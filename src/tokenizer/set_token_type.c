@@ -13,19 +13,15 @@ static char	**get_path(char **envp);
 
 void	set_token_type(t_token *token, char **envp)
 {
-	if (is_command(token, envp)) {
+	if (is_command(token, envp))
 		token->type = CMD;
-
-	}
-	
-	else
-		token->type = NIL;
 }
 
-static bool	is_operator(t_token *token)
+/* static bool	is_operator(t_token *token)
 {
-
-}
+	(void)token;
+	return (false);
+} */
 
 static bool	is_command(t_token *token, char **envp)
 {
