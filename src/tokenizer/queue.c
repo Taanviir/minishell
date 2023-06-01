@@ -1,4 +1,5 @@
 #include "../../include/token.h"
+#include <string.h>
 
 /* return command queue size */
 bool	q_isempty(_t_queue *cmd_q)
@@ -39,6 +40,17 @@ _t_token	*_dequeue(_t_queue *cmd_q)
 loop of the program */
 _t_queue	*create_command_queue(char **arguments)
 {
-	(void)arguments;
+	_t_token	*new;
+
+	while (*arguments)
+	{
+		new = malloc(sizeof(_t_token));
+		if (!new)
+			fputs("allocation error\n", stderr);
+		new->s_token = malloc(sizeof(char) * strlen(*arguments));
+		if (!new->s_token)
+			fputs("allocation error\n", stderr);
+		memcpy(new->s_token, *arguments, strlen(*arguments));
+	}
 	return (NULL);
 }
