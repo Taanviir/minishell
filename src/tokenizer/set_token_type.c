@@ -8,10 +8,10 @@
 	BSL		// backslash
  */
 
-static bool	is_command(_t_token *token, char **envp);
+static bool	is_command(t_token *token, char **envp);
 static char	**get_path(char **envp);
 
-void	set_token_type(_t_token *token, char **envp)
+void	set_token_type(t_token *token, char **envp)
 {
 	if (is_command(token, envp))
 		token->type = CMD;
@@ -23,7 +23,7 @@ void	set_token_type(_t_token *token, char **envp)
 	return (false);
 } */
 
-static bool	is_command(_t_token *token, char **envp)
+static bool	is_command(t_token *token, char **envp)
 {
 	char	**path_array;
 	char	*path_command;
@@ -34,11 +34,11 @@ static bool	is_command(_t_token *token, char **envp)
 	path_array = get_path(envp); // array of $(PATH) directories
 	while (path_array[i])
 	{
-		command_size = ft_strlen(path_array[i]) + ft_strlen(token->s_token) + 2; // (null) and (/)
+		command_size = ft_strlen(path_array[i]) + ft_strlen(token->name) + 2; // (null) and (/)
 		path_command = ft_calloc(sizeof(char), command_size);
 		ft_strcat(path_command, path_array[i]);
 		ft_strcat(path_command, "/");
-		ft_strcat(path_command, token->s_token);
+		ft_strcat(path_command, token->name);
 		if (!access(path_command, X_OK))
 		{
 			free(path_command);

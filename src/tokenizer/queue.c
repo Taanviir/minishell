@@ -2,15 +2,15 @@
 #include <string.h>
 
 /* return command queue size */
-bool	q_isempty(_t_queue *cmd_q)
+bool	q_isempty(t_queue *cmd_q)
 {
 	return ((bool)cmd_q->size);
 }
 
 /* adds tokens formed by splitting up the arguments from stdin */
-void	_enqueue(_t_token *token, _t_queue *cmd_q)
+void	_enqueue(t_token *token, t_queue *cmd_q)
 {
-	_t_token *old_last = cmd_q->last;
+	t_token *old_last = cmd_q->last;
 	cmd_q->last = token;
 	if (q_isempty(cmd_q))
 	{
@@ -25,9 +25,9 @@ void	_enqueue(_t_token *token, _t_queue *cmd_q)
 }
 
 /* removes a token from the command queue */
-_t_token	*_dequeue(_t_queue *cmd_q)
+t_token	*_dequeue(t_queue *cmd_q)
 {
-	_t_token	*old_first;
+	t_token	*old_first;
 	old_first = cmd_q->first;
 	cmd_q->first = old_first->next;
 	if (q_isempty(cmd_q))
@@ -38,19 +38,22 @@ _t_token	*_dequeue(_t_queue *cmd_q)
 
 /* creats the command queue from the arguments recieved from stdin in the main
 loop of the program */
-_t_queue	*create_command_queue(char **arguments)
+t_queue	*create_command_queue(char **arguments)
 {
-	_t_token	*new;
+	t_token	*new;
+	t_queue	*cmd_q;
 
+	cmd_q = malloc(sizeof(t_queue));
 	while (*arguments)
 	{
-		new = malloc(sizeof(_t_token));
+		new = malloc(sizeof(t_token));
 		if (!new)
 			fputs("allocation error\n", stderr);
-		new->s_token = malloc(sizeof(char) * strlen(*arguments));
-		if (!new->s_token)
+		new->name = malloc(sizeof(char) * strlen(*arguments));
+		if (!new->name)
 			fputs("allocation error\n", stderr);
-		memcpy(new->s_token, *arguments, strlen(*arguments));
+		memcpy(new->name, *arguments, strlen(*arguments));
+		_enqueue(new, cmd_q);
 	}
-	return (NULL);
+	return (cmd_q);
 }

@@ -28,20 +28,33 @@
 
 #define PROGRAM_NAME "minishell"
 
+t_ctable    *parse(char *input)
+{
+    t_ctable    *command_table;
+    char        **tokens;
+
+    tokens = ft_split(input, ' ');
+    command_table = malloc(sizeof(t_ctable));
+    if (!command_table) exit_clean();
+    
+
+
+}
+
 /* Main loop -- the main loop of the program */
 void    main_loop(void)
 {
-    char    *input; // a line inserted by the user
-    char    **arguments; // the line split up into a 2-D array
-    int     status;
+    char        *input; // a line inserted by the user
+    char        **arguments; // the line split up into a 2-D array
+    int         status;
+    t_ctable    *command_table;
 
     do {
         fprintf(stdout, "\033[0;32m%s@\033[0;35m%s\033[0m~>>", PROGRAM_NAME, USER);
         fflush(stdout);
         input = get_next_line(STDIN_FILENO);
-        arguments = ft_split(input, ' ');
-        create_command_queue(arguments); //! here @4:10 am 01/06
-        (void)arguments;
+        command_table = parse(input); /* the input is parsed into a data collection 'command_table' A 2 queues -words and -operators */
+
         status = 1;
     } while (status);
 }

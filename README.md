@@ -11,6 +11,16 @@ Minishell is a simple shell clone designed to teach C programming and the basics
 
 [picture of it running]
 
+### Tokenizing the command
+Tokens can be thought of as either words 'a group of characters bounded by an unquoted space' or an operator
+Then a word, can be split up into a command 'either the first word in a list of tokens, or the first word after an operator' and the rest are arguments
+so:
+--> tokens
+  --> words
+    --> command
+    --> arguments
+  --> operator
+
 
 #### _A list of built in commands to implement_
 
