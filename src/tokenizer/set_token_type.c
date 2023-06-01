@@ -8,10 +8,10 @@
 	BSL		// backslash
  */
 
-static bool	is_command(t_token *token, char **envp);
+static bool	is_command(_t_token *token, char **envp);
 static char	**get_path(char **envp);
 
-void	set_token_type(t_token *token, char **envp)
+void	set_token_type(_t_token *token, char **envp)
 {
 	if (is_command(token, envp))
 		token->type = CMD;
@@ -23,7 +23,7 @@ void	set_token_type(t_token *token, char **envp)
 	return (false);
 } */
 
-static bool	is_command(t_token *token, char **envp)
+static bool	is_command(_t_token *token, char **envp)
 {
 	char	**path_array;
 	char	*path_command;

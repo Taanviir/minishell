@@ -15,17 +15,13 @@ UTILS:= $(UTILS_DIR)utils
 
 CC_FLAGS:= -Wall -Werror -Wextra -std=c99 -ggdb3
 
-SRCS:= dequeue.c enqueue.c set_token_type.c token.c
+SRCS:= queue.c set_token_type.c token.c
 
-OBJS:= dequeue.o enqueue.o set_token_type.o token.o
+OBJS:= queue.o set_token_type.o token.o
 
 NAME:= tokenizer
 
 all: $(UTILS) $(NAME) clean
-
-testtokenizer: ./test/test_tokenizer.c all
-	@$(CC) $< $(NAME) -I $(INC_DIR) -o $@ $(UTILS) -ggdb3
-	@echo "$(COLOR_BLUE)>>test_tokenizer is ready$(COLOR_END)"
 
 $(UTILS):
 	$(MAKE) -C $(UTILS_DIR)

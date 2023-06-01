@@ -14,6 +14,8 @@
 #include "../include/utils.h"
 #include "../include/token/type.h"
 #include "../include/gnl.h"
+#include <assert.h>
+
 
 // COLORS
 #define COLOR_GREEN "\033[0;32m"
@@ -38,6 +40,7 @@ void    main_loop(void)
         fflush(stdout);
         input = get_next_line(STDIN_FILENO);
         arguments = ft_split(input, ' ');
+        create_command_queue(arguments); //! here @4:10 am 01/06
         (void)arguments;
         status = 1;
     } while (status);

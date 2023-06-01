@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eva-001 <eva-001@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/05 02:53:41 by sabdelra          #+#    #+#             */
-/*   Updated: 2022/12/08 17:42:59 by sabdelra         ###   ########.fr       */
+/*   Created: 2022/12/09 18:11:13 by sabdelra          #+#    #+#             */
+/*   Updated: 2023/06/01 02:57:27 by eva-001          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "../../include/gnl.h"
 
 size_t	ft_strlen(char *str)
 {
