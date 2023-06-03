@@ -28,11 +28,16 @@
 
 #define PROGRAM_NAME "minishell"
 
-t_command_table    *parse(char *input)
+/* Backus­Naur Form
+cmd [arg]* [ | cmd [arg]* ]*
+[ [> filename] [< filename] [ >& filename] [>> filename] [>>& filename] ]* [&]
+t_command_table    *parse(char *input) */
 {
     t_token *tokens;
 
+    // Lexer
     tokens = queue(input);
+    // parser
 }
 
 /* Main loop -- the main loop of the program */
