@@ -9,7 +9,6 @@
 #define CMD		0x10	// command
 #define BCMD	0x20	// built-in command (cd, exit, ...)
 #define ARG		0x30	// argument
-#define OPR		0x40	// operator
 #define VAR		0x50	// variable
 #define QTS		0x60	// quotes
 #define BSL		0x70	// backslash
