@@ -1,84 +1,98 @@
-#include "../../include/cmdtable.h"
-#include "../../include/utils.h"
-#include "../../include/cmdtable/type.h"
+#include "../../include/interpreter.h"
+// #include "../../include/utils.h"
+#include "../../include/interpreter/type.h"
 #include <string.h>
-
-/* define TEST_ALL if you want to test all*/
-#define TEST_ALL
-
 /*
-Grammar is written in a format called "Backus-Naur Form"
+Bash Grammar is written in a format called "Backus-Naur Form"
 cmd [arg]* [|cmd [arg]* ]* [ [> filename] [< filename] [ >& filename] [>> filename] [>>& filename] ]* [&]
-This is shell grammar in Backus-Naur form
+This is an example of shell grammar in Backus-Naur form
 */
 
+
+/* define TEST_ALL if you want to test all*/
+
 /* Create a t_token, an entry into token linked list */
-t_token *create_token(char *token)
+static t_token *create_token(char *token)
 {
 	t_token *new = malloc(sizeof(t_token));
-	new->t = token;
+	new->token = token;
 	new->next = NULL;
 	return (new);
+}
+
+/* Creates a string from the input, by finding the next token in the input */
+static char	*next_token_string(char *input, size_t *i)
+{
+		char	*token;
+		char	del;
+		size_t	token_length;
+
+		del = '\0';
+
+		size_t start = *i;
+		while (input[*i] && input[*i] != del)
+		{
+			if (!del && (input[*i] == '"' || input[*i] == '\''))
+			{
+				del = input[*i];
+				start += 1; // to skip the delimiter
+			}
+			else if (!del || input[*i] == del)
+				del = ' ';
+			(*i)++;
+		}
+		token_length = *i - start;
+		token = malloc(sizeof(char) * (token_length + 1));
+		if (token)
+		{
+			strncpy(token, input + start, token_length);
+			token[token_length] = '\0';
+			return (token);
+		}
+		else
+			return (NULL);
 }
 
 /* based on matching a pattern set the type field in t_simple_command
 pattern is simple either an operator from a list, or no its a word */
 /* splits up an input line into tokens with type enum{OPR,WRD} */
-/* split into a linked list */
 /* //!type not implemented yet */
-t_token *split_line(char *input)
+
+enum TKN_QUEUE {
+	first,
+	prev,
+	temp
+};
+
+t_token *tkn_queue(const char *input)
 {
 
-	t_token	*first = NULL;
-	t_token	*prev = NULL;
-	char	del;
+	t_token	*q[3]; /* position in que (first, prev, temp) */
 	size_t	i;
-	size_t	token_length;
 
 	i = 0;
 	while (input[i])
 	{
-		/* count the size until the next delimeter
-		delimeter can either be a \0 '"' '\'' or ' ' */
-		del = '\0'; // starts off as null
-
-		size_t start = i;
-		while (input[i] && input[i] != del)
+		q[temp] = create_token(next_token_string(input, &i));
+		/* adding q[new] token to queue FIFO */
+		if (q[prev]) // this is the 2nd new onwards
+			q[prev]->next = q[temp];
+		if (!q[first])
 		{
-			if (!del && (input[i] == '"' || input[i] == '\''))
-			{
-				del = input[i];
-				start += 1; // to skip the delimiter
-			}
-			else if (!del || input[i] == del)
-				del = ' ';
-			else
-			{
-				while (input[i] == ' ')
-			}
-			i++;
-		}
-		token_length = i - start;
-		char *token = malloc(sizeof(char) * (token_length + 1));
-		if (token)
-		{
-			strncpy(token, input + start, token_length);
-			token[token_length] = '\0';
-		}
-		t_token *new = create_token(token);
-		if (prev) // this is the 2nd new onwards
-			prev->next = new;
-		if (!first)
-		{
-			first = new; // new must be first one hmmmm!
-			prev = first;
+			q[first] = q[temp]; // new must be first one hmmmm!
+			q[prev]= q[first];
 		}
 		else
-			prev = new;
-		while (input[i] && input[i] == del)
+			q[prev]= q[temp];
+		if (input[i])
+		{
 			i++;
+			while (input[i] && input[i] == ' ')
+				i++;
+		}
 	}
-	return (first);
+	q[temp]->next = NULL; // terminating the queuekz
+	return (first); /* head of queue */
 }
 
 #ifdef TEST_ALL
@@ -96,6 +110,7 @@ int main(int argc, char **argv)
 		"echo \"Hello, World!\"",
 		"cat myfile.txt",
 		"grep \"pattern\" file.txt",
+		"grep \"pattern\"    file.txt",
 		"chmod +x script.sh",
 		"./script.sh",
 		"ps aux",
@@ -196,11 +211,11 @@ int main(int argc, char **argv)
 	int i = 0;
 	for (char *test_case = input[i]; test_case; i++, test_case = input[i])
 	{
-		t_token *token_queue_ll = split_line(test_case);
+		t_token *token_queue_ll = tkn_queue(test_case);
 		printf("Test case no: %d\n", i + 1);
 		printf("(%s)\n", test_case);
 		for (t_token *temp = token_queue_ll; temp; temp = temp->next)
-			printf("%s\n", temp->t);
+			printf("%s\n", temp->token);
 		printf("______________________________\n");
 	}
 }
@@ -210,6 +225,11 @@ int main(int argc, char **argv)
 int main(int argc, char **argv)
 {
 	char *test = "grep \"pattern\" file.txt";
-	t_token *head = split_line(test);
+	t_token *head = tkn_queue(test);
 }
 #endif
+
+
+// TODO case 30 "echo 'Hello' >> file.txt 2>&1" last token??
+// TODO maybe quotes are supposed to be part of the token or no? depends on how it will be passed on to execve
+

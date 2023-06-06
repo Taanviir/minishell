@@ -15,11 +15,11 @@ UTILS:= $(UTILS_DIR)utils
 
 CC_FLAGS:= -Wall -Werror -Wextra -std=c99 -ggdb3
 
-SRCS:= queue.c set_token_type.c token.c
+SRCS:= lexer.c
 
-OBJS:= queue.o set_token_type.o token.o
+OBJS:= lexer.o
 
-NAME:= tokenizer
+NAME:= cmdtable
 
 all: $(UTILS) $(NAME) clean
 
@@ -28,7 +28,7 @@ $(UTILS):
 
 $(NAME): $(OBJS)
 	@ar rcs $@ $(UTILS) $^
-	@echo "$(COLOR_GREEN)>>tokenizer ready$(COLOR_END)"
+	@echo "$(COLOR_GREEN)>>cmdtable is up to date!$(COLOR_END)"
 
 %.o: %.c
 	@$(CC) $(CC_FLAGS) -c -I $(INC_DIR) $^ -o $@

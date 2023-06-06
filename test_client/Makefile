@@ -4,11 +4,11 @@ COLOR_RED=\033[0;31m
 COLOR_BLUE=\033[0;34m
 COLOR_END=\033[0m
 ### DIRS
-TOK_DIR:=../src/tokenizer
+TOK_DIR:=../src/cmdtable
 
 GNL_DIR:=../src/gnl
 ### LIB
-TOK_LIB:=../src/tokenizer/tokenizer
+TOK_LIB:=../src/cmtable/cmdtable
 
 GNL_LIB:=../src/gnl/gnl
 
@@ -26,8 +26,8 @@ libs:
 	+$(MAKE) -C $(GNL_DIR)
 
 $(NAME): libs
-	$(CC) $(CC_FLAGS) main.c $(TOK_LIB) $(GNL_LIB) $(UTILS) -o $@ 
-	@echo "$(COLOR_GREEN)>>minishell ready$(COLOR_END)"
+	$(CC) $(CC_FLAGS) main.c $(TOK_LIB) $(GNL_LIB) $(UTILS) -o $@
+	@echo "$(COLOR_GREEN)>>minishell is up to date\n$(COLOR_END)"
 
 clean:
 	@rm -f $(OBJS)
