@@ -20,15 +20,14 @@ typedef struct s_token
 } t_token;
 /* creates a que of tokens to be formed into a simple command */
 t_token *queue(char *tokens);
-
 /* A simple command is an entry in the pipeline */
-enum    token_type {OPR, WRD}; 
+enum    token_type {OPR, WRD};
 /*          (token)
              /   \
            OPR   WRD
 Based on a list of operanads and words a simple command can be made
-
  */
+
 #define N_AVAILABLE_ARGS 32
 typedef struct s_simple_command
 {
@@ -45,10 +44,11 @@ typedef struct s_command_table
     t_simple_command *sc;
 
 
-    
+
 
 }t_command_table;
 
+/* token functions */
 
 
 
