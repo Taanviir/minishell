@@ -1,3 +1,10 @@
+/*
+Bash Grammar could be written in a format called "Backus-Naur Form"
+
+cmd [arg]* [|cmd [arg]* ]* [ [> filename] [< filename] [ >& filename] [>> filename] [>>& filename] ]* [&]
+- an example of shell grammar in Backus-Naur form
+*/
+
 #ifndef TOKEN_H
 #define TOKEN_H
 
@@ -10,14 +17,12 @@
 
 #include "utils.h"
 
-
 typedef struct	s_token
 {
 	char			*token; // mallocd needs to be freed aswell
 	int				identifier; /* 0 operand, word 1 */
-	struct s_token	*next;
 }	t_token;
-/* A simple command is an entry in the pipeline */
+
 enum    token_type {OPR, WRD};
 /*          (token)
              /   \
@@ -25,9 +30,11 @@ enum    token_type {OPR, WRD};
 Based on a list of operanads and words a simple command can be made
  */
 
-t_token	*tkn_queue(char *input);
+t_token	*create_token(char *token);
+t_queue	*interpreter(char *input);
 
 #define N_AVAILABLE_ARGS 32
+/* A simple command is an entry in the pipeline */
 typedef struct s_simple_command
 {
 	char	*name; // Wcommands name
@@ -38,7 +45,7 @@ typedef struct s_simple_command
 	struct s_simple_command *next;
 }t_simple_command;
 
-t_token	*parse(char *input); /* Parses the token queue into a queue of simple commands */
+t_queue	*parse(char *input); /* Parses the token queue into a queue of simple commands */
 
 /* token functions */
 

@@ -162,35 +162,38 @@ static bool	is_operand(char *token)
 	return (false);
 }
 
-static void set_type(t_token *first)
+/* takes a token queue as argument and sets its identifier to either word or operand */
+static void set_type(t_queue *queue)
 {
-	t_token	*temp;
+	t_token	*current;
+	t_node	*temp;
 
-	temp = first;
-	while (temp)
+	temp = queue->first;
+	if (temp)
 	{
-		if(is_operand(temp->token))
-			temp->identifier = OPR;
-		else
-			temp->identifier = WRD;
-		temp = temp->next;
+		while (temp)
+		{
+			current = temp->data;
+			if(is_operand(current->token))
+				current->identifier = OPR;
+			else
+				current->identifier = WRD;
+			temp = temp->next;
+		}
 	}
 }
 
-/*  */
-t_token	*parse(char *input)
+/* Parses the token queue into a simple command struct */
+t_queue	*parse(char *input)
 {
 	/* First in queue */
-	t_token				*first;
+	t_queue	*token_queue;
 	// t_simple_command	*sc;
 
-	first = tkn_queue(input);
+	token_queue = interpreter(input);
 	/* assert token que is properly functioning */
-	set_type(first);
-
-	//!here
-	return first;
-
+	set_type(token_queue);
+	return token_queue;
 }
 
 #ifdef TEST_ALL
@@ -200,13 +203,16 @@ int main(int argc, char **argv) {
 	int i = 0;
 	for (char *test_case = INPUT_TEST[i]; test_case; i++, test_case = INPUT_TEST[i])
 	{
-		t_token *token_queue_ll = parse(test_case);
+		t_queue	*token_queue = parse(test_case);
+		t_token	*current_token;
+
 		printf("Test case no: %d\n", i + 1);
 		printf("(%s)\n", test_case);
-		for (t_token *temp = token_queue_ll; temp; temp = temp->next)
+		for (t_node *temp = token_queue->first; temp; temp = temp->next)
 		{
-			printf("%s", temp->token);
-			printf(", type: %s\n", temp->identifier == OPR? "OPR":"WORD");
+			current_token = temp->data;
+			printf("%s ", current_token->token);
+			printf(" type: %s\n", current_token->identifier == OPR? "OPR":"WORD");
 		}
 		printf("______________________________\n");
 	}

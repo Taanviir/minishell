@@ -3,6 +3,7 @@
 		"error.h": "c",
 		"ft_error.h": "c",
 		"utils.h": "c",
-		"type.h": "c"
+		"type.h": "c",
+		"assert.h": "c"
 	}
 }

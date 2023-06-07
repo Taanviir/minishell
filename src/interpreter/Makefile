@@ -21,7 +21,7 @@ OBJS:= interpreter.o parser.o
 
 NAME:= interpreter
 
-all: $(NAME)
+all: $(NAME) clean
 
 $(UTILS):
 	$(MAKE) -C $(UTILS_DIR)

@@ -14,7 +14,7 @@ NAME:= gnl
 
 CC_FLAGS:= -Wall -Werror -Wextra -O3
 
-all: $(NAME)
+all: $(NAME) clean
 
 
 $(NAME): $(OBJ)

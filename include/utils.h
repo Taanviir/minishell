@@ -13,6 +13,22 @@ void	*ft_memset(void *dest, int c, size_t len);
 char	*ft_strcat(char *dest, char *src);
 int		ft_strncmp(char *s1, char *s2, int n);
 
+/* QUEUE FIFO implementation */
+typedef struct s_node
+{
+	void			*data; /* can be any type of struct */
+	struct s_node	*next;
+}	t_node;
+typedef struct s_queue
+{
+	t_node	*first;
+	t_node	*last;
+	size_t	size;
+}	t_queue;
+
+t_queue	*create_queue(void);
+void	enqueue(void *new, t_queue *q);
+
 #endif
 
 // TODO organize frees and errors

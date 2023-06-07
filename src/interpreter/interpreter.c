@@ -1,22 +1,15 @@
 #include "../../include/interpreter.h"
-// #include "../../include/utils.h"
 #include "../../include/interpreter/type.h"
-#include <string.h>
-/*
-Bash Grammar is written in a format called "Backus-Naur Form"
-cmd [arg]* [|cmd [arg]* ]* [ [> filename] [< filename] [ >& filename] [>> filename] [>>& filename] ]* [&]
-This is an example of shell grammar in Backus-Naur form
-*/
 
+#include <string.h>
 
 /* define TEST_ALL if you want to test all*/
 
-/* Create a t_token, an entry into token linked list */
-static t_token *create_token(char *token)
+/* Create a t_token, an entry into token que */
+t_token *create_token(char *token)
 {
 	t_token *new = malloc(sizeof(t_token));
 	new->token = token;
-	new->next = NULL;
 	return (new);
 }
 
@@ -53,39 +46,29 @@ static char	*next_token_string(char *input, size_t *i)
 			return (NULL);
 }
 
-/* based on matching a pattern set the type field in t_simple_command
-pattern is simple either an operator from a list, or no its a word */
-/* splits up an input line into tokens with type enum{OPR,WRD} */
-/* //!type not implemented yet */
-
 enum TKN_QUEUE {
 	first,
 	prev,
 	temp
 };
 
-t_token *tkn_queue(char *input)
+/* returns a queue FIFO of tokens */
+t_queue *interpreter(char *input)
 {
 
-	t_token	*q[3]; /* position in que (first, prev, temp) */
+	char	*name_token;
+	t_token	*temp_token;
+	t_queue	*q;
 	size_t	i;
 
 	i = 0;
-	q[prev] = NULL;
-	q[first] = NULL;
+	q = create_queue();
 	while (input[i])
 	{
-		q[temp] = create_token(next_token_string(input, &i));
+		name_token = next_token_string(input, &i);
+		temp_token = create_token(name_token);
 		/* adding q[new] token to queue FIFO */
-		if (q[prev]) // this is the 2nd new onwards
-			q[prev]->next = q[temp];
-		if (!q[first])
-		{
-			q[first] = q[temp]; // new must be first one hmmmm!
-			q[prev]= q[first];
-		}
-		else
-			q[prev]= q[temp];
+		enqueue(temp_token, q);
 		if (input[i])
 		{
 			i++;
@@ -93,8 +76,7 @@ t_token *tkn_queue(char *input)
 				i++;
 		}
 	}
-	q[temp]->next = NULL; // terminating the queue
-	return (q[first]); /* head of queue */
+	return (q); /* head of queue */
 }
 
 #ifdef TEST_ALL
