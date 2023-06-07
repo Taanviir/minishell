@@ -15,20 +15,20 @@ UTILS:= $(UTILS_DIR)utils
 
 CC_FLAGS:= -Wall -Werror -Wextra -std=c99 -ggdb3
 
-SRCS:= lexer.c
+SRCS:= interpreter.c parser.c
 
-OBJS:= lexer.o
+OBJS:= interpreter.o parser.o
 
-NAME:= cmdtable
+NAME:= interpreter
 
-all: $(UTILS) $(NAME) clean
+all: $(NAME)
 
 $(UTILS):
 	$(MAKE) -C $(UTILS_DIR)
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJS) $(UTILS)
 	@ar rcs $@ $(UTILS) $^
-	@echo "$(COLOR_GREEN)>>cmdtable is up to date!$(COLOR_END)"
+	@echo "$(COLOR_BLUE)>>interpreter is up to date!$(COLOR_END)"
 
 %.o: %.c
 	@$(CC) $(CC_FLAGS) -c -I $(INC_DIR) $^ -o $@
@@ -38,8 +38,8 @@ clean:
 
 fclean: clean
 	@rm -f $(NAME)
-	$(MAKE) -C $(UTILS_DIR) fclean
-	@echo "$(COLOR_RED)tokenizer clean completed$(COLOR_END)"
+	@$(MAKE) -C $(UTILS_DIR) fclean
+	@echo "$(COLOR_RED)interpreter removed$(COLOR_END)"
 
 re: fclean all
 

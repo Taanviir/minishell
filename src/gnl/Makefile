@@ -19,14 +19,14 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	@ar crs $@ $^
-	@echo "$(COLOR_BLUE)>>gnl ready$(COLOR_END)"
+	@echo "$(COLOR_BLUE)>>gnl is up to date!$(COLOR_END)"
 
 fclean: clean
-	@rm $(NAME)
-	@echo "$(COLOR_GREEN)>>gnl removed$(COLOR_END)"
+	@rm -f $(NAME)
+	@echo "$(COLOR_RED)>>gnl removed$(COLOR_END)"
 
 clean:
-	@rm $(OBJ)
+	@rm -f $(OBJ)
 
 re: fclean all
 

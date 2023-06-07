@@ -4,11 +4,11 @@ COLOR_RED=\033[0;31m
 COLOR_BLUE=\033[0;34m
 COLOR_END=\033[0m
 ### DIRS
-TOK_DIR:=../src/cmdtable
+INT_DIR:=../src/interpreter
 
 GNL_DIR:=../src/gnl
 ### LIB
-TOK_LIB:=../src/cmtable/cmdtable
+TOK_LIB:=../src/interpreter/interpreter
 
 GNL_LIB:=../src/gnl/gnl
 
@@ -22,7 +22,7 @@ NAME:= minishell
 all: $(NAME)
 
 libs:
-	+$(MAKE) -C $(TOK_DIR)
+	+$(MAKE) -C $(INT_DIR)
 	+$(MAKE) -C $(GNL_DIR)
 
 $(NAME): libs
@@ -31,11 +31,11 @@ $(NAME): libs
 
 clean:
 	@rm -f $(OBJS)
+	@$(MAKE) -C $(INT_DIR) fclean
+	@$(MAKE) -C $(GNL_DIR) fclean
 
 fclean: clean
 	@rm -f $(NAME)
-	+$(MAKE) -C $(TOK_DIR) fclean
-	+$(MAKE) -C $(GNL_DIR) fclean
 	@echo "$(COLOR_RED)full clean completed$(COLOR_END)"
 
 re: fclean all

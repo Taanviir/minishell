@@ -15,11 +15,11 @@ INC_DIR:= ../../include
 
 ERR_DIR:= ../error
 
-SRCS:= ft_split.c ft_strlen.c free_split.c ft_strlcpy.c \
+SRCS:= queue.c ft_strlen.c free_split.c ft_strlcpy.c \
 		ft_strncmp.c ft_strcat.c ft_calloc.c ft_memset.c\
 		$(ERR_DIR)/mem_error.c
 
-OBJS:= ft_split.o ft_strlen.o free_split.o ft_strlcpy.o \
+OBJS:= queue.o ft_strlen.o free_split.o ft_strlcpy.o \
 		ft_strncmp.o ft_strcat.o ft_calloc.o ft_memset.o\
 		$(ERR_DIR)/mem_error.o
 
@@ -36,7 +36,7 @@ testsplit: ./test/test_split.c all
 
 $(NAME): $(OBJS)
 	@ar rcs $@ $^
-	@echo "$(COLOR_BLUE)>>utils ready$(COLOR_END)"
+	@echo "$(COLOR_BLUE)>>utils is up to date!$(COLOR_END)"
 
 %.o: %.c
 	@$(CC) $(CC_FLAGS) -c -I $(INC_DIR) $^ -o $@
@@ -47,7 +47,7 @@ clean:
 fclean: clean
 	@rm -f $(NAME)
 	@rm -f testsplit
-	@echo "$(COLOR_RED)utils fully clean$(COLOR_END)"
+	@echo "$(COLOR_RED)utils removed$(COLOR_END)"
 
 re: fclean all
 
