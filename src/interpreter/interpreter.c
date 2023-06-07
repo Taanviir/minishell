@@ -71,6 +71,8 @@ t_token *tkn_queue(char *input)
 	size_t	i;
 
 	i = 0;
+	q[prev] = NULL;
+	q[first] = NULL;
 	while (input[i])
 	{
 		q[temp] = create_token(next_token_string(input, &i));

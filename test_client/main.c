@@ -29,31 +29,31 @@
 #define PROGRAM_NAME "minishell"
 
 /* Main loop -- the main loop of the program */
-void	main_loop(void)
-{
-	char				*input; // a line inserted by the user
-	int					status;
-	// t_simple_command	*sc;
-	t_token	*sc;
+// void	main_loop(void)
+// {
+// 	char				*input; // a line inserted by the user
+// 	int					status;
+// 	// t_simple_command	*sc;
+// 	t_token	*sc;
 
-	do {
-		fprintf(stdout, "\033[0;32m%s@\033[0;35m%s\033[0m~>>", PROGRAM_NAME, USER);
-		fflush(stdout);
-		/* The shell shall read its input in terms of lines from a file */
-		input = get_next_line(STDIN_FILENO);
-		/* input is parsed using two major modes, ordinary token recognition and processing of here-documents */
-		sc = parse(input); /* the input is parsed into a data collection 'command_table' A 2 queues -words and -operators */
-		printf("(%s)\n", input);
-		printf("%s", sc->token);
-		printf(", type: %s\n", sc->identifier == OPR? "OPR":"WORD");
-		printf("______________________________\n");
-		status = 1;
-	}	while (status);
-}
+// 	do {
+// 		fprintf(stdout, "\033[0;32m%s@\033[0;35m%s\033[0m~>>", PROGRAM_NAME, USER);
+// 		fflush(stdout);
+// 		/* The shell shall read its input in terms of lines from a file */
+// 		input = get_next_line(STDIN_FILENO);
+// 		/* input is parsed using two major modes, ordinary token recognition and processing of here-documents */
+// 		sc = parse(input); /* the input is parsed into a data collection 'command_table' A 2 queues -words and -operators */
+// 		printf("(%s)\n", input);
+// 		printf("%s", sc->token);
+// 		printf(", type: %s\n", sc->identifier == OPR? "OPR":"WORD");
+// 		printf("______________________________\n");
+// 		status = 1;
+// 	}	while (status);
+// }
 
-int
-main(int argc __attribute__((unused)), char **argv __attribute__((unused)), char **envp)
-{
-    (void)envp;
-    main_loop();
-}
+// int
+// main(int argc __attribute__((unused)), char **argv __attribute__((unused)), char **envp)
+// {
+//     (void)envp;
+//     main_loop();
+// }
