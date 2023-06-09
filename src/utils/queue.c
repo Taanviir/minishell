@@ -1,4 +1,4 @@
-#include "../../include/interpreter.h"
+#include "../../include/tokenizer.h"
 
 /* QUEUE FIFO implementation API needs to be made as it is used alot */
 /* complete with freeing functions */
