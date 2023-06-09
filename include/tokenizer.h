@@ -34,8 +34,6 @@ enum	token_type {OPR, WRD};
            OPR   WRD
 Based on a list of operanads and words a simple command can be made
  */
-
-t_token	*create_token(char *token);
 t_queue	*tokenizer(char *input);
 
 #define N_AVAILABLE_ARGS 32

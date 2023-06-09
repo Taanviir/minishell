@@ -1,5 +1,5 @@
 ## minishell
-Minishell is a simple shell clone designed to teach C programming and the basics of the Linux system. 
+Minishell is a simple shell clone designed to teach C programming and the basics of the Linux system.
 
 - A simplified hands-on learning experience for understanding how the shell interprets user commands, executes them, and communicates with the underlying system.
 
@@ -12,15 +12,6 @@ Minishell is a simple shell clone designed to teach C programming and the basics
 [picture of it running]
 
 ### Tokenizing the command
-Tokens can be thought of as either words 'a group of characters bounded by an unquoted space' or an operator
-Then a word, can be split up into a command 'either the first word in a list of tokens, or the first word after an operator' and the rest are arguments
-so:
---> tokens
-  --> words
-    --> command
-    --> arguments
-  --> operator
-
 
 #### _A list of built in commands to implement_
 
@@ -73,3 +64,10 @@ so:
   >[Blogpost guide](https://brennan.io/2015/01/16/write-a-shell-in-c/)
   >
   >[Minishell guide](https://harm-smits.github.io/42docs/projects/minishell)
+
+## Currently working on
+`tokenizer.c` breaks up the input command into tokens and places them into a queue
+
+	delimiter bit-field flag quotation rules
+
+

@@ -3,72 +3,56 @@
 
 
 /* define TEST_ALL if you want to test all*/
+#define TEST_ALL
+
+/* DELIMITER_FLAG */
+#define INSIDE_QUOTES 0X01 /* 0000 0001 */
+
+/* using bitfields
+- oring an OPTION  for exampe INSIDE_QUOTES sets on the flag
+	INSIDE_QUOTES | int delimter_flag */
+#define SET(delmiter, flag) ((delimter, |= (flag)))
+
+/* finds and returns the next token in an input_command string, takes in the string and index pointer */
+char *static_find_token(char *input_command, size_t *i, u_int8_t delimter_flag)
+{
+	/* follows bash grammar rules for determining the meaning of each character based on a set
+	of quoting flags
+	f1 - inside quotes
+	f2 - inside double quotes
+	f3 - inside Dollar braces
+	f4 - inside  */
+	if (input_command[*i] == '\'')
+		SET()
+}
 
 /* Create a t_token, an entry into token que */
-t_token *create_token(char *token)
+static t_token *create_token(char *token)
 {
 	t_token *new = malloc(sizeof(t_token));
 	new->token = token;
 	return (new);
 }
 
-/* finds next token and returns a null terminated string of it */
-static char	*next_token_string(char *in_cmd, size_t *i)
-{
-		char	*token;
-		char	del;
-		size_t	token_length;
-		size_t	start;
-
-		del = '\0';
-		start = *i;
-		while (in_cmd[*i] && in_cmd[*i] != del)
-		{
-			if (!del && (in_cmd[*i] == '"' || in_cmd[*i] == '\'' || in_cmd[*i] == '\\'))
-			{
-				del = in_cmd[*i];
-				start += 1; // to skip the delimiter
-			}
-			else if (!del || in_cmd[*i] == del)
-				del = ' ';
-			(*i)++;
-		}
-		token_length = *i - start;
-		token = malloc(sizeof(char) * (token_length + 1));
-		if (token)
-		{
-			ft_strlcpy(token, in_cmd + start, token_length);
-			return (token);
-		}
-		else
-			return (NULL);
-}
-
 /* Break up the input command into tokens, and places them in a FIFO queue
 returns the queue (t_queue)*/
 t_queue *tokenizer(char *input_command)
 {
+	t_queue		*token_queue;
+	t_token		*token;
+	char		*s_token;
+	size_t		i;
+	u_int8_t	*delimter_flag;
 
-	char	*token_name;
-	t_token	*temp;
-	t_queue	*token_queue;
-	size_t	i;
-
-	i = 0;
 	token_queue = create_queue();
+	i = 0;
 	while (input_command[i])
 	{
-		token_name = next_token_string(input_command, &i);
-		temp = create_token(token_name);
-		/* adding temp token to queue FIFO */
-		enqueue(temp, token_queue);
-		if (input_command[i])
-		{
-			i++;
-			while (input_command[i] && input_command[i] == ' ')
-				i++;
-		}
+		s_token = find_token(input_command, &i, delimter_flag);
+		token = create_token(s_token);
+		enqueue(token, token_queue);
 	}
+	enqueue(NULL, token_queue); /* adding a null node to terminate the queue */
 	return (token_queue);
 }
 

@@ -3,7 +3,9 @@
 /* QUEUE FIFO implementation API needs to be made as it is used alot */
 /* complete with freeing functions */
 
-/* converts a struct to a node */
+/* creates a t_node, and sets the data field in node to point
+to struct new.
+effectively acting as a wrapper for any type node to be used as a node in the queue */
 static t_node	*_node_wrapper(void *new)
 {
 	t_node	*temp;
