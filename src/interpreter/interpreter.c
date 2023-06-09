@@ -1,7 +1,6 @@
 #include "../../include/interpreter.h"
 #include "../../include/interpreter/type.h"
 
-#include <string.h>
 
 /* define TEST_ALL if you want to test all*/
 
@@ -13,16 +12,16 @@ t_token *create_token(char *token)
 	return (new);
 }
 
-/* Creates a string from the input, by finding the next token in the input */
+/* finds next token and returns a null terminated string of it */
 static char	*next_token_string(char *input, size_t *i)
 {
 		char	*token;
 		char	del;
 		size_t	token_length;
+		size_t	start;
 
 		del = '\0';
-
-		size_t start = *i;
+		start = *i;
 		while (input[*i] && input[*i] != del)
 		{
 			if (!del && (input[*i] == '"' || input[*i] == '\''))
@@ -38,45 +37,39 @@ static char	*next_token_string(char *input, size_t *i)
 		token = malloc(sizeof(char) * (token_length + 1));
 		if (token)
 		{
-			strncpy(token, input + start, token_length);
-			token[token_length] = '\0';
+			ft_strlcpy(token, input + start, token_length);
 			return (token);
 		}
 		else
 			return (NULL);
 }
 
-enum TKN_QUEUE {
-	first,
-	prev,
-	temp
-};
-
-/* returns a queue FIFO of tokens */
-t_queue *interpreter(char *input)
+/* Break up the input command into tokens, and places them in a FIFO queue
+returns the queue (t_queue)*/
+t_queue *tokenizer(char *input_command)
 {
 
-	char	*name_token;
-	t_token	*temp_token;
-	t_queue	*q;
+	char	*token_name;
+	t_token	*temp;
+	t_queue	*token_queue;
 	size_t	i;
 
 	i = 0;
-	q = create_queue();
-	while (input[i])
+	token_queue = create_queue();
+	while (input_command[i])
 	{
-		name_token = next_token_string(input, &i);
-		temp_token = create_token(name_token);
-		/* adding q[new] token to queue FIFO */
-		enqueue(temp_token, q);
-		if (input[i])
+		token_name = next_token_string(input_command, &i);
+		temp = create_token(token_name);
+		/* adding temp token to queue FIFO */
+		enqueue(temp, token_queue);
+		if (input_command[i])
 		{
 			i++;
-			while (input[i] && input[i] == ' ')
+			while (input_command[i] && input_command[i] == ' ')
 				i++;
 		}
 	}
-	return (q); /* head of queue */
+	return (token_queue);
 }
 
 #ifdef TEST_ALL

@@ -3,9 +3,6 @@
 of type t_token *token; a token can be either a WORD or OPERATOR
  The aim of this function here is to create the data structure struct s_simple_command; and ?? Compund_commands*/
 
-
-/* returns true if the token is an operand, and false if else wise */
-
 #define TEST_ALL
 
 char *INPUT_TEST[] = {
@@ -119,6 +116,8 @@ char *INPUT_TEST[] = {
 		NULL
 	};
 
+
+/* returns true if the token is an operand, and false if else wise */
 static bool	is_operand(char *token)
 {
 	int		i;
@@ -162,7 +161,8 @@ static bool	is_operand(char *token)
 	return (false);
 }
 
-/* takes a token queue as argument and sets its identifier to either word or operand */
+/* takes a token queue as argument and sets the identifier of all the tokens in the que
+to either word or operand */
 static void set_type(t_queue *queue)
 {
 	t_token	*current;
@@ -186,13 +186,22 @@ static void set_type(t_queue *queue)
 /* Parses the token queue into a simple command struct */
 t_queue	*parse(char *input)
 {
-	/* First in queue */
-	t_queue	*token_queue;
+	t_queue				*token_queue;
 	// t_simple_command	*sc;
 
-	token_queue = interpreter(input);
-	/* assert token que is properly functioning */
+	// sc = malloc(sizeof(t_queue));
+	// if (!sc)
+	// 	return (NULL);
+	token_queue = tokenizer(input);
 	set_type(token_queue);
+	/*
+	- set command name
+	- set size_of_args
+	- store in argument array
+	- set redirections based on operators in the token_queue
+	- set background flag
+	- has a pointer to next command
+	 */
 	return token_queue;
 }
 

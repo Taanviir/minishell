@@ -16,17 +16,18 @@ static t_node	*_node_wrapper(void *new)
 	return (temp);
 }
 
-/* creates an empty queue */
+/* returns an empty queue (t_queue) */
 t_queue	*create_queue(void)
 {
-	t_queue	*q;
-	q = malloc(sizeof(t_queue));
-	if (!q)
+	t_queue	*new_queue;
+
+	new_queue = malloc(sizeof(t_queue));
+	if (!new_queue)
 		return (NULL);
-	q->first = NULL;
-	q->last = NULL;
-	q->size = 0;
-	return (q);
+	new_queue->first = NULL;
+	new_queue->last = NULL;
+	new_queue->size = 0;
+	return (new_queue);
 }
 
 /* adds a node to the queue */

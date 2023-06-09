@@ -14,16 +14,22 @@ cmd [arg]* [|cmd [arg]* ]* [ [> filename] [< filename] [ >& filename] [>> filena
 #include <unistd.h>
 #include <sys/types.h>
 #include <assert.h>
+#include <string.h>
+#include <stdint.h>
 
 #include "utils.h"
 
+/* A token is a character or a group of characters recognized
+from the input stream. Identifier = primarytype_secondarytype
+
+ */
 typedef struct	s_token
 {
 	char			*token; // mallocd needs to be freed aswell
-	int				identifier; /* 0 operand, word 1 */
+	u_int32_t		identifier; /* 0 operand, word 1 */
 }	t_token;
 
-enum    token_type {OPR, WRD};
+enum	token_type {OPR, WRD};
 /*          (token)
              /   \
            OPR   WRD
@@ -31,13 +37,13 @@ Based on a list of operanads and words a simple command can be made
  */
 
 t_token	*create_token(char *token);
-t_queue	*interpreter(char *input);
+t_queue	*tokenizer(char *input);
 
 #define N_AVAILABLE_ARGS 32
 /* A simple command is an entry in the pipeline */
 typedef struct s_simple_command
 {
-	char	*name; // Wcommands name
+	char	*name; // commands name
 	int		size_of_args;
 	char	*args[N_AVAILABLE_ARGS]; // argument array
 	int		rfiles[3]; /* 0 inFile, 1 outfile, 2 errfile array of file descriptors to redirect a stream to, (ex. direct stdin to pipe)*/
