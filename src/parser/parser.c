@@ -1,4 +1,4 @@
-#include "../../include/interpreter.h"
+#include "../../include/tokenizer.h"
 /* The interpreter passes on a queue (FIFO) linked list to the parser
 of type t_token *token; a token can be either a WORD or OPERATOR
  The aim of this function here is to create the data structure struct s_simple_command; and ?? Compund_commands*/

@@ -21,7 +21,6 @@ cmd [arg]* [|cmd [arg]* ]* [ [> filename] [< filename] [ >& filename] [>> filena
 
 /* A token is a character or a group of characters recognized
 from the input stream. Identifier = primarytype_secondarytype
-
  */
 typedef struct	s_token
 {

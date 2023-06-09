@@ -1,5 +1,5 @@
-#include "../../include/interpreter.h"
-#include "../../include/interpreter/type.h"
+#include "../../include/tokenizer.h"
+#include "../../include/tokenizer/type.h"
 
 
 /* define TEST_ALL if you want to test all*/
@@ -13,7 +13,7 @@ t_token *create_token(char *token)
 }
 
 /* finds next token and returns a null terminated string of it */
-static char	*next_token_string(char *input, size_t *i)
+static char	*next_token_string(char *in_cmd, size_t *i)
 {
 		char	*token;
 		char	del;
@@ -22,14 +22,14 @@ static char	*next_token_string(char *input, size_t *i)
 
 		del = '\0';
 		start = *i;
-		while (input[*i] && input[*i] != del)
+		while (in_cmd[*i] && in_cmd[*i] != del)
 		{
-			if (!del && (input[*i] == '"' || input[*i] == '\''))
+			if (!del && (in_cmd[*i] == '"' || in_cmd[*i] == '\'' || in_cmd[*i] == '\\'))
 			{
-				del = input[*i];
+				del = in_cmd[*i];
 				start += 1; // to skip the delimiter
 			}
-			else if (!del || input[*i] == del)
+			else if (!del || in_cmd[*i] == del)
 				del = ' ';
 			(*i)++;
 		}
@@ -37,7 +37,7 @@ static char	*next_token_string(char *input, size_t *i)
 		token = malloc(sizeof(char) * (token_length + 1));
 		if (token)
 		{
-			ft_strlcpy(token, input + start, token_length);
+			ft_strlcpy(token, in_cmd + start, token_length);
 			return (token);
 		}
 		else

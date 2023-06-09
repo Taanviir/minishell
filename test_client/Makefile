@@ -4,11 +4,11 @@ COLOR_RED=\033[0;31m
 COLOR_BLUE=\033[0;34m
 COLOR_END=\033[0m
 ### DIRS
-INT_DIR:=../src/interpreter
+INT_DIR:=../src/parser
 
 GNL_DIR:=../src/gnl
 ### LIB
-TOK_LIB:=../src/interpreter/interpreter
+TOK_LIB:=../src/parser/parser
 
 GNL_LIB:=../src/gnl/gnl
 

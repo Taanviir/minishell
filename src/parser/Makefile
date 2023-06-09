@@ -15,11 +15,11 @@ UTILS:= $(UTILS_DIR)utils
 
 CC_FLAGS:= -Wall -Werror -Wextra -std=c99 -ggdb3
 
-SRCS:= interpreter.c parser.c
+SRCS:= tokenizer.c parser.c
 
-OBJS:= interpreter.o parser.o
+OBJS:= tokenizer.o parser.o
 
-NAME:= interpreter
+NAME:= parser
 
 all: $(NAME) clean
 
@@ -28,7 +28,7 @@ $(UTILS):
 
 $(NAME): $(OBJS) $(UTILS)
 	@ar rcs $@ $(UTILS) $^
-	@echo "$(COLOR_BLUE)>>interpreter is up to date!$(COLOR_END)"
+	@echo "$(COLOR_BLUE)>>parser is up to date!$(COLOR_END)"
 
 %.o: %.c
 	@$(CC) $(CC_FLAGS) -c -I $(INC_DIR) $^ -o $@
@@ -39,7 +39,7 @@ clean:
 fclean: clean
 	@rm -f $(NAME)
 	@$(MAKE) -C $(UTILS_DIR) fclean
-	@echo "$(COLOR_RED)interpreter removed$(COLOR_END)"
+	@echo "$(COLOR_RED)parser removed$(COLOR_END)"
 
 re: fclean all
 

@@ -10,9 +10,9 @@
 //			. keep adding items to those lists
 
 #include "../include/ft_error.h"
-#include "../include/interpreter.h"
+#include "../include/tokenizer.h"
 #include "../include/utils.h"
-#include "../include/interpreter/type.h"
+#include "../include/tokenizer/type.h"
 #include "../include/gnl.h"
 #include <assert.h>
 
@@ -24,7 +24,7 @@
 #define COLOR_PURPLE "\033[0;35m"
 #define COLOR_END "\033[0m"
 
-#define USER "eva001"
+#define USER "samih"
 
 #define PROGRAM_NAME "minishell"
 
