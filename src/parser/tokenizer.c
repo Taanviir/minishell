@@ -1,4 +1,4 @@
-#include "../../include/minishell.h"
+#include "minishell.h"
 
 /* define TEST_ALL if you want to test all*/
 
@@ -24,50 +24,50 @@
 // }
 
 /* Create a t_token, an entry into token que */
-static t_token *create_token(char *token)
-{
-	t_token *new = malloc(sizeof(t_token));
-	new->token = token;
-	return (new);
-}
+// static t_token *create_token(char *token)
+// {
+// 	t_token *new = malloc(sizeof(t_token));
+// 	new->token = token;
+// 	return (new);
+// }
 
-/* Break up the input command into tokens, and places them in a FIFO queue
-returns the queue (t_queue)*/
-t_queue *tokenizer(char *input_command)
-{
-	t_queue		*token_queue;
-	t_token		*token;
-	char		*s_token;
-	size_t		i;
-	u_int8_t	*delimter_flag;
+// /* Break up the input command into tokens, and places them in a FIFO queue
+// returns the queue (t_queue)*/
+// t_queue *tokenizer(char *input_command)
+// {
+// 	t_queue		*token_queue;
+// 	t_token		*token;
+// 	char		*s_token;
+// 	size_t		i;
+// 	u_int8_t	*delimter_flag = NULL;
 
-	token_queue = create_queue();
-	i = 0;
-	while (input_command[i])
-	{
-		s_token = find_token(input_command, &i, delimter_flag);
-		token = create_token(s_token);
-		enqueue(token, token_queue);
-	}
-	enqueue(NULL, token_queue); /* adding a null node to terminate the queue */
-	return (token_queue);
-}
+// 	// token_queue = create_queue();
+// 	i = 0;
+// 	while (input_command[i])
+// 	{
+// 		// s_token = find_token(input_command, &i, delimter_flag);
+// 		// token = create_token(s_token);
+// 		enqueue(token, token_queue);
+// 	}
+// 	enqueue(NULL, token_queue); /* adding a null node to terminate the queue */
+// 	return (token_queue);
+// }
 
-#ifdef TEST_ALL
-int main(int argc, char **argv)
-{
-	int i = 0;
-	for (char *test_case = INPUT_TEST[i]; test_case; i++, test_case = INPUT_TEST[i])
-	{
-		t_token *token_queue_ll = tkn_queue(test_case);
-		printf("Test case no: %d\n", i + 1);
-		printf("(%s)\n", test_case);
-		for (t_token *temp = token_queue_ll; temp; temp = temp->next)
-			printf("%s\n", temp->token);
-		printf("______________________________\n");
-	}
-}
-#endif
+// #ifdef TEST_ALL
+// int main(int argc, char **argv)
+// {
+// 	int i = 0;
+// 	for (char *test_case = INPUT_TEST[i]; test_case; i++, test_case = INPUT_TEST[i])
+// 	{
+// 		t_token *token_queue_ll = tkn_queue(test_case);
+// 		printf("Test case no: %d\n", i + 1);
+// 		printf("(%s)\n", test_case);
+// 		for (t_token *temp = token_queue_ll; temp; temp = temp->next)
+// 			printf("%s\n", temp->token);
+// 		printf("______________________________\n");
+// 	}
+// }
+// #endif
 
 #ifdef CASE_11
 int main(int argc, char **argv)
@@ -77,6 +77,9 @@ int main(int argc, char **argv)
 }
 #endif
 
-
-// TODO case 30 "echo 'Hello' >> file.txt 2>&1" last token?
+int print_hi(void)
+{
+	return printf("hello");
+}
+// // TODO case 30 "echo 'Hello' >> file.txt 2>&1" last token?
 

@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/06/18 15:01:52 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/06/18 15:10:10 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,9 @@
 # include <stdint.h> // types
 # include <stdbool.h> // bool
 #include <assert.h>
-# include "libft.h" // libft
+# include "../libft/includes/libft.h" // libft
 # include "tokenizer.h"
 # include "tokenizer/type.h"
-
 
 // ERROR CODES
 # define ERR_ARGS 1

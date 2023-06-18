@@ -6,14 +6,14 @@
 #    By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/14 14:38:29 by tanas             #+#    #+#              #
-#    Updated: 2023/06/18 14:53:15 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/06/18 15:19:08 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 C_FLAGS = -Wall -Wextra -Werror -g3
 LIBFT = libft/libft.a
-LD_FLAGS = -lreadline $(LIBFT)
+LD_FLAGS = -lreadline $(LIBFT) src/parser/parser.a
 INCLUDES = -Iinclude/ -Ilibft/includes
 
 SRCS_DIR = src/
@@ -33,7 +33,7 @@ COLOUR_RESET = "\033[0m"
 
 all : $(NAME)
 
-$(NAME) : $(LIBFT) $(OBJS)
+$(NAME) : $(LIBFT) $(OBJS) parser
 	@cc $(C_FLAGS) $(INCLUDES) $(OBJS) -o $(NAME) $(LD_FLAGS)
 	@echo $(GREEN)"$(NAME) is ready. ✅\n"$(COLOUR_RESET)
 
@@ -48,18 +48,19 @@ $(LIBFT) :
 	@echo $(GREEN)"\nLibft is ready. ✅\n"$(COLOUR_RESET)
 
 parser :
-	@make -sC src/parser
+	@make -C src/parser
 	@echo "parser is ready"
 
 clean :
 	@make clean -sC libft
+	@make clean -sC src/parser
 	@rm -rf $(OBJS_DIR)
 	@echo $(RED)"\nRemoving object directory and files"$(COLOUR_RESET)
 
 fclean : clean
 	@rm -f $(NAME)
-	@make fclean -sC libft
-	@echo $(RED)"Removing $(NAME), libft.a and libmlx.a\n"$(COLOUR_RESET)
+	@make fclean -sC libft src/parser
+	@echo $(RED)"Removing $(NAME) and libft.a\n"$(COLOUR_RESET)
 
 re : fclean all
 
