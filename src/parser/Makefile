@@ -6,7 +6,7 @@
 #    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/18 14:50:05 by sabdelra          #+#    #+#              #
-#    Updated: 2023/06/18 18:17:13 by tanas            ###   ########.fr        #
+#    Updated: 2023/06/18 18:26:11 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,6 @@ $(NAME) : $(OBJS)
 	@ar rcs $@ $^
 
 %.o : %.c
-	@mkdir obj/
 	@$(CC) $(C_FLAGS) -I $(INC_DIR) -c $^ -o $@
 	@echo $(BLUE_I)"Compiling src/parser/$<."$(COLOUR_RESET)
 
