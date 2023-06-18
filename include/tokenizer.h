@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenizer.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/18 14:59:44 by sabdelra          #+#    #+#             */
+/*   Updated: 2023/06/18 15:01:55 by sabdelra         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 /*
 Bash Grammar could be written in a format called "Backus-Naur Form"
 
@@ -6,26 +18,30 @@ cmd [arg]* [|cmd [arg]* ]* [ [> filename] [< filename] [ >& filename] [>> filena
 */
 
 #ifndef TOKEN_H
-#define TOKEN_H
-
-#include <stdlib.h>
-#include <stdint.h>
-#include <stdbool.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <assert.h>
-#include <string.h>
-
-#include "utils.h"
+# define TOKEN_H
 
 /* A token is a character or a group of characters recognized
 from the input stream. Identifier = primarytype_secondarytype
  */
+/* QUEUE FIFO implementation */
+typedef struct s_node
+{
+	void			*data; /* can be any type of struct */
+	struct s_node	*next;
+}	t_node;
+
 typedef struct	s_token
 {
 	char			*token; // mallocd needs to be freed aswell
 	u_int32_t		identifier; /* 0 operand, word 1 */
 }	t_token;
+
+typedef struct s_queue
+{
+	t_node	*first;
+	t_node	*last;
+	size_t	size;
+}	t_queue;
 
 enum	token_type {OPR, WRD};
 /*          (token)
@@ -33,7 +49,6 @@ enum	token_type {OPR, WRD};
            OPR   WRD
 Based on a list of operanads and words a simple command can be made
  */
-t_queue	*tokenizer(char *input);
 
 #define N_AVAILABLE_ARGS 32
 /* A simple command is an entry in the pipeline */

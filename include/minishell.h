@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/06/15 19:48:40 by tanas            ###   ########.fr       */
+/*   Updated: 2023/06/18 15:01:52 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,13 @@
 # include <termios.h> // tcsetattr, tcgetattr
 # include <curses.h> // tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 # include <fcntl.h> // open
+# include <stdint.h> // types
+# include <stdbool.h> // bool
+#include <assert.h>
 # include "libft.h" // libft
+# include "tokenizer.h"
+# include "tokenizer/type.h"
+
 
 // ERROR CODES
 # define ERR_ARGS 1
@@ -39,10 +45,10 @@
 # define WHITE "\033[0m"
 
 // TYPEDEFS
-typedef struct s_token
-{
-	char	*command;
-}	t_token;
+
+
+t_queue	*create_queue(void);
+void	enqueue(void *new, t_queue *q);
 
 void	receive_signal(void);
 

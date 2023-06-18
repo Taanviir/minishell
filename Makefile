@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
+#    By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/14 14:38:29 by tanas             #+#    #+#              #
-#    Updated: 2023/06/15 19:30:03 by tanas            ###   ########.fr        #
+#    Updated: 2023/06/18 14:53:15 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,14 +14,13 @@ NAME = minishell
 C_FLAGS = -Wall -Wextra -Werror -g3
 LIBFT = libft/libft.a
 LD_FLAGS = -lreadline $(LIBFT)
-INCLUDES = -Iincludes/ -Ilibft/includes
+INCLUDES = -Iinclude/ -Ilibft/includes
 
-SRCS_DIR = sources/
-SRCS_LIST = main.c \
-			signal.c
+SRCS_DIR = src/
+SRCS_LIST = main.c signal.c
 SRCS = $(addprefix $(SRCS_DIR), $(SRCS_LIST))
 
-OBJS_DIR = objects/
+OBJS_DIR = obj/
 OBJS_LIST = $(SRCS_LIST:.c=.o)
 OBJS = $(addprefix $(OBJS_DIR), $(OBJS_LIST))
 
@@ -43,10 +42,14 @@ $(OBJS_DIR)%.o : $(SRCS_DIR)%.c $(HEADERS)
 	@cc $(C_FLAGS) $(INCLUDES) -c $< -o $@
 	@echo $(BLUE)"Compiling $<."$(COLOUR_RESET)
 
-$(LIBFT) : 
+$(LIBFT) :
 	@echo $(YELLOW)"Creating $(LIBFT)"$(COLOUR_RESET)
 	@make -sC libft
 	@echo $(GREEN)"\nLibft is ready. ✅\n"$(COLOUR_RESET)
+
+parser :
+	@make -sC src/parser
+	@echo "parser is ready"
 
 clean :
 	@make clean -sC libft

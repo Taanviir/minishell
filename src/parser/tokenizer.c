@@ -1,6 +1,4 @@
-#include "../../include/tokenizer.h"
-#include "../../include/tokenizer/type.h"
-
+#include "../../include/minishell.h"
 
 /* define TEST_ALL if you want to test all*/
 
@@ -13,17 +11,17 @@
 #define SET(delmiter, flag) ((delimter, |= (flag)))
 
 /* finds and returns the next token in an input_command string, takes in the string and index pointer */
-char *static_find_token(char *input_command, size_t *i, u_int8_t delimter_flag)
-{
-	/* follows bash grammar rules for determining the meaning of each character based on a set
-	of quoting flags
-	f1 - inside quotes
-	f2 - inside double quotes
-	f3 - inside Dollar braces
-	f4 - inside  */
-	if (input_command[*i] == '\'')
-		SET()
-}
+// char *static_find_token(char *input_command, size_t *i, u_int8_t delimter_flag)
+// {
+// 	/* follows bash grammar rules for determining the meaning of each character based on a set
+// 	of quoting flags
+// 	f1 - inside quotes
+// 	f2 - inside double quotes
+// 	f3 - inside Dollar braces
+// 	f4 - inside  */
+// 	if (input_command[*i] == '\'')
+// 		SET()
+// }
 
 /* Create a t_token, an entry into token que */
 static t_token *create_token(char *token)
