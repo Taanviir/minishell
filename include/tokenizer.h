@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 14:59:44 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/06/18 17:51:07 by tanas            ###   ########.fr       */
+/*   Updated: 2023/06/18 18:38:26 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ cmd [arg]* [|cmd [arg]* ]* [ [> filename] [< filename] [ >& filename] [>> filena
 from the input stream. Identifier = primarytype_secondarytype
  */
 /* QUEUE FIFO implementation */
+#include "minishell.h"
+
 typedef struct s_node
 {
 	void			*data; /* can be any type of struct */
