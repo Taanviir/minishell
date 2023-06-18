@@ -4,7 +4,7 @@ COLOR_RED=\033[0;31m
 COLOR_BLUE=\033[0;34m
 COLOR_END=\033[0m
 ### DIRS
-INT_DIR:=../src/parser
+PRS_DIR:=../src/parser
 
 GNL_DIR:=../src/gnl
 ### LIB
@@ -22,8 +22,7 @@ NAME:= minishell
 all: $(NAME)
 
 libs:
-	+$(MAKE) -C $(INT_DIR)
-	+$(MAKE) -C $(GNL_DIR)
+	+$(MAKE) -C $(PRS_DIR)
 
 $(NAME): libs
 	$(CC) $(CC_FLAGS) main.c $(TOK_LIB) $(GNL_LIB) $(UTILS) -o $@
@@ -31,8 +30,7 @@ $(NAME): libs
 
 clean:
 	@rm -f $(OBJS)
-	@$(MAKE) -C $(INT_DIR) fclean
-	@$(MAKE) -C $(GNL_DIR) fclean
+	@$(MAKE) -C $(PRS_DIR) fclean
 
 fclean: clean
 	@rm -f $(NAME)

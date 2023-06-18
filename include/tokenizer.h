@@ -15,7 +15,6 @@ cmd [arg]* [|cmd [arg]* ]* [ [> filename] [< filename] [ >& filename] [>> filena
 #include <sys/types.h>
 #include <assert.h>
 #include <string.h>
-#include <stdint.h>
 
 #include "utils.h"
 

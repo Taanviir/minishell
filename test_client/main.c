@@ -1,15 +1,9 @@
 // test each stage seperatly
-// 1 - the data structure queue and token
-//			. check memory leaks
-//			. empty queues 1 item, 2, 1000 ... etc
-//			. put only 1 item in the que and dque it
-//			. dque regular, dque last item in the que, dque an empty que
 // 2 - parsing
 //			. chatgpt 1000 random bash commands for testing
 //			. wrong input ...
 //			. keep adding items to those lists
 
-#include "../include/ft_error.h"
 #include "../include/tokenizer.h"
 #include "../include/utils.h"
 #include "../include/tokenizer/type.h"
@@ -24,7 +18,7 @@
 #define COLOR_PURPLE "\033[0;35m"
 #define COLOR_END "\033[0m"
 
-#define USER "samih"
+#define AUTHOR "samih/tanvir"
 
 #define PROGRAM_NAME "minishell"
 

@@ -6,18 +6,16 @@ COLOR_END=\033[0m
 ### DIRS
 INC_DIR:= ../../include
 
-ERR_DIR:= ../error/
-
-UTILS_DIR:= ../utils/
+UTILS_DIR:= ..//
 ### libs
 UTILS:= $(UTILS_DIR)utils
 ###
 
 CC_FLAGS:= -Wall -Werror -Wextra -std=c99 -ggdb3
 
-SRCS:= tokenizer.c parser.c
+SRCS:= tokenizer.c parser.c queue.c
 
-OBJS:= tokenizer.o parser.o
+OBJS:= tokenizer.o parser.o queue.o
 
 NAME:= parser
 

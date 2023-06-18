@@ -3,7 +3,6 @@
 
 
 /* define TEST_ALL if you want to test all*/
-#define TEST_ALL
 
 /* DELIMITER_FLAG */
 #define INSIDE_QUOTES 0X01 /* 0000 0001 */
@@ -81,6 +80,5 @@ int main(int argc, char **argv)
 #endif
 
 
-// TODO case 30 "echo 'Hello' >> file.txt 2>&1" last token??
-// TODO maybe quotes are supposed to be part of the token or no? depends on how it will be passed on to execve
+// TODO case 30 "echo 'Hello' >> file.txt 2>&1" last token?
 
