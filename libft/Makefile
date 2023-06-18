@@ -1,8 +1,20 @@
-NAME 		= libft.a
-C_FLAGS 	= -Wall -Wextra -Werror
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/06/18 16:13:46 by tanas             #+#    #+#              #
+#    Updated: 2023/06/18 18:11:18 by tanas            ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-SRC_PATH 	= sources/
-SRCS_LIST 	= error-utils/ft_error.c \
+NAME = libft.a
+C_FLAGS = -Wall -Wextra -Werror
+
+SRCS_DIR = src/
+SRCS_LIST = error-utils/ft_error.c \
 			ft_printf/ft_print_char.c ft_printf/ft_print_hex.c ft_printf/ft_print_number.c ft_printf/ft_print_pointer.c \
 			ft_printf/ft_print_string.c ft_printf/ft_print_unsigned.c ft_printf/ft_printf.c \
 			get_next_line/get_next_line.c \
@@ -16,28 +28,28 @@ SRCS_LIST 	= error-utils/ft_error.c \
 			string-utils/ft_strlcat.c string-utils/ft_strlcpy.c string-utils/ft_strlen.c string-utils/ft_strmapi.c string-utils/ft_strncmp.c \
 			string-utils/ft_strnstr.c string-utils/ft_strrchr.c string-utils/ft_strtrim.c string-utils/ft_substr.c \
 			to-utils/ft_atoi_base.c to-utils/ft_atoi.c to-utils/ft_itoa.c to-utils/ft_tolower.c to-utils/ft_toupper.c
-SRCS		= $(addprefix $(SRC_PATH), $(SRCS_LIST))
-SUB_DIRS 	= error-utils ft_printf get_next_line is-utils linked-list memory-utils put-utils string-utils to-utils
+SRCS = $(addprefix $(SRCS_DIR), $(SRCS_LIST))
+SUB_DIRS = error-utils ft_printf get_next_line is-utils linked-list memory-utils put-utils string-utils to-utils
 
-OBJ_PATH 	= objects/
-OBJS_DIRS 	= $(foreach directory, $(SUB_DIRS), $(addprefix $(OBJ_PATH), $(directory))) # adding the prefix objects/ to each subdirectory
-OBJS 		= $(subst $(SRC_PATH), $(OBJ_PATH), $(SRCS:.c=.o)) # changing .c to .o for object files
+OBJS_DIR = obj/
+OBJS_SUBDIRS = $(foreach directory, $(SUB_DIRS), $(addprefix $(OBJS_DIR), $(directory))) # adding the prefix objects/ to each subdirectory
+OBJS = $(subst $(SRCS_DIR), $(OBJS_DIR), $(SRCS:.c=.o)) # changing .c to .o for object files
 
-YELLOW 		= "\033[0;33m"
-RESET	 	= "\033[0m"
+YELLOW = "\033[0;33m"
+COLOUR_RESET = "\033[0m"
 
 all : $(NAME)
 
 $(NAME) : $(OBJS)
 	@ar -rcs $(NAME) $^
 
-$(OBJ_PATH)%.o : $(SRC_PATH)%.c
-	@mkdir -p $(OBJ_PATH) $(OBJS_DIRS)
-	@cc $(C_FLAGS) -I includes -c $< -o $@
-	@echo $(YELLOW)".\c"$(RESET)
+$(OBJS_DIR)%.o : $(SRCS_DIR)%.c
+	@mkdir -p $(OBJS_DIR) $(OBJS_SUBDIRS)
+	@cc $(C_FLAGS) -I include -c $< -o $@
+	@echo $(YELLOW)".\c"$(COLOUR_RESET)
 
 clean :
-	@rm -rf $(OBJ_PATH)
+	@rm -rf $(OBJS_DIR)
 
 fclean : clean
 	@rm -f $(NAME)

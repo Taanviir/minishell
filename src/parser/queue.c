@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   queue.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/18 17:45:53 by tanas             #+#    #+#             */
+/*   Updated: 2023/06/18 17:51:58 by tanas            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /* QUEUE FIFO implementation API needs to be made as it is used alot */
@@ -55,4 +67,3 @@ void	enqueue(void *new, t_queue *q)
 
 /* removes the first node in the que and returns it */
 // t_node*	dequeue(t_queue *q)
-

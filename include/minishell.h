@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/06/18 15:10:10 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/06/18 18:03:03 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # include <stdint.h> // types
 # include <stdbool.h> // bool
 #include <assert.h>
-# include "../libft/includes/libft.h" // libft
+# include "../libft/include/libft.h" // libft
 # include "tokenizer.h"
 # include "tokenizer/type.h"
 
@@ -44,7 +44,6 @@
 # define WHITE "\033[0m"
 
 // TYPEDEFS
-
 
 t_queue	*create_queue(void);
 void	enqueue(void *new, t_queue *q);

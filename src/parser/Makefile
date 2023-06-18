@@ -3,48 +3,47 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+         #
+#    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/18 14:50:05 by sabdelra          #+#    #+#              #
-#    Updated: 2023/06/18 15:20:25 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/06/18 18:17:13 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME:= parser.a
 
 ### COLORS
-COLOR_GREEN=\033[0;32m
-COLOR_RED=\033[0;31m
+GREEN_B = "\033[1;32m"
+RED_BI = "\033[1;3;31m"
 BLUE_I = "\033[3;34m"
-COLOR_BLUE=\033[0;34m
-COLOR_END=\033[0m
+COLOUR_RESET = "\033[0m"
 
-### DIRS
 INC_DIR:= ../../include
 
-CC_FLAGS:= -Wall -Werror -Wextra -ggdb3
+C_FLAGS:= -Wall -Werror -Wextra -ggdb3
 
 SRCS:= tokenizer.c parser.c queue.c
 
+# OBJS_DIR:= obj/
+# OBJS = $(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
 OBJS:= $(SRCS:.c=.o)
 
-all: $(NAME)
+all : $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT)
-	@ar rcs $@ $(LIBFT) $^
+$(NAME) : $(OBJS)
+	@ar rcs $@ $^
 
-%.o: %.c
-	@$(CC) $(CC_FLAGS) -c -I $(INC_DIR) $^ -o $@
-	@echo $(BLUE_I)"Compiling $<."$(COLOUR_END)
+%.o : %.c
+	@mkdir obj/
+	@$(CC) $(C_FLAGS) -I $(INC_DIR) -c $^ -o $@
+	@echo $(BLUE_I)"Compiling src/parser/$<."$(COLOUR_RESET)
 
-clean:
-	@rm -f $(OBJS)
+clean :
+	@rm -rf $(OBJS)
 
-fclean: clean
+fclean : clean
 	@rm -f $(NAME)
-	@$(MAKE) -C $(LIBFT) fclean
-	@echo "$(COLOR_RED)parser removed$(COLOR_END)"
 
-re: fclean all
+re : fclean all
 
-.PHONY: all test fclean clean re
+.PHONY = all test fclean clean re

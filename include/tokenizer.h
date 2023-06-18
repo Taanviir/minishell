@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 14:59:44 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/06/18 15:01:55 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/06/18 17:51:07 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ cmd [arg]* [|cmd [arg]* ]* [ [> filename] [< filename] [ >& filename] [>> filena
 - an example of shell grammar in Backus-Naur form
 */
 
-#ifndef TOKEN_H
-# define TOKEN_H
+#ifndef TOKENIZER_H
+# define TOKENIZER_H
 
 /* A token is a character or a group of characters recognized
 from the input stream. Identifier = primarytype_secondarytype
@@ -30,7 +30,7 @@ typedef struct s_node
 	struct s_node	*next;
 }	t_node;
 
-typedef struct	s_token
+typedef struct s_token
 {
 	char			*token; // mallocd needs to be freed aswell
 	u_int32_t		identifier; /* 0 operand, word 1 */
@@ -43,14 +43,15 @@ typedef struct s_queue
 	size_t	size;
 }	t_queue;
 
-enum	token_type {OPR, WRD};
+enum	e_token_type {OPR, WRD};
 /*          (token)
              /   \
            OPR   WRD
 Based on a list of operanads and words a simple command can be made
  */
 
-#define N_AVAILABLE_ARGS 32
+# define N_AVAILABLE_ARGS 32
+
 /* A simple command is an entry in the pipeline */
 typedef struct s_simple_command
 {
@@ -59,14 +60,12 @@ typedef struct s_simple_command
 	char	*args[N_AVAILABLE_ARGS]; // argument array
 	int		rfiles[3]; /* 0 inFile, 1 outfile, 2 errfile array of file descriptors to redirect a stream to, (ex. direct stdin to pipe)*/
 	int		background;
-	struct s_simple_command *next;
-}t_simple_command;
+	struct s_simple_command	*next;
+}	t_simple_command;
 
-t_queue	*parse(char *input); /* Parses the token queue into a queue of simple commands */
+// t_queue	*parse(char *input); /* Parses the token queue into a queue of simple commands */
 
 /* token functions */
-
-
 
 #endif
 

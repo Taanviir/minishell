@@ -1,15 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/18 17:45:17 by tanas             #+#    #+#             */
+/*   Updated: 2023/06/18 17:45:34 by tanas            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 // test each stage seperatly
 // 2 - parsing
 //			. chatgpt 1000 random bash commands for testing
 //			. wrong input ...
 //			. keep adding items to those lists
 
-#include "../include/tokenizer.h"
-#include "../include/utils.h"
-#include "../include/tokenizer/type.h"
-#include "../include/gnl.h"
-#include <assert.h>
-
+#include "minishell.h"
 
 // COLORS
 #define COLOR_GREEN "\033[0;32m"
