@@ -6,7 +6,7 @@
 #    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/18 16:13:46 by tanas             #+#    #+#              #
-#    Updated: 2023/06/18 18:11:18 by tanas            ###   ########.fr        #
+#    Updated: 2023/06/18 18:31:59 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,4 +56,4 @@ fclean : clean
 
 re : fclean all
 
-.PHONY = all clean fclean re
+.PHONY : all clean fclean re
