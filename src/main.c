@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/06/15 19:56:09 by tanas            ###   ########.fr       */
+/*   Updated: 2023/06/21 15:09:54 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	quote_check(char *line)
 			counter++;
 	if ((counter % 2) == 1)
 		printf("quote error lmao\n");
-} 
+}
 
 void	get_cmd(void)
 {
@@ -43,7 +43,7 @@ void	get_cmd(void)
 	free
 	exit
 */
-int	main(int argc, char **argv __unused, char **envp __unused)
+int	main(int argc , char **argv __attribute__((unused)), char **envp __attribute__((unused)))
 {
 	if (argc != 1)
 	{
@@ -55,7 +55,8 @@ int	main(int argc, char **argv __unused, char **envp __unused)
 	while (1)
 	{
 		get_cmd();
-	}
 	/* free whatever needs to be freed */
+	}
 	return (EXIT_SUCCESS);
+
 }

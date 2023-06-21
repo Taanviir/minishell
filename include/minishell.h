@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/06/18 18:03:03 by tanas            ###   ########.fr       */
+/*   Updated: 2023/06/21 15:52:19 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,11 @@
 # define WHITE "\033[0m"
 
 // TYPEDEFS
+void	receive_signal(void);
+char	get_token(char **incmd, char *tkend, char **q, char **eq);
 
+// queue api, might not be needed
 t_queue	*create_queue(void);
 void	enqueue(void *new, t_queue *q);
-
-void	receive_signal(void);
 
 #endif
