@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 14:59:44 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/06/21 17:17:08 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/06/21 22:15:12 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,24 +20,16 @@ cmd [arg]* [|cmd [arg]* ]* [ [> filename] [< filename] [ >& filename] [>> filena
 #ifndef TOKENIZER_H
 # define TOKENIZER_H
 
-/* A token is a character or a group of characters recognized
-from the input stream. Identifier = primarytype_secondarytype
- */
-/* QUEUE FIFO implementation */
 #include "minishell.h"
 
+/* A node in the queue can be any type of struct */
 typedef struct s_node
 {
 	void			*data; /* can be any type of struct */
 	struct s_node	*next;
 }	t_node;
 
-typedef struct s_token
-{
-	char			*token; // mallocd needs to be freed aswell
-	u_int32_t		identifier; /* 0 operand, word 1 */
-}	t_token;
-
+/* QUEUE FIFO implementation */
 typedef struct s_queue
 {
 	t_node	*first;
@@ -45,12 +37,12 @@ typedef struct s_queue
 	size_t	size;
 }	t_queue;
 
-enum	e_token_type {OPR, WRD};
-/*          (token)
-             /   \
-           OPR   WRD
-Based on a list of operanads and words a simple command can be made
- */
+/* A token is a character or a group of characters recognized from the input stream. */
+typedef struct s_token
+{
+	char			*token; // mallocd needs to be freed aswell
+	u_int32_t		identifier; /* 0 operand, word 1 */
+}	t_token;
 
 # define N_AVAILABLE_ARGS 32
 
@@ -66,7 +58,7 @@ typedef struct s_simple_command
 }	t_simple_command;
 
 /* input commands test cases keep adding here */
-const char *INPUT_TEST[108] = {
+char *INPUT_TEST[108] = {
 		"ls -l",
 		"cd /path/to/directory",
 		"touch myfile.txt",
