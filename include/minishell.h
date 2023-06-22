@@ -28,7 +28,6 @@
 # include <termios.h> // tcsetattr, tcgetattr
 # include <curses.h> // tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 # include <fcntl.h> // open
-# include <stdint.h> // types
 # include <stdbool.h> // bool
 #include <assert.h>
 # include "../libft/include/libft.h" // libft

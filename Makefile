@@ -48,7 +48,7 @@ $(LIBFT) :
 	@echo $(GREEN_B)"\nLibft is ready. ✅\n"$(COLOUR_RESET)
 
 parser :
-	@make -C src/parser
+	@make -sC src/parser
 
 clean :
 	@make clean -sC libft
