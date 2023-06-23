@@ -6,14 +6,14 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 15:29:11 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/06/22 15:49:08 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/06/23 16:28:45 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /* define TEST_ALL for testing all test cases in input array */
-#define TEST_ALL
+#define CASE_I
 
 static bool	is_whitespace(char c)
 {
@@ -59,10 +59,6 @@ static char	find_type(char **s)
 
 	opr = "<|>&;(){}=$";
 	i = 0;
-	if (is_operator(**s))
-	{
-
-	}
 	while (opr[i])
 	{
 		if (!**s)
@@ -79,10 +75,12 @@ static char	find_type(char **s)
 		}
 		i++;
 	}
-	if (**s)
-		*s += 1;
+	
 	while (!is_whitespace(**s) && !is_operator(**s))
+	{
+
 		*s += 1;
+	}
 	return ('a');
 }
 
@@ -116,7 +114,7 @@ char	get_token(char **b_start, char *b_end,
 	return (ret);
 }
 
-/* #ifdef TEST_ALL
+#ifdef TEST_ALL
 int main(void)
 {
 	char *b_start;
@@ -135,7 +133,7 @@ int main(void)
 			ret = get_token(&b_start, b_end, &q, &eq);
 			for (char *i = q; i != eq; i++)
 				write(1, i, 1);
-			printf("\ttype : %c\n", ret);
+			printf("\t\ttype : %c\n", ret);
 		}
 		printf("---------------------------------------------\n");
 	}
@@ -145,8 +143,25 @@ int main(void)
 #ifdef CASE_I
 int main(int argc, char **argv)
 {
-	char *test = "grep \"pattern\" file.txt";
-	t_token *head = tkn_queue(test);
+	char *b_start;
+	char *b_end;
+	char *q;
+	char *eq;
+	char ret;
+
+	b_start = argv[1];
+	b_end = b_start + strlen(b_start);
+	printf("case : '%s'\n", b_start);
+	while (*b_start) {
+		q = b_start;
+		eq = b_start;
+		ret = get_token(&b_start, b_end, &q, &eq);
+		for (char *i = q; i != eq; i++)
+			write(1, i, 1);
+		printf("\t\ttype : %c\n", ret);
+	}
+	printf("---------------------------------------------\n");
+
 }
-#endif */
+#endif
 
