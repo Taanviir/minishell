@@ -66,8 +66,24 @@ Minishell is a simple shell clone designed to teach C programming and the basics
   >[Minishell guide](https://harm-smits.github.io/42docs/projects/minishell)
 
 ## Currently working on
-`tokenizer.c` breaks up the input command into tokens and places them into a queue
+`get_token.c` breaks up the input command into tokens, that could be either an __`operator`__ or __`a`__ a word that could be either a command, file name, arguments... etc
 
-	delimiter bit-field flag quotation rules
+### Quoting
+Is used to remove special meaning from characters or words in the shell.
+- Preserve the literal meaning of an operator
+- Prevent reserved keywords from being recognized as such
+- Prevent parameter expansion and substitutions within `here_doc????`
+
+The following characters represent themselves when quoted
+
+	|  &  ;  <  >  (  )  $  `  \  "  '  <space>  <tab>  <newline>
+Quoting can be done in 3 ways
+- Escape character `\`
+- Single-Quotes `'`
+- Double-Quotes `"`
+
+#### Escape character - backslash `\`
+
+
 
 
