@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
+#    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/18 14:50:05 by sabdelra          #+#    #+#              #
-#    Updated: 2023/06/18 18:36:55 by tanas            ###   ########.fr        #
+#    Updated: 2023/06/23 16:34:35 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ COLOUR_RESET:= "\033[0m"
 NAME:= parser.a
 C_FLAGS:= -Wall -Werror -Wextra -ggdb3
 
-SRCS:= tokenizer.c parser.c queue.c
+SRCS:= get_token.c parser.c queue.c
 OBJS_DIR:= obj/
 OBJS = $(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
 

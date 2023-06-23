@@ -68,7 +68,8 @@ Minishell is a simple shell clone designed to teach C programming and the basics
 ## Currently working on
 `get_token.c` breaks up the input command into tokens, that could be either an __`operator`__ or __`a`__ a word that could be either a command, file name, arguments... etc
 
-### Quoting
+
+# Quoting
 Is used to remove special meaning from characters or words in the shell.
 - Preserve the literal meaning of an operator
 - Prevent reserved keywords from being recognized as such
@@ -82,7 +83,10 @@ Quoting can be done in 3 ways
 - Single-Quotes `'`
 - Double-Quotes `"`
 
-#### Escape character - backslash `\`
+## Escape character - backslash `\`
+Can be either a line break or an escape character
+## Single Quote `'`
+Preserves the meaning of all characters until the next `'` is encountered. A single quote cannot occur within single quotes
 
 
 
