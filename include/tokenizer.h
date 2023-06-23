@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 14:59:44 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/06/21 22:15:12 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/06/22 17:21:44 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,23 @@ typedef struct s_simple_command
 	int		background;
 	struct s_simple_command	*next;
 }	t_simple_command;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* input commands test cases keep adding here */
 // char *INPUT_TEST[108] = {
