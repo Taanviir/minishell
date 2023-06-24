@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 15:29:11 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/06/24 08:07:18 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/06/24 22:07:24 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static bool	is_whitespace(char c)
 	return (false);
 }
 
-static char	is_operator(char c)
+static bool	is_operator(char c)
 {
 	char const	*opr;
 	int			i;
@@ -41,12 +41,12 @@ static char	is_operator(char c)
 	while (opr[i])
 	{
 		if (!c)
-			return (0);
+			return (false);
 		else if (c == opr[i])
-			return (opr[i]);
+			return (true);
 		i++;
 	}
-	return (0);
+	return (false);
 }
 
 /* returns the type of a token, helper function for get_token
@@ -71,7 +71,7 @@ static char	find_type(char **s)
 	}
 	if (**s == '\'')
 		single_q = 1;
-	while (*(*s + 1) && single_q || (!is_whitespace(*(*s + 1)) && !is_operator(*(*s + 1))))
+	while ((*(*s + 1) && single_q) || (!is_whitespace(*(*s + 1)) && !is_operator(*(*s + 1))))
 	{
 		*s += 1;
 		if (**s == '\'')
@@ -112,7 +112,7 @@ char	get_token(char **b_start, char *b_end,
 	return (ret);
 }
 
-/* #ifdef ALL
+#ifdef ALL
 int main(void)
 {
 	char *b_start;
@@ -161,4 +161,4 @@ int main(int argc, char **argv)
 }
 #endif
 
- */
+
