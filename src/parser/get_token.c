@@ -6,14 +6,14 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 15:29:11 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/06/24 22:07:24 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/06/26 16:48:26 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /* define ALL for testing all test cases in input array */
-#define ALL
+# define ALL
 
 static bool	is_whitespace(char c)
 {
@@ -100,7 +100,6 @@ char	get_token(char **b_start, char *b_end,
 		s++;
 	if (q)
 		*q = s;
-	// ret = *s;
 	ret = find_type(&s);
 	if (*s)
 		s++;
@@ -113,6 +112,7 @@ char	get_token(char **b_start, char *b_end,
 }
 
 #ifdef ALL
+
 int main(void)
 {
 	char *b_start;
