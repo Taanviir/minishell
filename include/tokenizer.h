@@ -6,21 +6,12 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 14:59:44 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/06/26 16:48:07 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/06/27 04:09:02 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-Bash Grammar could be written in a format called "Backus-Naur Form"
-
-cmd [arg]* [|cmd [arg]* ]* [ [> filename] [< filename] [ >& filename] [>> filename] [>>& filename] ]* [&]
-- an example of shell grammar in Backus-Naur form
-*/
-
 #ifndef TOKENIZER_H
 # define TOKENIZER_H
-
-#include <stdint.h> // variable types
 
 /* A node in the queue can be any type of struct */
 typedef struct s_node
@@ -28,7 +19,6 @@ typedef struct s_node
 	void			*data; /* can be any type of struct */
 	struct s_node	*next;
 }	t_node;
-
 /* QUEUE FIFO implementation */
 typedef struct s_queue
 {
@@ -56,6 +46,11 @@ typedef struct s_simple_command
 	int		background;
 	struct s_simple_command	*next;
 }	t_simple_command;
+
+bool	is_whitespace(char c);
+bool	is_operator(char c);
+char	get_token(char **b_start, char *b_end, char **q, char **eq);
+char	*expand(char *q, char **envp);
 
 extern char *INPUT_TEST[100];
 
