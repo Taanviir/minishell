@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 14:59:44 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/06/27 04:09:02 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/06/27 15:25:10 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ bool	is_operator(char c);
 char	get_token(char **b_start, char *b_end, char **q, char **eq);
 char	*expand(char *q, char **envp);
 
-extern char *INPUT_TEST[100];
+extern char	*INPUT_TEST[100];
 
 
 /* input commands test cases keep adding here */
