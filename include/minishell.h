@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/06/21 15:52:19 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/06/27 04:06:25 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # include <curses.h> // tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 # include <fcntl.h> // open
 # include <stdbool.h> // bool
+# include <stdint.h>
 #include <assert.h>
 # include "../libft/include/libft.h" // libft
 # include "tokenizer.h"
