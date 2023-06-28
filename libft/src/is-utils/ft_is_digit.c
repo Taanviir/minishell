@@ -1,21 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_print_string.c                                  :+:      :+:    :+:   */
+/*   ft_is_digit.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/10 18:50:25 by tanas             #+#    #+#             */
-/*   Updated: 2022/12/17 14:01:30 by tanas            ###   ########.fr       */
+/*   Created: 2022/11/06 09:28:15 by tanas             #+#    #+#             */
+/*   Updated: 2023/06/28 19:48:35 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_print_string(char *str)
+// 0 returned if no digit found and 1 returned if digit found
+bool	ft_is_digit(int c)
 {
-	if (!str)
-		return (write(1, "(null)", 6));
-	ft_putstr_fd(str, 1);
-	return (ft_strlen(str));
+	return (c >= '0' && c <= '9');
 }

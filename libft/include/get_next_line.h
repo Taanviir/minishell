@@ -13,12 +13,11 @@
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# include "libft.h"
-
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1000
 # endif
 
+// GET_NEXT_LINE FUNCTIONS
 char	*get_next_line(int fd);
 char	*get_line(char *str);
 char	*read_file(int fd, char *stash);

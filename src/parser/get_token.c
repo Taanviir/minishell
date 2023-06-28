@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   get_token.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 15:29:11 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/06/27 15:27:19 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/06/28 21:44:15 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* char *INPUT_TEST[100] = {
+char *INPUT_TEST[100] = {
     "ls -l",
     "cd /path/to/directory",
     "touch myfile.txt",
@@ -114,24 +114,8 @@
 	"\"echo $(PATH)\"",
 	NULL
 	};
- */
+
 /* define ALL for testing all test cases in input array */
-
-bool	is_whitespace(char c)
-{
-	char const	*ws;
-	int			i;
-
-	ws = " \t\r\n\v";
-	i = 0;
-	while (ws[i])
-	{
-		if (!c || c == ws[i])
-			return (true);
-		i++;
-	}
-	return (false);
-}
 
 bool	is_operator(char c)
 {
@@ -139,15 +123,10 @@ bool	is_operator(char c)
 	int			i;
 
 	opr = "<|>&;(){}=$";
-	i = 0;
-	while (opr[i])
-	{
-		if (!c)
-			return (false);
-		else if (c == opr[i])
+	i = -1;
+	while (opr[++i])
+		if (c == opr[i])
 			return (true);
-		i++;
-	}
 	return (false);
 }
 
@@ -175,7 +154,7 @@ static char	find_type(char **s)
 		single_q = 1;
 	else if (**s == '\"')
 		double_q = 1;
-	while ((*(*s + 1) && (single_q || double_q)) || (!is_whitespace(*(*s + 1)) && !is_operator(*(*s + 1))))
+	while ((*(*s + 1) && (single_q || double_q)) || (!ft_is_whitespace(*(*s + 1)) && !is_operator(*(*s + 1))))
 	{
 		*s += 1;
 		if (**s == '\'')
@@ -201,7 +180,7 @@ char	get_token(char **b_start, char *b_end,
 	char	*s;
 
 	s = *b_start;
-	while (s < b_end && is_whitespace(*s))
+	while (s < b_end && ft_is_whitespace(*s))
 		s++;
 	if (q)
 		*q = s;
@@ -210,7 +189,7 @@ char	get_token(char **b_start, char *b_end,
 		s++;
 	if (eq)
 		*eq = s;
-	while (s < b_end && is_whitespace(*s))
+	while (s < b_end && ft_is_whitespace(*s))
 		s++;
 	*b_start = s;
 	return (ret);

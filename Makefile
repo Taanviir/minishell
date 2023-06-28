@@ -3,18 +3,26 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
+#    By: codespace <codespace@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/14 14:38:29 by tanas             #+#    #+#              #
-#    Updated: 2023/06/26 16:25:15 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/06/28 21:52:44 by codespace        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+### COLOURS
+GREEN_B = "\033[1;32m"
+RED_BI = "\033[1;3;31m"
+BLUE_I = "\033[3;34m"
+YELLOW = "\033[0;33m"
+COLOUR_RESET = "\033[0m"
 
 NAME = minishell
 C_FLAGS = -Wall -Wextra -Werror -g3
 LIBFT = libft/libft.a
-LD_FLAGS = -lreadline $(LIBFT) src/parser/parser.a
-INCLUDES = -Iinclude/ -Ilibft/include
+PARSER = src/parser/parser.a
+LD_FLAGS = -lreadline $(PARSER) $(LIBFT)
+INCLUDES = -I include/ -I libft/include
 
 SRCS_DIR = src/
 SRCS_LIST = main.c signal.c
@@ -23,13 +31,6 @@ SRCS = $(addprefix $(SRCS_DIR), $(SRCS_LIST))
 OBJS_DIR = obj/
 OBJS_LIST = $(SRCS_LIST:.c=.o)
 OBJS = $(addprefix $(OBJS_DIR), $(OBJS_LIST))
-
-### COLOURS
-GREEN_B = "\033[1;32m"
-RED_BI = "\033[1;3;31m"
-BLUE_I = "\033[3;34m"
-YELLOW = "\033[0;33m"
-COLOUR_RESET = "\033[0m"
 
 all : $(NAME)
 

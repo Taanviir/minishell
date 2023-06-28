@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
+#    By: codespace <codespace@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/18 14:50:05 by sabdelra          #+#    #+#              #
-#    Updated: 2023/06/27 04:09:35 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/06/28 21:53:16 by codespace        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,8 @@ COLOUR_RESET:= "\033[0m"
 
 NAME:= parser.a
 C_FLAGS:= -Wall -Werror -Wextra -ggdb3
+INCLUDES:= -I ../../include -I ../../libft/include
+LIBFT:= ../../libft/libft.a
 
 SRCS:= get_token.c parser.c queue.c expansion.c
 OBJS_DIR:= obj/
@@ -25,12 +27,12 @@ OBJS = $(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
 
 all : $(NAME)
 
-$(NAME) : $(OBJS)
+$(NAME) : $(OBJS) $(LIBFT)
 	@ar -rcs $@ $^
 
 $(OBJS_DIR)%.o : %.c
 	@mkdir -p $(OBJS_DIR)
-	@$(CC) $(C_FLAGS) -I ../../include -c $^ -o $@
+	@$(CC) $(C_FLAGS) $(INCLUDES) -c $^ -o $@
 	@echo $(BLUE_I)"Compiling src/parser/$<."$(COLOUR_RESET)
 
 clean :
