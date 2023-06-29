@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/06/27 04:06:25 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/06/29 05:13:07 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,9 @@
 # include "../libft/include/libft.h" // libft
 # include "tokenizer.h"
 # include "tokenizer/type.h"
+
+// EXIT_STATUS
+// extern int exit_status;
 
 // ERROR CODES
 # define ERR_ARGS 1
