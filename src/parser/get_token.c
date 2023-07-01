@@ -6,13 +6,13 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 15:29:11 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/06/27 15:27:19 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/07/01 05:05:55 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* char *INPUT_TEST[100] = {
+char *INPUT_TEST[100] = {
     "ls -l",
     "cd /path/to/directory",
     "touch myfile.txt",
@@ -114,7 +114,7 @@
 	"\"echo $(PATH)\"",
 	NULL
 	};
- */
+
 /* define ALL for testing all test cases in input array */
 
 bool	is_whitespace(char c)
@@ -154,11 +154,10 @@ bool	is_operator(char c)
 /* returns the type of a token, helper function for get_token */
 static char	find_type(char **s)
 {
-	int	single_q;
-	int	double_q;
+	int	q[2];
 
-	double_q = 0;
-	single_q = 0;
+	q[1] = 0;
+	q[0] = 0;
 	if (!**s)
 		return (0);
 	else if (is_operator(**s))
@@ -168,14 +167,13 @@ static char	find_type(char **s)
 			*s += 1;
 			return ('+');
 		}
-		else
-			return (**s);
+		return (**s);
 	}
 	if (**s == '\'')
-		single_q = 1;
+		q[0] = 1;
 	else if (**s == '\"')
-		double_q = 1;
-	while ((*(*s + 1) && (single_q || double_q)) || (!is_whitespace(*(*s + 1)) && !is_operator(*(*s + 1))))
+		q[1] = 1;
+	while ((*(*s + 1) && (q[0] || q[1])) || (!is_whitespace(*(*s + 1)) && !is_operator(*(*s + 1))))
 	{
 		*s += 1;
 		if (**s == '\'')
@@ -216,7 +214,7 @@ char	get_token(char **b_start, char *b_end,
 	return (ret);
 }
 
-/* #ifdef ALL
+#ifdef ALL
 
 int main(void)
 {
@@ -265,4 +263,4 @@ int main(int argc, char **argv)
 
 }
 #endif
- */
+

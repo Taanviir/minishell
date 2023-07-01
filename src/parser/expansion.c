@@ -6,30 +6,20 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 02:28:01 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/06/29 06:59:10 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/07/01 04:45:35 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <string.h>
 
-/* Commit
-- changed expand to use strjoin and removed [1024]
-- added the $$ case expands to calling process ID
-- changed substitute to compare based on the longer string
-	- case like $X would get matched wrongly with envp XTERM
-		since it only compared the first character of envp
-		- added helper function to return the longer of the 2
-	- added $$ and $? cases to it
-- exit status not yet implemented but needed for $? case
-	could be a global
- */
+int	g_exit_status = 35; //!remove
 
-int exit_status = 35; //!remove
 /* helper function for substitue
 compares the length of the variable
 and envp variable and returns the longer */
-static int	longer(int lvar_s, char *envp) {
+static int	longer(int lvar_s, char *envp)
+{
 	int	i;
 
 	i = 0;
@@ -52,15 +42,10 @@ static char	*substitute(char **q, char **envp)
 	if (*(*q + 1))
 	{
 		if (*(*q + 1) == '$')
-		{
-			(*q)++;
-			return(ft_itoa((int)getpid()));
-		}
+			return (ft_itoa((int)getpid()));
 		else if (*(*q + 1) == '?')
-		{
-			(*q)++;
-			return(ft_itoa((int)exit_status));
-		}
+			return (ft_itoa((int)g_exit_status));
+		(*q)++;
 	}
 	while (var_s[lvar_s] && !is_whitespace(var_s[lvar_s]))
 	{
@@ -105,34 +90,10 @@ char	*expand(char *q, char **envp)
 	return (expanded_string);
 }
 
-/* int main(__attribute__((unused))int argc,
-__attribute__((unused))char **argv, char **envp)
+/* int main(__attribute__((unused))int argc,__attribute__((unused))
+char **argv, char **envp)
 {
-	char *test = "$$$$$$ $USER $ USER $$ $$$USER $X $";
+	char *test = argv[1];
+	// char *test = "$x m l";
 	printf("%s\n", expand(test, envp));
-	printf("hello");
-}
- */
-/* TEST_cases
-"$$$$$$ $USER $ USER $$ $$$USER $X $"
-*all of envp*
-""
-"!$ m l"
-"b !$ l"
-"b m !$"
-"$USER m l"
-"b $USER l"
-"b m $USER"
-"$$USER m l"
-"b $$USER l"
-"b m $$USER"
-"$$ USER m l"
-"b $$ USER l"
-"b m $$ USER"
-"$ m l"
-"b $ l"
-"b m $"
-"$$$ m l"
-"b $$$ l"
-"b m $$$"
- */
+} */
