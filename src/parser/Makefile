@@ -6,7 +6,7 @@
 #    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/18 14:50:05 by sabdelra          #+#    #+#              #
-#    Updated: 2023/06/27 04:09:35 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/07/02 07:33:32 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ COLOUR_RESET:= "\033[0m"
 NAME:= parser.a
 C_FLAGS:= -Wall -Werror -Wextra -ggdb3
 
-SRCS:= get_token.c parser.c queue.c expansion.c
+SRCS:= get_token.c parser.c expansion.c
 OBJS_DIR:= obj/
 OBJS = $(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
 

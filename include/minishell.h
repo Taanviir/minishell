@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/06/29 05:13:07 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/07/02 06:46:11 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	receive_signal(void);
 char	get_token(char **incmd, char *tkend, char **q, char **eq);
 
 // queue api, might not be needed
-t_queue	*create_queue(void);
-void	enqueue(void *new, t_queue *q);
+// t_queue	*create_queue(void);
+// void	enqueue(void *new, t_queue *q);
 
 #endif
