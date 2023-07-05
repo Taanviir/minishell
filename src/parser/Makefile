@@ -6,7 +6,7 @@
 #    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/18 14:50:05 by sabdelra          #+#    #+#              #
-#    Updated: 2023/07/02 07:33:32 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/07/06 02:27:32 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,9 @@ OBJS_DIR:= obj/
 OBJS = $(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
 
 all : $(NAME)
+
+test: all
+	$(CC) $(C_FLAGS) -I ../../include test.c $(NAME) ../../libft/libft.a -o $@
 
 $(NAME) : $(OBJS)
 	@ar -rcs $@ $^
