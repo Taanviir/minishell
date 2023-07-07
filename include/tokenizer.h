@@ -14,6 +14,13 @@
 # define TOKENIZER_H
 
 # define ARGC 20
+
+# define EXEC 0
+# define REDIR 1
+# define PIPE 2
+# define SEQUENCE 3
+# define BG 4
+
 typedef struct s_cmd
 {
 	int	type;
@@ -62,6 +69,13 @@ char	get_token(char **b_start, char *b_end, char **q, char **eq);
 char	*expand(char *q, char **envp);
 int		peek(char **b_start, char *b_end, const char *str);
 t_cmd	*parsecmd(char *b_start);
+
+/* constructors */
+t_cmd	*construct_exec(void);
+t_cmd	*construct_redircmd(t_cmd *command, char *fp, char *efp, int mode, int fd);
+t_cmd	*construct_pipecmd(t_cmd *left, t_cmd *right);
+t_cmd	*construct_seqcmd(t_cmd *left, t_cmd *right);
+t_cmd	*construct_bgcmd(t_cmd *cmd);
 
 extern char	*INPUT_TEST[102];
 

@@ -12,71 +12,8 @@
 
 #include "minishell.h"
 
-# define EXEC 1
-# define REDIR 2
-# define PIPE 3
-# define SEQUENCE 4
-# define BG 5
-
 t_cmd	*parseexec(char **b_start, char *b_end);
-/* Constructors */
-//! all constructors malloc */
-t_cmd	*construct_exec(void)
-{
-	t_exec	*cmd;
 
-	cmd = ft_calloc(sizeof(t_exec), 1);
-	cmd->argv = ft_calloc(sizeof(char *), ARGC);
-	cmd->eargv = ft_calloc(sizeof(char *), ARGC);
-	cmd->type = EXEC;
-	return ((t_cmd *)cmd); // some voodoo shit going on right here
-}
-
-t_cmd	*construct_redircmd(t_cmd *command, char *fp, char *efp, int mode, int fd)
-{
-	t_redircmd	*cmd;
-
-	cmd = ft_calloc(sizeof(t_redircmd), 1);
-	cmd->type = REDIR;
-	cmd->cmd = command;
-	cmd->fp = fp;
-	cmd->efp = efp;
-	cmd->mode = mode;
-	cmd->fd = fd;
-	return ((t_cmd *)cmd);
-}
-
-t_cmd	*construct_pipecmd(t_cmd *left, t_cmd *right)
-{
-	t_pipecmd	*cmd;
-
-	cmd = ft_calloc(sizeof(t_pipecmd), 1);
-	cmd->type = PIPE;
-	cmd->left = left;
-	cmd->right = right;
-	return ((t_cmd *)cmd);
-}
-
-t_cmd	*construct_seqcmd(t_cmd *left, t_cmd *right)
-{
-	t_seqcmd	*cmd;
-
-	cmd = ft_calloc(sizeof(t_seqcmd), 1);
-	cmd->type = SEQUENCE;
-	cmd->left = left;
-	cmd->right = right;
-	return((t_cmd *)cmd);
-}
-
-t_cmd	*construct_bgcmd(t_cmd *cmd)
-{
-	t_bgcmd	*bgcmd;
-
-	bgcmd = ft_calloc(sizeof(t_bgcmd), 1);
-	bgcmd->type = BG;
-	bgcmd->cmd = cmd;
-	return((t_cmd *)bgcmd);
-}
 /* str is a string of characters to look for
 this functions is used to deteremine which parse
 function to call */
@@ -112,6 +49,7 @@ t_cmd	*parseredir(t_cmd *cmd, char **b_start, char *b_end)
 	}
 	return (cmd);
 }
+
 t_cmd	*parsepipe(char **b_start, char *b_end)
 {
 	t_cmd	*cmd;
@@ -124,6 +62,7 @@ t_cmd	*parsepipe(char **b_start, char *b_end)
 	}
 	return cmd;
 }
+
 t_cmd	*parseline(char **b_start, char *b_end)
 {
 	t_cmd	*cmd;
@@ -131,7 +70,7 @@ t_cmd	*parseline(char **b_start, char *b_end)
 	cmd = parsepipe(b_start, b_end);
 	while (peek(b_start, b_end, "&"))
 	{
-		get_token(b_start, b_end, 0, 0); //! maybe not a good idea to pass null
+		get_token(b_start, b_end, 0, 0);
 		cmd = construct_bgcmd(cmd);
 	}
 	if (peek(b_start, b_end, ";"))
@@ -188,6 +127,53 @@ t_cmd	*parseexec(char **b_start, char *b_end)
 	cmd->eargv[argc] = 0;
 	return ret;
 }
+
+t_cmd	*nullterminate(t_cmd *cmd)
+{
+	t_exec		*execmd;
+	t_redircmd	*redircmd;
+	t_pipecmd	*pipecmd;
+	t_seqcmd	*seqcmd;
+	t_bgcmd		*bgcmd;
+	int			i;
+
+	if (!cmd)
+		return (0);
+	if (!(i = 0) && cmd->type == EXEC)
+	{
+		execmd = (t_exec *)cmd;
+		while (execmd->argv[i])
+		{
+			*execmd->eargv[i] = 0;
+			i++;
+		}
+	}
+	else if (cmd->type == REDIR)
+	{
+		redircmd = (t_redircmd *)cmd;
+		nullterminate(redircmd->cmd);
+		*redircmd->efp = 0;
+	}
+	else if (cmd->type == PIPE)
+	{
+		pipecmd = (t_pipecmd *)cmd;
+		nullterminate(pipecmd->left);
+		nullterminate(pipecmd->right);
+	}
+	else if (cmd->type == SEQUENCE)
+	{
+		seqcmd = (t_seqcmd *)cmd;
+		nullterminate(seqcmd->left);
+		nullterminate(seqcmd->right);
+	}
+	else if (cmd->type == BG)
+	{
+		bgcmd = (t_bgcmd *)cmd;
+		nullterminate(bgcmd->cmd);
+	}
+	return (cmd);
+}
+
 //! fix to adjust for exit, for now it only prints "SYNTAX MF" */
 t_cmd	*parsecmd(char *b_start)
 {
@@ -196,9 +182,9 @@ t_cmd	*parsecmd(char *b_start)
 
 	b_end = ft_strlen(b_start) + b_start;
 	root = parseline(&b_start, b_end);
-	if (peek(&b_start, b_end, "")) //! testing to see if b_start is now at null
+	if (peek(&b_start, b_end, ""))
 		write(2, "SYNTAX MF", 10);
-	/* NULL Terminate?? */
+	nullterminate(root);
 	return (root);
 }
 
