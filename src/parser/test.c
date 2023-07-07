@@ -25,8 +25,9 @@ void print_redir(t_cmd *c)
 	t_redircmd *redir;
 
 	redir = (t_redircmd *)c;
+	printf("   Node_%p [label=\"std: %d to %s\"]\n", (void *)redir, redir->fd, redir->fp);
+    printf("   Node_%p -> Node_%p\n", (void *)redir, (void *)redir->cmd);
 	print(redir->cmd);
-	printf("redirected %d to file:%s\n", redir->fd, redir->fp);
 }
 
 void print_pipe(t_cmd *c)
@@ -46,8 +47,10 @@ void print_seq(t_cmd *c)
 	t_seqcmd *cmd;
 
 	cmd = (t_seqcmd *)c;
+	printf("   Node_%p [label=\";\"]\n", (void *)cmd);
+    printf("   Node_%p -> Node_%p\n", (void *)cmd, (void *)cmd->left);
+    printf("   Node_%p -> Node_%p\n", (void *)cmd, (void *)cmd->right);
 	print(cmd->left);
-	printf("sequenced\n");
 	print(cmd->right);
 }
 
@@ -56,6 +59,8 @@ void print_bgcmd(t_cmd *c)
 	t_bgcmd *cmd;
 
 	cmd = (t_bgcmd *)c;
+	printf("   Node_%p [label=\"&\"]\n", (void *)cmd);
+    printf("   Node_%p -> Node_%p\n", (void *)cmd, (void *)cmd->cmd);
 	print(cmd->cmd);
 }
 
@@ -76,7 +81,7 @@ void print(t_cmd *root)
 
 int main(void)
 {
-	char *cmd = ft_memcpy(malloc(38), "ping -c 5 google.com | grep rtt | cat", 38);
+	char *cmd = ft_memcpy(malloc(70), "command 2>&1 | tee output.txt >> pipe a | to the & ; echo hello world", 70);
 	printf("digraph Trie {\n");
 	t_cmd *root = parsecmd(cmd);
 	print(root);
