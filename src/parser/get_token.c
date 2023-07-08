@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   get_token.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/02 07:38:08 by sabdelra          #+#    #+#             */
 /*   Updated: 2023/07/02 16:38:51 by sabdelra         ###   ########.fr       */
@@ -121,37 +121,16 @@
 
 /* define ALL for testing all test cases in input array */
 
-bool	is_ws(char c)
-{
-	char const	*ws;
-	int			i;
-
-	ws = " \t\r\n\v";
-	i = 0;
-	while (ws[i])
-	{
-		if (!c || c == ws[i])
-			return (true);
-		i++;
-	}
-	return (false);
-}
-
 bool	is_opr(char c)
 {
 	char const	*opr;
 	int			i;
 
 	opr = "<|>&;(){}=$";
-	i = 0;
-	while (opr[i])
-	{
-		if (!c)
-			return (false);
-		else if (c == opr[i])
+	i = -1;
+	while (opr[++i])
+		if (c == opr[i])
 			return (true);
-		i++;
-	}
 	return (false);
 }
 
@@ -201,7 +180,7 @@ char	get_token(char **b_start, char *b_end,
 	char	*s;
 
 	s = *b_start;
-	while (s < b_end && is_ws(*s))
+	while (s < b_end && ft_is_whitespace(*s))
 		s++;
 	if (q)
 		*q = s;
@@ -210,7 +189,7 @@ char	get_token(char **b_start, char *b_end,
 		s++;
 	if (eq)
 		*eq = s;
-	while (s < b_end && is_ws(*s))
+	while (s < b_end && ft_is_whitespace(*s))
 		s++;
 	*b_start = s;
 	return (ret);
