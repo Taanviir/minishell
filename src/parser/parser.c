@@ -22,7 +22,7 @@ int peek(char **b_start, char *b_end, const char *str)
 	char	*s;
 
 	s = *b_start;
-	while (s < b_end && is_ws(*s))
+	while (s < b_end && ft_is_whitespace(*s))
 		s++;
 	*b_start = s;
 	return (*s && ft_strchr(str, *s));
