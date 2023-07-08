@@ -6,19 +6,19 @@
 #    By: codespace <codespace@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/18 16:13:46 by tanas             #+#    #+#              #
-#    Updated: 2023/06/28 21:38:57 by codespace        ###   ########.fr        #
+#    Updated: 2023/07/08 14:51:04 by codespace        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libft.a
-C_FLAGS = -Wall -Wextra -Werror
+C_FLAGS = -Wall -Wextra -Werror -ggdb3
 
 SRCS_DIR = src/
 SRCS_LIST = error-utils/ft_error.c \
 			ft_printf/ft_print_char.c ft_printf/ft_print_hex.c ft_printf/ft_print_number.c ft_printf/ft_print_pointer.c \
 			ft_printf/ft_print_string.c ft_printf/ft_print_unsigned.c ft_printf/ft_printf.c \
 			get_next_line/get_next_line.c \
-			is-utils/ft_is_alnum.c is-utils/ft_is_alpha.c is-utils/ft_is_ascii.c is-utils/ft_is_digit.c is-utils/ft_is_print.c is-utils/ft_is_whitespace.c \
+			is-utils/ft_is_alnum.c is-utils/ft_is_alpha.c is-utils/ft_is_ascii.c is-utils/ft_is_digit.c is-utils/ft_is_print.c is-utils/ft_is_whitespace.c\
 			linked-list/ft_lstadd_back.c linked-list/ft_lstadd_front.c linked-list/ft_lstclear.c linked-list/ft_lstdelone.c \
 			linked-list/ft_lstiter.c linked-list/ft_lstlast.c linked-list/ft_lstmap.c linked-list/ft_lstnew.c linked-list/ft_lstsize.c \
 			memory-utils/ft_bzero.c memory-utils/ft_calloc.c memory-utils/ft_memchr.c memory-utils/ft_memcmp.c memory-utils/ft_memcpy.c \

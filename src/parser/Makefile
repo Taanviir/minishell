@@ -6,7 +6,7 @@
 #    By: codespace <codespace@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/18 14:50:05 by sabdelra          #+#    #+#              #
-#    Updated: 2023/06/28 21:53:16 by codespace        ###   ########.fr        #
+#    Updated: 2023/07/08 15:00:00 by codespace        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,11 +21,19 @@ C_FLAGS:= -Wall -Werror -Wextra -ggdb3
 INCLUDES:= -I ../../include -I ../../libft/include
 LIBFT:= ../../libft/libft.a
 
-SRCS:= get_token.c parser.c queue.c expansion.c
+SRCS:= get_token.c parser.c expansion.c constructor.c
 OBJS_DIR:= obj/
 OBJS = $(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
 
 all : $(NAME)
+
+test: all test.c
+	$(CC) $(C_FLAGS) -I ../../include test.c $(NAME) ../../libft/libft.a -o $@
+
+ast: test
+	./test > test.dot
+	dot -Tpng test.dot > test.png
+	@rm -f test.dot
 
 $(NAME) : $(OBJS) $(LIBFT)
 	@ar -rcs $@ $^

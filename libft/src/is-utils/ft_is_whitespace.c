@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/28 19:38:08 by codespace         #+#    #+#             */
-/*   Updated: 2023/06/28 19:48:29 by codespace        ###   ########.fr       */
+/*   Created: 2023/07/08 14:58:01 by codespace         #+#    #+#             */
+/*   Updated: 2023/07/08 14:58:36 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-bool	ft_is_whitespace(char c)
+bool    ft_is_whitespace(char c)
 {
     return (c == ' ' || c == '\t' || c == '\r' || c == '\n' || c == '\v');
 }
