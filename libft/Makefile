@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
+#    By: codespace <codespace@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/18 16:13:46 by tanas             #+#    #+#              #
-#    Updated: 2023/06/29 02:09:29 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/07/08 14:51:04 by codespace        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SRCS_LIST = error-utils/ft_error.c \
 			ft_printf/ft_print_char.c ft_printf/ft_print_hex.c ft_printf/ft_print_number.c ft_printf/ft_print_pointer.c \
 			ft_printf/ft_print_string.c ft_printf/ft_print_unsigned.c ft_printf/ft_printf.c \
 			get_next_line/get_next_line.c \
-			is-utils/ft_isalnum.c is-utils/ft_isalpha.c is-utils/ft_isascii.c is-utils/ft_isdigit.c is-utils/ft_isprint.c \
+			is-utils/ft_is_alnum.c is-utils/ft_is_alpha.c is-utils/ft_is_ascii.c is-utils/ft_is_digit.c is-utils/ft_is_print.c is-utils/ft_is_whitespace.c\
 			linked-list/ft_lstadd_back.c linked-list/ft_lstadd_front.c linked-list/ft_lstclear.c linked-list/ft_lstdelone.c \
 			linked-list/ft_lstiter.c linked-list/ft_lstlast.c linked-list/ft_lstmap.c linked-list/ft_lstnew.c linked-list/ft_lstsize.c \
 			memory-utils/ft_bzero.c memory-utils/ft_calloc.c memory-utils/ft_memchr.c memory-utils/ft_memcmp.c memory-utils/ft_memcpy.c \
@@ -35,6 +35,7 @@ OBJS_DIR = obj/
 OBJS_SUBDIRS = $(foreach directory, $(SUB_DIRS), $(addprefix $(OBJS_DIR), $(directory))) # adding the prefix objects/ to each subdirectory
 OBJS = $(subst $(SRCS_DIR), $(OBJS_DIR), $(SRCS:.c=.o)) # changing .c to .o for object files
 
+### COLOURS
 YELLOW = "\033[0;33m"
 COLOUR_RESET = "\033[0m"
 

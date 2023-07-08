@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_print_number.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 13:44:42 by tanas             #+#    #+#             */
-/*   Updated: 2022/12/17 14:01:26 by tanas            ###   ########.fr       */
+/*   Updated: 2023/07/08 14:54:03 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
 
 int	ft_print_number(int n)
 {
