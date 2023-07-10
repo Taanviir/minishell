@@ -36,6 +36,8 @@
 *.x86_64
 *.hex
 minishell
+test.png
+test
 
 # Debug files
 *.dSYM/
