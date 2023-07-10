@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: codespace <codespace@student.42.fr>        +#+  +:+       +#+         #
+#    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/18 14:50:05 by sabdelra          #+#    #+#              #
-#    Updated: 2023/07/08 15:00:00 by codespace        ###   ########.fr        #
+#    Updated: 2023/07/11 03:28:41 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,12 +30,15 @@ all : $(NAME)
 test: all test.c
 	$(CC) $(C_FLAGS) -I ../../include test.c $(NAME) ../../libft/libft.a -o $@
 
+### tree diagram
 ast: test
 	./test > test.dot
 	dot -Tpng test.dot > test.png
-	@rm -f test.dot
 
-$(NAME) : $(OBJS) $(LIBFT)
+cleanast:
+	@rm -f test.png test
+
+$(NAME) : $(OBJS)
 	@ar -rcs $@ $^
 
 $(OBJS_DIR)%.o : %.c

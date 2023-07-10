@@ -12,12 +12,12 @@ void print_exec(t_cmd *c)
 	t_exec *cmd;
 
 	cmd = (t_exec *)c;
-	printf("   Node_%p [label=\"%s\"]\n", (void *)cmd, cmd->argv[0]);
+	printf("   Node_%p [label=\"%s\" shape=box style=filled color=darkslategray4]\n", (void *)cmd, cmd->argv[0]);
+	printf("   Node_%p -> Node_%p1\n", (void *)cmd, (void *)cmd);
+	printf("   Node_%p1 [shape=box color=darkslategray4 label=\"\n", (void *)cmd);
 	for (int i = 1; cmd->argv[i]; i++)
-	{
-		printf("   Node_%p -> Node_%p\n", (void *)cmd, (void *)cmd->argv[i]);
-        printf("   Node_%p [label=\"%s\"]\n", (void *)cmd->argv[i], cmd->argv[i]);
-	}
+		printf("%s\n", cmd->argv[i]);
+  	printf("\"]\n");
 }
 
 void print_redir(t_cmd *c)
@@ -81,7 +81,7 @@ void print(t_cmd *root)
 
 int main(void)
 {
-	char *cmd = ft_memcpy(malloc(70), "command 2>&1 | tee output.txt >> pipe a | to the & ; echo hello world", 70);
+	char *cmd = ft_memcpy(malloc(70), "echo hello world my name is abu 3abdo | grep 3abdo", 70);
 	printf("digraph Trie {\n");
 	t_cmd *root = parsecmd(cmd);
 	print(root);
