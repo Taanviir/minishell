@@ -116,9 +116,9 @@ t_cmd	*parseexec(char **b_start, char *b_end, char **envp)
 			break ;
 		if (token != 'a')
 			write(2, "sytnax", 7);
-		if (*q == '$')
+		if (*q == '$' || *q == '\"' || *q == '\'')
 		{
-			cmd->argv[argc] = expand(q, envp);
+			cmd->argv[argc] = expand(q, eq, envp);
 			cmd->eargv[argc] = cmd->argv[argc] + ft_strlen(cmd->argv[argc]);
 		}
 		else

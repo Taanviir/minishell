@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 02:28:01 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/07/11 04:39:46 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/07/11 22:10:28 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static char	*substitute(char **q, char **envp)
 }
 
 /* expands a token if it contains a $ */
-char	*expand(char *q, char **envp)
+char	*expand(char *q, char *eq, char **envp)
 {
 	char	*expanded_string;
 	char	buffer[2];
@@ -72,7 +72,7 @@ char	*expand(char *q, char **envp)
 	expanded_string = malloc(1);
 	if (!expanded_string)
 		return (0);
-	while (*q)
+	while (q < eq)
 	{
 		if (*q == '$' && !ft_is_whitespace(*(q + 1)))
 		{

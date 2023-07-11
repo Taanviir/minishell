@@ -63,10 +63,9 @@ typedef struct	s_bgcmd
 	t_cmd	*cmd;
 }	t_bgcmd;
 
-bool	is_ws(char c);
 bool	is_opr(char c);
 char	get_token(char **b_start, char *b_end, char **q, char **eq);
-char	*expand(char *q, char **envp);
+char	*expand(char *q, char *eq, char **envp);
 int		peek(char **b_start, char *b_end, const char *str);
 t_cmd	*parsecmd(char *b_start, char **envp);
 

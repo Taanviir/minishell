@@ -6,7 +6,7 @@
 #    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/18 14:50:05 by sabdelra          #+#    #+#              #
-#    Updated: 2023/07/11 07:59:57 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/07/11 08:16:12 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,7 +49,7 @@ $(OBJS_DIR)%.o : %.c
 clean :
 	@rm -rf $(OBJS_DIR)
 
-fclean : clean
+fclean : clean cleanast
 	@rm -f $(NAME)
 
 re : fclean all
