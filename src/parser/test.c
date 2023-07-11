@@ -16,7 +16,17 @@ void print_exec(t_cmd *c)
 	printf("   Node_%p -> Node_%p1\n", (void *)cmd, (void *)cmd);
 	printf("   Node_%p1 [shape=box color=darkslategray4 label=\"\n", (void *)cmd);
 	for (int i = 1; cmd->argv[i]; i++)
-		printf("%s\n", cmd->argv[i]);
+	{
+		if (ft_strchr(cmd->argv[i], '"'))
+		{
+			for (int j = 0; cmd->argv[i][j]; j++) {
+				if (cmd->argv[i][j] == '\"') printf("\\");
+				printf("%c",cmd->argv[i][j]);
+			}
+		}
+		else
+			printf("%s\n", cmd->argv[i]);
+	}
   	printf("\"]\n");
 }
 

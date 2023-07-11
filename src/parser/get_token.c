@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/02 07:38:08 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/07/11 22:18:52 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/07/11 22:48:51 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ char *INPUT_TEST[102] = {
     "command1 | command2 | command3",
     "''",    //Empty single quotes
     "\"\"",
-	"\"echo $(PATH)\"",
+	"\"echo $PATH\"",
 	"> echo",
 	">> echo",
 	NULL
