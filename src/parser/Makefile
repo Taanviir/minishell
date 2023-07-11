@@ -6,7 +6,7 @@
 #    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/18 14:50:05 by sabdelra          #+#    #+#              #
-#    Updated: 2023/07/11 22:25:24 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/07/12 02:31:05 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,8 +28,7 @@ OBJS = $(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
 all : $(NAME)
 
 test: all test.c
-	$(CC) $(C_FLAGS) -I ../../include test.c $(NAME) -lreadline ../../libft/libft.a -o $@
-
+	$(CC) $(C_FLAGS) -I ../../include test.c $(NAME) -lreadline $(LIBFT) -o $@
 ### tree diagram
 ast: test
 	./test $(index) > test.dot
