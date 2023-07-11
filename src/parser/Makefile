@@ -6,7 +6,7 @@
 #    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/18 14:50:05 by sabdelra          #+#    #+#              #
-#    Updated: 2023/07/11 03:28:41 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/07/11 04:23:32 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,7 @@ clean :
 
 fclean : clean
 	@rm -f $(NAME)
+	@rm -f test test.dot test.png
 
 re : fclean all
 
