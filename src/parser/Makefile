@@ -6,7 +6,7 @@
 #    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/18 14:50:05 by sabdelra          #+#    #+#              #
-#    Updated: 2023/07/11 08:16:12 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/07/11 22:25:24 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ test: all test.c
 
 ### tree diagram
 ast: test
-	./test > test.dot
+	./test $(index) > test.dot
 	dot -Tpng test.dot > test.png
 
 cleanast:
