@@ -38,6 +38,7 @@
 minishell
 test.png
 test
+builtins/bin
 
 # Debug files
 *.dSYM/
