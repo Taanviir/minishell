@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-t_cmd	*parseexec(char **b_start, char *b_end);
+t_cmd	*parseexec(char **b_start, char *b_end, char **envp);
 
 /* str is a string of characters to look for
 this functions is used to deteremine which parse
@@ -50,24 +50,24 @@ t_cmd	*parseredir(t_cmd *cmd, char **b_start, char *b_end)
 	return (cmd);
 }
 
-t_cmd	*parsepipe(char **b_start, char *b_end)
+t_cmd	*parsepipe(char **b_start, char *b_end, char **envp)
 {
 	t_cmd	*cmd;
 
-	cmd = parseexec(b_start, b_end);
+	cmd = parseexec(b_start, b_end, envp);
 	if (peek(b_start, b_end, "|"))
 	{
 		get_token(b_start, b_end, 0, 0);
-		cmd = construct_pipecmd(cmd, parsepipe(b_start, b_end));
+		cmd = construct_pipecmd(cmd, parsepipe(b_start, b_end, envp));
 	}
 	return cmd;
 }
 
-t_cmd	*parseline(char **b_start, char *b_end)
+t_cmd	*parseline(char **b_start, char *b_end, char **envp)
 {
 	t_cmd	*cmd;
 
-	cmd = parsepipe(b_start, b_end);
+	cmd = parsepipe(b_start, b_end, envp);
 	while (peek(b_start, b_end, "&"))
 	{
 		get_token(b_start, b_end, 0, 0);
@@ -76,7 +76,7 @@ t_cmd	*parseline(char **b_start, char *b_end)
 	if (peek(b_start, b_end, ";"))
 	{
 		get_token(b_start, b_end, 0, 0);
-		cmd = construct_seqcmd(cmd, parseline(b_start, b_end));
+		cmd = construct_seqcmd(cmd, parseline(b_start, b_end, envp));
 	}
 	return (cmd);
 }
@@ -97,7 +97,7 @@ static t_exec	*inc_argsize(t_exec *cmd, size_t argc)
 	return (ret);
 }
 
-t_cmd	*parseexec(char **b_start, char *b_end)
+t_cmd	*parseexec(char **b_start, char *b_end, char **envp)
 {
 	char		*q;
 	char		*eq;
@@ -116,8 +116,16 @@ t_cmd	*parseexec(char **b_start, char *b_end)
 			break ;
 		if (token != 'a')
 			write(2, "sytnax", 7);
-		cmd->argv[argc] = q;
-		cmd->eargv[argc] = eq;
+		if (*q == '$')
+		{
+			cmd->argv[argc] = expand(q, envp);
+			cmd->eargv[argc] = cmd->argv[argc] + ft_strlen(cmd->argv[argc]);
+		}
+		else
+		{
+			cmd->argv[argc] = q;
+			cmd->eargv[argc] = eq;
+		}
 		argc++;
 		if (argc > (ARGC - 1))
 			cmd = inc_argsize(cmd, argc);
@@ -175,13 +183,13 @@ t_cmd	*nullterminate(t_cmd *cmd)
 }
 
 //! fix to adjust for exit, for now it only prints "SYNTAX MF" */
-t_cmd	*parsecmd(char *b_start)
+t_cmd	*parsecmd(char *b_start, char **envp)
 {
 	char	*b_end;
 	t_cmd	*root;
 
 	b_end = ft_strlen(b_start) + b_start;
-	root = parseline(&b_start, b_end);
+	root = parseline(&b_start, b_end, envp);
 	if (peek(&b_start, b_end, ""))
 		write(2, "SYNTAX MF", 10);
 	nullterminate(root);

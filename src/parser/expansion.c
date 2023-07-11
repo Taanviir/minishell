@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 02:28:01 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/07/02 07:34:18 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/07/11 04:39:46 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static char	*substitute(char **q, char **envp)
 			return (ft_itoa((int)g_exit_status));
 		(*q)++;
 	}
-	while (var_s[lvar_s] && !is_ws(var_s[lvar_s]))
+	while (var_s[lvar_s] && !ft_is_whitespace(var_s[lvar_s]))
 	{
 		lvar_s++;
 		(*q)++;
@@ -74,7 +74,7 @@ char	*expand(char *q, char **envp)
 		return (0);
 	while (*q)
 	{
-		if (*q == '$' && !is_ws(*(q + 1)))
+		if (*q == '$' && !ft_is_whitespace(*(q + 1)))
 		{
 			sub = substitute(&q, envp);
 			if (sub)

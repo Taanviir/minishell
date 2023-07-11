@@ -68,7 +68,7 @@ bool	is_opr(char c);
 char	get_token(char **b_start, char *b_end, char **q, char **eq);
 char	*expand(char *q, char **envp);
 int		peek(char **b_start, char *b_end, const char *str);
-t_cmd	*parsecmd(char *b_start);
+t_cmd	*parsecmd(char *b_start, char **envp);
 
 /* constructors */
 t_cmd	*construct_exec(void);

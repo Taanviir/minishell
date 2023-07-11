@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   get_token.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/02 07:38:08 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/07/02 16:38:51 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/07/11 07:49:20 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // #define ALL
-//
+
 // char *INPUT_TEST[102] = {
 //     "ls -l",
 //     "cd /path/to/directory",
@@ -126,7 +126,7 @@ bool	is_opr(char c)
 	char const	*opr;
 	int			i;
 
-	opr = "<|>&;(){}=$";
+	opr = "<|>&;(){}=";
 	i = -1;
 	while (opr[++i])
 		if (c == opr[i])
@@ -138,12 +138,9 @@ bool	is_opr(char c)
 helper function for get_token */
 static char	find_type(char **s)
 {
-	int	q[2];
+	int	q;
 
-	/* norminette <3 */
-	q[1] = 0;
-	q[0] = 0;
-	/* norminette <3 */
+	q = 0;
 	if (!**s)
 		return (0);
 	else if (is_opr(**s))
@@ -152,12 +149,11 @@ static char	find_type(char **s)
 			return ('+');
 		return (**s);
 	}
-	q[0] = (**s == '\'');
-	q[1] = (**s == '\"');
-	while ((*(*s + 1) && (q[0] || q[1])) || (!ft_is_whitespace(*(*s + 1)) && !is_opr(*(*s + 1))))
+	q = (**s == '\"' || **s == '\'');
+	while (*(*s + 1) && (q || (!ft_is_whitespace(*(*s + 1)) && !is_opr(*(*s + 1)))))
 	{
 		*s += 1;
-		if ((**s == '\'' && q[0]) || (**s == '\"' && q[1]))
+		if (!(*s - q))
 			return ('a');
 	}
 	return ('a');
@@ -195,31 +191,31 @@ char	get_token(char **b_start, char *b_end,
 	return (ret);
 }
 
-// #ifdef ALL
+#ifdef ALL
 
-// int main(void)
-// {
-// 	char *b_start;
-// 	char *b_end;
-// 	char *q;
-// 	char *eq;
-// 	char ret;
+int main(void)
+{
+	char *b_start;
+	char *b_end;
+	char *q;
+	char *eq;
+	char ret;
 
-// 	for (int i = 0; INPUT_TEST[i]; i++) {
-// 		b_start = INPUT_TEST[i];
-// 		b_end = b_start + strlen(b_start);
-// 		printf("case : '%s'\n", b_start);
-// 		while (*b_start) {
-// 			q = b_start;
-// 			eq = b_start;
-// 			ret = get_token(&b_start, b_end, &q, &eq);
-// 			printf("%-30.*s", (int)(eq - q), q);
-// 			printf("\t\t\ttype : %c\n", ret);
-// 		}
-// 		printf("---------------------------------------------\n");
-// 	}
-// }
-// #endif
+	for (int i = 0; INPUT_TEST[i]; i++) {
+		b_start = INPUT_TEST[i];
+		b_end = b_start + strlen(b_start);
+		printf("case : '%s'\n", b_start);
+		while (*b_start) {
+			q = b_start;
+			eq = b_start;
+			ret = get_token(&b_start, b_end, &q, &eq);
+			printf("%-30.*s", (int)(eq - q), q);
+			printf("\t\t\ttype : %c\n", ret);
+		}
+		printf("---------------------------------------------\n");
+	}
+}
+#endif
 //
 // #ifdef CASE
 // int main(int argc, char **argv)

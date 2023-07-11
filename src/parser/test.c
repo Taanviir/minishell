@@ -79,11 +79,13 @@ void print(t_cmd *root)
 	prints[root->type](root);
 }
 
-int main(void)
+int main(__attribute__((unused))int argc, __attribute__((unused))char **argv, char **envp)
 {
-	char *cmd = ft_memcpy(malloc(70), "echo hello world my name is abu 3abdo | grep 3abdo", 70);
+	char *cmd = malloc(41);
+	ft_strlcpy(cmd, "echo $USER | wc -l >> file.txt", 31);
+	// char *cmd = readline("ghost>>");
 	printf("digraph Trie {\n");
-	t_cmd *root = parsecmd(cmd);
+	t_cmd *root = parsecmd(cmd, envp);
 	print(root);
 	printf("}\n");
 }
