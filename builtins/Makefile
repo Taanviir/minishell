@@ -6,7 +6,7 @@
 #    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/12 02:10:11 by sabdelra          #+#    #+#              #
-#    Updated: 2023/07/12 03:15:44 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/07/12 04:18:30 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ C_FLAGS:= -Wall -Werror -Wextra -ggdb3
 INCLUDES:= -I ../include -I ../libft/include
 LIBFT:= ../libft/libft.a
 
-SRCS:= echo.c
+SRCS:= echo.c export.c
 BIN_DIR:= bin
 BINS = $(addprefix $(BIN_DIR)/, $(notdir $(SRCS:.c=)))
 
