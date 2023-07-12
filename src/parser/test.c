@@ -1,8 +1,4 @@
-/* commit
-- split up parser and made new file constructor.c moved all constructors there
-- added print functions to test.c
-- added nulterminate function
- */
+
 #include "minishell.h"
 
 void print(t_cmd *root);

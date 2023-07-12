@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 03:46:11 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/07/12 05:06:12 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/07/13 02:27:39 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ int main(int argc, char **argv, char **envp)
 			break ;
 	}
 	if (!envp[i]) // this really shouldn't work
-		envp[i+1] = NULL;
+		envp[i + 1] = NULL;
 	envp[i] = *argv;
-	for (int i = 0; envp[i]; i++)
-		printf("%s\n", envp[i]);
 }
