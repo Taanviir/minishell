@@ -6,7 +6,7 @@
 #    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/12 02:10:11 by sabdelra          #+#    #+#              #
-#    Updated: 2023/07/13 02:43:27 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/07/13 05:13:48 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,25 +16,35 @@ RED_BI:= "\033[1;3;31m"
 BLUE_I:= "\033[3;34m"
 COLOUR_RESET:= "\033[0m"
 
+NAME:= builtins.a
 C_FLAGS:= -Wall -Werror -Wextra -ggdb3
 INCLUDES:= -I ../include -I ../libft/include
 LIBFT:= ../libft/libft.a
 
-SRCS:= echo.c export.c pwd.c
-BIN_DIR:= bin
-BINS = $(addprefix $(BIN_DIR)/, $(notdir $(SRCS:.c=)))
+SRCS:= echo.c
+OBJSDIR:= obj
+OBJS = $(addprefix $(OBJSDIR)/, $(SRCS:.c=.o))
 
-all: $(BINS)
+all: $(NAME)
 
-$(BIN_DIR)/%: %.c
-	@mkdir -p $(BIN_DIR)
-	@$(CC) $(C_FLAGS) $(INCLUDES) $^ -o $@ $(LIBFT)
+test: all test.c
+	$(CC) $(C_FLAGS) $(INCLUDES) test.c $(NAME) $(LIBFT) -o $@
+
+$(NAME) : $(OBJS)
+	@ar -rcs $@ $^
+
+$(OBJSDIR)/%.o: %.c
+	@mkdir -p $(OBJSDIR)
+	@$(CC) $(C_FLAGS) $(INCLUDES) -c $^ -o $@
+	@echo $(GREEN_B)"Compiling builtins/$<."$(COLOUR_RESET)
 
 clean:
-	@rm -rf bin
+	@rm -rf $(OBJSDIR)
 
 fclean: clean
+	@rm -f $(NAME)
+	@rm -f test
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re test

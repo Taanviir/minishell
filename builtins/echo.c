@@ -1,10 +1,6 @@
 #include "minishell.h"
 
-#define PROGRAM_NAME "echo"
-#define AUTHORS "Samih"
-
-
-int main(int argc, char **argv, __attribute__((unused))char **envp)
+int ft_echo(int argc, char **argv, __attribute__((unused))char **envp)
 {
   int	show_newline;
   int	length;

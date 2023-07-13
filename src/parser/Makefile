@@ -6,7 +6,7 @@
 #    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/18 14:50:05 by sabdelra          #+#    #+#              #
-#    Updated: 2023/07/12 02:31:05 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/07/13 05:26:49 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ C_FLAGS:= -Wall -Werror -Wextra -ggdb3
 INCLUDES:= -I ../../include -I ../../libft/include
 LIBFT:= ../../libft/libft.a
 
-SRCS:= get_token.c parser.c expansion.c constructor.c
+SRCS:= get_token.c parser.c expansion.c constructor.c test.c
 OBJS_DIR:= obj/
 OBJS = $(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
 

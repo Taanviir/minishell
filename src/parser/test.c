@@ -85,18 +85,18 @@ void print(t_cmd *root)
 	prints[root->type](root);
 }
 
-int main(int argc, char **argv, char **envp)
-{
-	char *cmd;
+// int main(int argc, char **argv, char **envp)
+// {
+// 	char *cmd;
 
-	if (argc != 2) return 0;
-	int i = atoi(argv[1]);
-	int len = strlen(INPUT_TEST[i]);
-	cmd = malloc(len + 1);
-	ft_strlcpy(cmd, INPUT_TEST[i], len + 1);
-	// char *cmd = readline("ghost>>");
-	printf("digraph Trie {\n");
-	t_cmd *root = parsecmd(cmd, envp);
-	print(root);
-	printf("}\n");
-}
+// 	if (argc != 2) return 0;
+// 	int i = atoi(argv[1]);
+// 	int len = strlen(INPUT_TEST[i]);
+// 	cmd = malloc(len + 1);
+// 	ft_strlcpy(cmd, INPUT_TEST[i], len + 1);
+// 	// char *cmd = readline("ghost>>");
+// 	printf("digraph Trie {\n");
+// 	t_cmd *root = parsecmd(cmd, envp);
+// 	print(root);
+// 	printf("}\n");
+// }

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: codespace <codespace@student.42.fr>        +#+  +:+       +#+         #
+#    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/14 14:38:29 by tanas             #+#    #+#              #
-#    Updated: 2023/07/08 14:50:11 by codespace        ###   ########.fr        #
+#    Updated: 2023/07/13 05:38:00 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,10 +18,12 @@ YELLOW = "\033[0;33m"
 COLOUR_RESET = "\033[0m"
 
 NAME = minishell
+CC = gcc
 C_FLAGS = -Wall -Wextra -Werror -g3
 LIBFT = libft/libft.a
 PARSER = src/parser/parser.a
-LD_FLAGS = -lreadline $(PARSER) $(LIBFT)
+BUILTINS = builtins/builtins.a
+LD_FLAGS = -lreadline $(PARSER) $(LIBFT) $(BUILTINS)
 INCLUDES = -I include/ -I libft/include
 
 SRCS_DIR = src/
@@ -33,14 +35,17 @@ OBJS_LIST = $(SRCS_LIST:.c=.o)
 OBJS = $(addprefix $(OBJS_DIR), $(OBJS_LIST))
 
 all : $(NAME)
+test :
+	override C_FLAGS+=" -DTEST"
+	@$(MAKE)  all
 
-$(NAME) : $(LIBFT) $(OBJS) parser
-	@cc $(C_FLAGS) $(INCLUDES) $(OBJS) -o $(NAME) $(LD_FLAGS)
+$(NAME) : $(LIBFT) $(OBJS) parser builtins
+	@$(CC) $(C_FLAGS) $(INCLUDES) $(OBJS) -o $(NAME) $(LD_FLAGS)
 	@echo $(GREEN_B)"$(NAME) is ready. ✅\n"$(COLOUR_RESET)
 
 $(OBJS_DIR)%.o : $(SRCS_DIR)%.c $(HEADERS)
 	@mkdir -p $(OBJS_DIR)
-	@cc $(C_FLAGS) $(INCLUDES) -c $< -o $@
+	@$(CC) $(C_FLAGS) $(INCLUDES) -c $< -o $@
 	@echo $(BLUE_I)"Compiling $<."$(COLOUR_RESET)
 
 $(LIBFT) :
@@ -51,9 +56,13 @@ $(LIBFT) :
 parser :
 	@make -sC src/parser
 
+builtins :
+	@make -sC builtins
+
 clean :
 	@make clean -sC libft
 	@make clean -sC src/parser
+	@make clean -sC builtins
 	@rm -rf $(OBJS_DIR)
 	@echo $(RED_BI)"\nRemoving object directories and files"$(COLOUR_RESET)
 
@@ -61,8 +70,9 @@ fclean : clean
 	@rm -f $(NAME)
 	@make fclean -sC libft
 	@make fclean -sC src/parser
-	@echo $(RED_BI)"Removing $(NAME) and libft.a\n"$(COLOUR_RESET)
+	@make fclean -sC builtins
+	@echo $(RED_BI)"Removing $(NAME) and libs\n"$(COLOUR_RESET)
 
 re : fclean all
 
-.PHONY : all clean fclean re
+.PHONY : all clean fclean re builtins parser

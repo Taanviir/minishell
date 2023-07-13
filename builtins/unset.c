@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export.c                                           :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/12 03:46:11 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/07/13 03:24:12 by sabdelra         ###   ########.fr       */
+/*   Created: 2023/07/13 03:17:30 by sabdelra          #+#    #+#             */
+/*   Updated: 2023/07/13 03:20:31 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,13 @@ int main(int argc, char **argv, char **envp)
 	if (argc != 2)
 		return (0);
 	argv++;
-	while ((*argv)[var_len] && (*argv)[var_len] != '=') {
-		var_len++;
-		if (!((*argv)[var_len]))
-			return (0);
-	}
 	for (i = 0; envp[i]; i++){
 		if (!ft_strncmp(*argv, envp[i], var_len + 1))
 			break ;
 	}
-	if (!envp[i]) // this really shouldn't work
-		envp[i + 1] = NULL;
-	envp[i] = *argv;
+	while (envp[i + 1])
+	{
+		envp[i] = envp[i+1];
+		i++;
+	}
 }
