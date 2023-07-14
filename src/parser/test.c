@@ -9,8 +9,8 @@ void print_exec(t_cmd *c)
 
 	cmd = (t_exec *)c;
 	printf("   Node_%p [label=\"%s\" shape=box style=filled color=darkslategray4]\n", (void *)cmd, cmd->argv[0]);
-	printf("   Node_%p -> Node_%p1\n", (void *)cmd, (void *)cmd);
-	printf("   Node_%p1 [shape=box color=darkslategray4 label=\"\n", (void *)cmd);
+	printf("   Node_%p -> Node_%pargs\n", (void *)cmd, (void *)cmd);
+	printf("   Node_%pargs [shape=box color=darkslategray4 label=\"\n", (void *)cmd);
 	for (int i = 1; cmd->argv[i]; i++)
 	{
 		if (ft_strchr(cmd->argv[i], '"'))
@@ -82,7 +82,9 @@ printers prints[5] = {
 
 void print(t_cmd *root)
 {
+	printf("digraph Trie {\n");
 	prints[root->type](root);
+	printf("}\n");
 }
 
 // int main(int argc, char **argv, char **envp)
@@ -95,8 +97,6 @@ void print(t_cmd *root)
 // 	cmd = malloc(len + 1);
 // 	ft_strlcpy(cmd, INPUT_TEST[i], len + 1);
 // 	// char *cmd = readline("ghost>>");
-// 	printf("digraph Trie {\n");
 // 	t_cmd *root = parsecmd(cmd, envp);
 // 	print(root);
-// 	printf("}\n");
 // }

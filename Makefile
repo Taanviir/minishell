@@ -6,7 +6,7 @@
 #    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/14 14:38:29 by tanas             #+#    #+#              #
-#    Updated: 2023/07/13 05:38:00 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/07/14 05:16:34 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,6 @@ YELLOW = "\033[0;33m"
 COLOUR_RESET = "\033[0m"
 
 NAME = minishell
-CC = gcc
 C_FLAGS = -Wall -Wextra -Werror -g3
 LIBFT = libft/libft.a
 PARSER = src/parser/parser.a
@@ -35,12 +34,13 @@ OBJS_LIST = $(SRCS_LIST:.c=.o)
 OBJS = $(addprefix $(OBJS_DIR), $(OBJS_LIST))
 
 all : $(NAME)
-test :
-	override C_FLAGS+=" -DTEST"
-	@$(MAKE)  all
+test : C_FLAGS += -D TEST
+test : all
+
+debug_compile:	C_FLAGS += -D TEST
 
 $(NAME) : $(LIBFT) $(OBJS) parser builtins
-	@$(CC) $(C_FLAGS) $(INCLUDES) $(OBJS) -o $(NAME) $(LD_FLAGS)
+	$(CC) $(C_FLAGS) $(INCLUDES) $(OBJS) -o $(NAME) $(LD_FLAGS)
 	@echo $(GREEN_B)"$(NAME) is ready. ✅\n"$(COLOUR_RESET)
 
 $(OBJS_DIR)%.o : $(SRCS_DIR)%.c $(HEADERS)
@@ -75,4 +75,4 @@ fclean : clean
 
 re : fclean all
 
-.PHONY : all clean fclean re builtins parser
+.PHONY : all clean fclean re builtins parser C_FLAGS

@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/07/13 05:24:42 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/07/14 04:05:55 sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ t_cmd	*get_cmd(char **envp)
 	quote_check(line);
 	add_history(line);
 	root = parsecmd(line, envp);
-	free(line);
 	return (root);
 }
 
@@ -50,7 +49,6 @@ t_cmd	*get_cmd(char **envp)
 int	main(int argc , char **argv __attribute__((unused)), char **envp)
 {
 	// char png[10];
-
 	if (argc != 1)
 	{
 		printf(RED_B"Error: %s\n"WHITE, strerror(E2BIG));
@@ -60,14 +58,13 @@ int	main(int argc , char **argv __attribute__((unused)), char **envp)
 	// minishell loop
 	while (1)
 	{
-		printf("digraph Trie {\n");
 		print(get_cmd(envp));
-		printf("}\n");
-	/* free whatever needs to be freed */
+		// free(line);
 	}
 	return (EXIT_SUCCESS);
 }
 #else
+#define WHATEVERNEEDSTOBEFREEED line
 int	main(int argc , char **argv __attribute__((unused)), char **envp)
 {
 	if (argc != 1)
@@ -79,7 +76,8 @@ int	main(int argc , char **argv __attribute__((unused)), char **envp)
 	// minishell loop
 	while (1)
 	{
-		(get_cmd(envp)); // execute(get_cmd(envp)) when we got execute
+		get_cmd(envp); // execute(get_cmd(envp)) when we got execute
+		// free(WHATEVERNEEDSTOBEFREEED);
 	/* free whatever needs to be freed */
 	}
 	return (EXIT_SUCCESS);
