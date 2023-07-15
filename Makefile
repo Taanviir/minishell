@@ -6,7 +6,7 @@
 #    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/14 14:38:29 by tanas             #+#    #+#              #
-#    Updated: 2023/07/14 05:16:34 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/07/14 19:47:10 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,11 +36,10 @@ OBJS = $(addprefix $(OBJS_DIR), $(OBJS_LIST))
 all : $(NAME)
 test : C_FLAGS += -D TEST
 test : all
-
-debug_compile:	C_FLAGS += -D TEST
+	@mkdir -p png
 
 $(NAME) : $(LIBFT) $(OBJS) parser builtins
-	$(CC) $(C_FLAGS) $(INCLUDES) $(OBJS) -o $(NAME) $(LD_FLAGS)
+	@$(CC) $(C_FLAGS) $(INCLUDES) $(OBJS) -o $(NAME) $(LD_FLAGS)
 	@echo $(GREEN_B)"$(NAME) is ready. ✅\n"$(COLOUR_RESET)
 
 $(OBJS_DIR)%.o : $(SRCS_DIR)%.c $(HEADERS)
@@ -72,6 +71,9 @@ fclean : clean
 	@make fclean -sC src/parser
 	@make fclean -sC builtins
 	@echo $(RED_BI)"Removing $(NAME) and libs\n"$(COLOUR_RESET)
+
+tclean : fclean
+	@rm -rf png
 
 re : fclean all
 

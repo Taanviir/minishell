@@ -1,6 +1,7 @@
 
 #include "minishell.h"
 
+int	flag = 0;
 void print(t_cmd *root);
 
 void print_exec(t_cmd *c)
@@ -79,12 +80,9 @@ printers prints[5] = {
 	print_seq,
 	print_bgcmd,
 };
-
 void print(t_cmd *root)
 {
-	printf("digraph Trie {\n");
 	prints[root->type](root);
-	printf("}\n");
 }
 
 // int main(int argc, char **argv, char **envp)
