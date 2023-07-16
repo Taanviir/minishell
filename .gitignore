@@ -37,7 +37,7 @@
 *.hex
 minishell
 test.png
-test
+testfile
 
 # Debug files
 *.dSYM/

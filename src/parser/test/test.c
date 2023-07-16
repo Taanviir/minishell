@@ -95,12 +95,28 @@ int main(int argc, char **argv, char **envp)
 
 	if (argc != 2) return 0;
 	int i = atoi(argv[1]);
-	int len = strlen(INPUT_TEST[i]);
-	cmd = malloc(len + 1);
-	ft_strlcpy(cmd, INPUT_TEST[i], len + 1);
+
+	int fd = open("test/inputs.txt", O_RDONLY);
+	if (i == 0)
+		cmd = get_next_line(fd);
+	else {
+		int j = -1;
+		while (++j < i)
+		{
+			cmd = get_next_line(fd);
+			if (!cmd)
+			{
+				close(fd);
+				return 1;
+			}
+		}
+	}
+	close(fd);
+
 	// char *cmd = readline("ghost>>");
 	printf("digraph Trie {\n");
 	t_cmd *root = parsecmd(cmd, envp);
 	print(root);
 	printf("}\n");
+	free(cmd);
 }

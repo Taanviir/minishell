@@ -3,13 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42abudhabi.ae>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/07/08 14:59:23 by codespace        ###   ########.fr       */
-/*   Updated: 2023/06/28 21:53:46 by codespace        ###   ########.fr       */
+/*   Updated: 2023/07/13 22:33:06 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minishell.h"
 
@@ -25,16 +25,16 @@ void	quote_check(char *line)
 		printf("quote error lmao\n");
 }
 
-void	get_cmd(void)
+char	*get_cmd(void)
 {
-	char	*line;
+	char	*cmd;
 
-	line = readline(MAGENTA_B"ghost@shell → "WHITE);
-	if (!line || !*line)
-		return ;
-	quote_check(line);
-	add_history(line);
-	free(line);
+	cmd = readline(MAGENTA_B"ghost@shell → "WHITE);
+	if (!cmd || !*cmd)
+		return (NULL);
+	quote_check(cmd);
+	add_history(cmd);
+	return (cmd);
 }
 
 /*
@@ -46,6 +46,8 @@ void	get_cmd(void)
 */
 int	main(int argc , char **argv __attribute__((unused)), char **envp __attribute__((unused)))
 {
+	char	*cmd;
+
 	if (argc != 1)
 	{
 		printf(RED_B"Error: %s\n"WHITE, strerror(E2BIG));
@@ -55,7 +57,10 @@ int	main(int argc , char **argv __attribute__((unused)), char **envp __attribute
 	// minishell loop
 	while (1)
 	{
-		get_cmd();
+		cmd = get_cmd();
+		t_cmd *root = parsecmd(cmd, envp);
+		printf("%i\n", root->type);
+		free(cmd);
 	/* free whatever needs to be freed */
 	}
 	return (EXIT_SUCCESS);

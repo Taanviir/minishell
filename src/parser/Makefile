@@ -3,16 +3,14 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
+#    By: tanas <tanas@student.42abudhabi.ae>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/18 14:50:05 by sabdelra          #+#    #+#              #
-#    Updated: 2023/07/11 22:25:24 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/07/13 22:31:15 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 ### COLORS
-GREEN_B:= "\033[1;32m"
-RED_BI:= "\033[1;3;31m"
 BLUE_I:= "\033[3;34m"
 COLOUR_RESET:= "\033[0m"
 
@@ -20,23 +18,24 @@ NAME:= parser.a
 C_FLAGS:= -Wall -Werror -Wextra -ggdb3
 INCLUDES:= -I ../../include -I ../../libft/include
 LIBFT:= ../../libft/libft.a
+LD:= -lreadline $(LIBFT)
 
 SRCS:= get_token.c parser.c expansion.c constructor.c
 OBJS_DIR:= obj/
-OBJS = $(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
+OBJS:= $(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
 
 all : $(NAME)
 
-test: all test.c
-	$(CC) $(C_FLAGS) -I ../../include test.c $(NAME) -lreadline ../../libft/libft.a -o $@
+test : all test/test.c
+	$(CC) $(C_FLAGS) $(INCLUDES) test/test.c $(NAME) -o test/testfile $(LD)
 
 ### tree diagram
-ast: test
-	./test $(index) > test.dot
-	dot -Tpng test.dot > test.png
+ast : test
+	./test/testfile $(index) > test/test.dot
+	dot -Tpng test/test.dot > test/test.png
 
-cleanast:
-	@rm -f test.png test test.dot
+cleanast :
+	@rm -f test/test.png test/testfile test/test.dot
 
 $(NAME) : $(OBJS)
 	@ar -rcs $@ $^

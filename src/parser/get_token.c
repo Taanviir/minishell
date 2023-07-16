@@ -3,157 +3,49 @@
 /*                                                        :::      ::::::::   */
 /*   get_token.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42abudhabi.ae>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/02 07:38:08 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/07/11 22:48:51 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/07/16 22:26:32 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // #define ALL
-
-char *INPUT_TEST[102] = {
-    "ls -l",
-    "cd /path/to/directory",
-    "touch myfile.txt",
-    "rm file.txt",
-    "cp file.txt newfile.txt",
-    "mv file.txt newdirectory/",
-    "mkdir newdirectory",
-    "rmdir emptydirectory",
-    "echo \"Hello, World!\"",
-    "cat myfile.txt",
-    "grep \"pattern\" file.txt",
-    "chmod +x script.sh",
-    "ps aux",
-    "kill PID",
-    "find /path/to/directory -name \"*.txt\"",
-    "tar -czvf archive.tar.gz directory/",
-    "ssh username@hostname",
-    "wget http://example.com/file.zip",
-    "ls > files.txt",
-    "cat < files.txt",
-    "ls >> files.txt",
-    "grep pattern < input.txt > output.txt",
-    "echo 'Hello' >> file.txt 2>&1",
-    "command | grep pattern",
-    "command1 && command2",
-    "command1 || command2",
-    "command1; command2",
-    "command1 &",
-    "if [ -f file.txt ]; then echo 'File exists'; else echo 'File does not exist'; fi",
-    "for i in 1 2 3; do echo $i; done",
-    "while true; do echo 'Looping'; sleep 1; done",
-    "case $VAR in option1) echo 'Option 1';; option2) echo 'Option 2';; *) echo 'Default option';; esac",
-    "function say_hello() { echo 'Hello'; }; say_hello",
-    "my_var='Hello'; echo $my_var",
-    "my_array=(value1 value2 value3); echo ${my_array[1]}",
-    "my_command() { echo 'Custom command'; }; my_command",
-    "ls -l | grep pattern",
-    "((num = 2 + 3)); echo $num",
-    "if [[ $VAR == 'value' ]]; then echo 'Match'; fi",
-    "echo $((RANDOM % 100))",
-    "echo $((1 / 3))",
-    "expr 5 + 2",
-    "expr 10 - 3",
-    "expr 5 \\* 2",
-    "expr 10 / 3",
-    "expr 15 % 4",
-    "echo $[2+2]",
-    "((num = 5)); ((num += 2)); echo $num",
-    "awk '{ print $1 }' file.txt",
-    "sed 's/pattern/replacement/' file.txt",
-    "cut -d ':' -f 1 file.txt",
-    "sort file.txt",
-    "uniq file.txt",
-    "head -n 5 file.txt",
-    "tail -n 3 file.txt",
-    "wc -l file.txt",
-    "tee newfile.txt",
-    "gzip file.txt",
-    "gunzip file.txt.gz",
-    "tar -xvf archive.tar",
-    "awk 'BEGIN { print \"Start\" } { print $1 } END { print \"End\" }' file.txt",
-    "sed -n '2,4p' file.txt",
-    "cut -c 1-5 file.txt",
-    "sort -r file.txt",
-    "grep -i pattern file.txt",
-    "head -n 10 file.txt | tail -n 5",
-    "ls | grep pattern | wc -l",
-    "command 2>&1 | tee output.txt",
-    "find /path/to/directory -type f -name \"*.txt\"",
-    "xargs -I {} mv {} newdirectory/",
-    "sort file1.txt file2.txt > merged.txt",
-    "paste file1.txt file2.txt > merged.txt",
-    "comm file1.txt file2.txt",
-    "diff file1.txt file2.txt",
-    "man command",
-    "info command",
-    "apropos keyword",
-    "history",
-    "alias l='ls -l'",
-    "unalias l",
-    "source script.sh",
-    "export VAR=value",
-    "env",
-    "echo $PWD",
-    "uptime",
-    "date",
-    "cal",
-    "whoami",
-    "hostname",
-    "clear",
-    "ls -l | grep pattern | wc -l",
-    "ls -l | grep pattern > output.txt",
-    "ls -l | grep pattern >> output.txt",
-    "command1 && command2 || command3",
-    "command1 || command2 && command3",
-    "command1 | command2 | command3",
-    "''",    //Empty single quotes
-    "\"\"",
-	"\"echo $PATH\"",
-	"> echo",
-	">> echo",
-	NULL
-	};
-
 /* define ALL for testing all test cases in input array */
 
-bool	is_opr(char c)
+static bool    is_opr(char c)
 {
-	char const	*opr;
-	int			i;
+    return (c == '<' || c == '|' || c == '>' || c == '&' || c == ';' ||
+            c == '(' || c == ')' || c == '{' || c == '}' || c == '=');
+}
 
-	opr = "<|>&;(){}=";
-	i = -1;
-	while (opr[++i])
-		if (c == opr[i])
-			return (true);
-	return (false);
+static bool	check(char c)
+{
+	return (!ft_is_whitespace(c) && !is_opr(c));
 }
 
 /* returns the type of a token,
 helper function for get_token */
-static char	find_type(char **s)
+static char	find_type(char **scan)
 {
-	int	q;
+	int	in_quote;
 
-	q = 0;
-	if (!**s)
+	in_quote = 0;
+	if (!**scan)
 		return (0);
-	else if (is_opr(**s))
+	else if (is_opr(**scan))
 	{
-		if (!ft_strncmp(*s, ">>", 2) && ((*s)++))
+		if (!ft_strncmp(*scan, ">>", 2) && ((*scan)++))
 			return ('+');
-		return (**s);
+		return (**scan);
 	}
-	q = (**s == '\"' || **s == '\'');
-	while (*(*s + 1) && (q || (!ft_is_whitespace(*(*s + 1)) && !is_opr(*(*s + 1)))))
+	in_quote = (**scan == '\"' || **scan == '\'');
+	while (scan[0][1] && (in_quote || check(scan[0][1])))
 	{
-		*s += 1;
-		if (!(*s - q))
+		*scan += 1;
+		if (!(*scan - in_quote))
 			return ('a');
 	}
 	return ('a');
@@ -169,55 +61,29 @@ static char	find_type(char **s)
 * 	of the token respectively
 ? note: buffer is the return of readline
 */
-char	get_token(char **b_start, char *b_end,
-				char **q, char **eq)
+char	get_token(char **buffer_start, char *buffer_end,
+				char **token_start, char **token_end)
 {
-	char	ret;
-	char	*s;
+	char	token_type;
+	char	*scan;
 
-	s = *b_start;
-	while (s < b_end && ft_is_whitespace(*s))
-		s++;
-	if (q)
-		*q = s;
-	ret = find_type(&s);
-	if (*s)
-		s++;
-	if (eq)
-		*eq = s;
-	while (s < b_end && ft_is_whitespace(*s))
-		s++;
-	*b_start = s;
-	return (ret);
+	scan = *buffer_start;
+	while (scan < buffer_end && ft_is_whitespace(*scan))
+		scan++;
+	if (token_start)
+		*token_start = scan;
+	token_type = find_type(&scan);
+	if (*scan)
+		scan++;
+	if (token_end)
+		*token_end = scan;
+	while (scan < buffer_end && ft_is_whitespace(*scan))
+		scan++;
+	*buffer_start = scan;
+	return (token_type);
 }
 
-#ifdef ALL
-
-int main(void)
-{
-	char *b_start;
-	char *b_end;
-	char *q;
-	char *eq;
-	char ret;
-
-	for (int i = 0; INPUT_TEST[i]; i++) {
-		b_start = INPUT_TEST[i];
-		b_end = b_start + strlen(b_start);
-		printf("case : '%s'\n", b_start);
-		while (*b_start) {
-			q = b_start;
-			eq = b_start;
-			ret = get_token(&b_start, b_end, &q, &eq);
-			printf("%-30.*s", (int)(eq - q), q);
-			printf("\t\t\ttype : %c\n", ret);
-		}
-		printf("---------------------------------------------\n");
-	}
-}
-#endif
-//
-// #ifdef CASE
+// #ifdef ALL
 // int main(int argc, char **argv)
 // {
 // 	char *b_start;
