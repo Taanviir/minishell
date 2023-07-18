@@ -17,8 +17,7 @@ COLOUR_RESET:= "\033[0m"
 
 NAME:= builtins.a
 C_FLAGS:= -Wall -Werror -Wextra -ggdb3
-INCLUDES:= -I ../include -I ../libft/include
-LIBFT:= ../libft/libft.a
+INCLUDES:= -I ../../include -I ../../libft/include
 LIBFT:= ../../libft/libft.a
 LD:= -lreadline $(LIBFT)
 
