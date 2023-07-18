@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: codespace <tanas@student.42abudhabi.ae>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/07/14 04:05:55 sabdelra         ###   ########.fr       */
+/*   Updated: 2023/07/18 19:09:19 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "minishell.h"
 //! this quote check is wrong it fails on "'
@@ -23,6 +22,18 @@ void	quote_check(char *line)
 			counter++;
 	if ((counter % 2) == 1)
 		printf("quote error lmao\n");
+}
+
+char	*get_cmd(void)
+{
+	char	*cmd;
+
+	cmd = readline(MAGENTA_B"ghost@shell → "WHITE);
+	if (!cmd || !*cmd)
+		return (NULL);
+	quote_check(cmd);
+	add_history(cmd);
+	return (cmd);
 }
 
 /*
@@ -90,6 +101,8 @@ t_cmd	*get_cmd(char **envp)
 }
 int	main(int argc , char **argv __attribute__((unused)), char **envp)
 {
+	char	*cmd;
+
 	if (argc != 1)
 	{
 		printf(RED_B"Error: %s\n"WHITE, strerror(E2BIG));
@@ -99,8 +112,10 @@ int	main(int argc , char **argv __attribute__((unused)), char **envp)
 	// minishell loop
 	while (1)
 	{
-		get_cmd(envp); // execute(get_cmd(envp)) when we got execute
-		// free(WHATEVERNEEDSTOBEFREEED);
+		cmd = get_cmd();
+		t_cmd *root = parsecmd(cmd, envp);
+		printf("%i\n", root->type);
+		free(cmd);
 	/* free whatever needs to be freed */
 	}
 	return (EXIT_SUCCESS);

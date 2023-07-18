@@ -37,8 +37,7 @@
 *.hex
 minishell
 test.png
-test
-builtins/bin
+testfile
 
 # Debug files
 *.dSYM/

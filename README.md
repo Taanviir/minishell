@@ -57,13 +57,15 @@ Minishell is a simple shell clone designed to teach C programming and the basics
 > lstat for file info
 
 ---
-##### usefull resources
+##### useful resources
 
->[Github - sample](https://github.com/maiadegraaf/minishell)
+>[Github - Sample](https://github.com/maiadegraaf/minishell)
   >
-  >[Blogpost guide](https://brennan.io/2015/01/16/write-a-shell-in-c/)
+  >[Blogpost Guide](https://brennan.io/2015/01/16/write-a-shell-in-c/)
   >
-  >[Minishell guide](https://harm-smits.github.io/42docs/projects/minishell)
+  >[Minishell Guide](https://harm-smits.github.io/42docs/projects/minishell)
+  >
+  >[Shell Program Explained Video](https://www.youtube.com/watch?v=ubt-UjcQUYg)
 
 ## Currently working on
 `get_token.c` breaks up the input command into tokens, that could be either an __`operator`__ or __`a`__ a word that could be either a command, file name, arguments... etc

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
+#    By: tanas <tanas@student.42abudhabi.ae>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/14 14:38:29 by tanas             #+#    #+#              #
-#    Updated: 2023/07/14 19:47:10 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/07/18 19:12:47 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,24 +56,21 @@ parser :
 	@make -sC src/parser
 
 builtins :
-	@make -sC builtins
+	@make -sC src/builtins
 
 clean :
 	@make clean -sC libft
 	@make clean -sC src/parser
-	@make clean -sC builtins
+	@make clean -sC src/builtins
 	@rm -rf $(OBJS_DIR)
-	@echo $(RED_BI)"\nRemoving object directories and files"$(COLOUR_RESET)
+	@echo $(RED_BI)"\nRemoving all object directories and files"$(COLOUR_RESET)
 
 fclean : clean
 	@rm -f $(NAME)
 	@make fclean -sC libft
 	@make fclean -sC src/parser
-	@make fclean -sC builtins
-	@echo $(RED_BI)"Removing $(NAME) and libs\n"$(COLOUR_RESET)
-
-tclean : fclean
-	@rm -rf png
+	@make fclean -sC src/builtins
+	@echo $(RED_BI)"Removing $(NAME) and all libraries\n"$(COLOUR_RESET)
 
 re : fclean all
 
