@@ -59,11 +59,12 @@ int	main(int argc , char **argv __attribute__((unused)), char **envp)
 	// receive_signal();
 	// minishell loop
 	int	saved_stdout;
+	int	fd;
 	while (1)
 	{
 		saved_stdout = dup(STDOUT_FILENO);
 		root = get_cmd(envp);
-		int	fd = open("./test.dot", O_WRONLY | O_CREAT | O_TRUNC);
+		fd = open("./test.dot", O_WRONLY | O_CREAT | O_TRUNC);
 		dup2(fd, STDOUT_FILENO);
 		printf("digraph Trie {\n");
 		print(root);
