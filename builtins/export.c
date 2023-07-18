@@ -1,25 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/06 11:56:16 by tanas             #+#    #+#             */
-/*   Updated: 2023/07/12 04:48:12 by sabdelra         ###   ########.fr       */
+/*   Created: 2023/07/12 03:46:11 by sabdelra          #+#    #+#             */
+/*   Updated: 2023/07/13 03:24:12 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+int main(int argc, char **argv, char **envp)
 {
-	size_t	i;
+	int	var_len;
+	int	i;
 
-	i = 0;
-	if (n == 0)
+	var_len = 0;
+	if (argc != 2)
 		return (0);
-	while (s1[i] && i < (n - 1) && s1[i] == s2[i])
-		i++;
-	return ((unsigned char) s1[i] - (unsigned char) s2[i]);
+	argv++;
+	while ((*argv)[var_len] && (*argv)[var_len] != '=') {
+		var_len++;
+		if (!((*argv)[var_len]))
+			return (0);
+	}
+	for (i = 0; envp[i]; i++){
+		if (!ft_strncmp(*argv, envp[i], var_len + 1))
+			break ;
+	}
+	if (!envp[i]) // this really shouldn't work
+		envp[i + 1] = NULL;
+	envp[i] = *argv;
 }

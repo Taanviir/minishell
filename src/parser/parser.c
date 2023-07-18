@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/23 14:08:26 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/07/03 03:06:08by sabdelra         ###   ########.fr       */
+/*   Created: 2023/07/13 02:29:24 by sabdelra          #+#    #+#             */
+/*   Updated: 2023/07/13 02:36:34 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_cmd	*parseexec(char **b_start, char *b_end, char **envp);
 /* str is a string of characters to look for
 this functions is used to deteremine which parse
 function to call */
-int peek(char **b_start, char *b_end, const char *str)
+int	peek(char **b_start, char *b_end, const char *str)
 {
 	char	*s;
 
@@ -43,9 +43,11 @@ t_cmd	*parseredir(t_cmd *cmd, char **b_start, char *b_end)
 		else if (redirection == '<')
 			cmd = construct_redircmd(cmd, q, eq, O_RDONLY, STDIN_FILENO);
 		else if (redirection == '>')
-			cmd = construct_redircmd(cmd, q, eq, O_WRONLY|O_CREAT, STDOUT_FILENO);
+			cmd = construct_redircmd(cmd, q, eq, O_WRONLY | O_CREAT
+					| O_TRUNC, STDOUT_FILENO);
 		else if (redirection == '+')
-			cmd = construct_redircmd(cmd, q, eq, O_WRONLY|O_CREAT|O_APPEND, STDOUT_FILENO);
+			cmd = construct_redircmd(cmd, q, eq, O_WRONLY | O_CREAT
+					| O_APPEND, STDOUT_FILENO);
 	}
 	return (cmd);
 }
@@ -60,7 +62,7 @@ t_cmd	*parsepipe(char **b_start, char *b_end, char **envp)
 		get_token(b_start, b_end, 0, 0);
 		cmd = construct_pipecmd(cmd, parsepipe(b_start, b_end, envp));
 	}
-	return cmd;
+	return (cmd);
 }
 
 t_cmd	*parseline(char **b_start, char *b_end, char **envp)
@@ -97,6 +99,7 @@ static t_exec	*inc_argsize(t_exec *cmd, size_t argc)
 	return (ret);
 }
 
+//! fix exit
 t_cmd	*parseexec(char **b_start, char *b_end, char **envp)
 {
 	char		*q;

@@ -6,7 +6,7 @@
 #    By: tanas <tanas@student.42abudhabi.ae>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/14 14:38:29 by tanas             #+#    #+#              #
-#    Updated: 2023/07/16 22:53:24 by tanas            ###   ########.fr        #
+#    Updated: 2023/07/18 19:12:47 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,8 @@ NAME = minishell
 C_FLAGS = -Wall -Wextra -Werror -g3
 LIBFT = libft/libft.a
 PARSER = src/parser/parser.a
-LD_FLAGS = -lreadline $(PARSER) $(LIBFT)
+BUILTINS = builtins/builtins.a
+LD_FLAGS = -lreadline $(PARSER) $(LIBFT) $(BUILTINS)
 INCLUDES = -I include/ -I libft/include
 
 SRCS_DIR = src/
@@ -33,14 +34,17 @@ OBJS_LIST = $(SRCS_LIST:.c=.o)
 OBJS = $(addprefix $(OBJS_DIR), $(OBJS_LIST))
 
 all : $(NAME)
+test : C_FLAGS += -D TEST
+test : all
+	@mkdir -p png
 
 $(NAME) : $(LIBFT) $(OBJS) parser builtins
-	@cc $(C_FLAGS) $(INCLUDES) $(OBJS) -o $(NAME) $(LD_FLAGS)
+	@$(CC) $(C_FLAGS) $(INCLUDES) $(OBJS) -o $(NAME) $(LD_FLAGS)
 	@echo $(GREEN_B)"$(NAME) is ready. ✅\n"$(COLOUR_RESET)
 
 $(OBJS_DIR)%.o : $(SRCS_DIR)%.c $(HEADERS)
 	@mkdir -p $(OBJS_DIR)
-	@cc $(C_FLAGS) $(INCLUDES) -c $< -o $@
+	@$(CC) $(C_FLAGS) $(INCLUDES) -c $< -o $@
 	@echo $(BLUE_I)"Compiling $<."$(COLOUR_RESET)
 
 $(LIBFT) :
@@ -70,4 +74,4 @@ fclean : clean
 
 re : fclean all
 
-.PHONY : all clean fclean re
+.PHONY : all clean fclean re builtins parser C_FLAGS
