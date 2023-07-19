@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: codespace <codespace@student.42.fr>        +#+  +:+       +#+         #
+#    By: tanas <tanas@student.42abudhabi.ae>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/18 16:13:46 by tanas             #+#    #+#              #
-#    Updated: 2023/07/08 14:51:04 by codespace        ###   ########.fr        #
+#    Updated: 2023/07/18 19:22:05 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,7 @@ $(NAME) : $(OBJS)
 
 $(OBJS_DIR)%.o : $(SRCS_DIR)%.c
 	@mkdir -p $(OBJS_DIR) $(OBJS_SUBDIRS)
-	@cc $(C_FLAGS) -I include -c $< -o $@
+	@$(CC) $(C_FLAGS) -I include -c $< -o $@
 	@echo $(YELLOW)".\c"$(COLOUR_RESET)
 
 clean :

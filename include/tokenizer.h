@@ -75,10 +75,4 @@ t_cmd	*construct_pipecmd(t_cmd *left, t_cmd *right);
 t_cmd	*construct_seqcmd(t_cmd *left, t_cmd *right);
 t_cmd	*construct_bgcmd(t_cmd *cmd);
 
-/* testing */
-void print(t_cmd *root);
-
-extern char	*INPUT_TEST[102];
-
-
 # endif

@@ -6,7 +6,7 @@
 #    By: tanas <tanas@student.42abudhabi.ae>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/18 14:50:05 by sabdelra          #+#    #+#              #
-#    Updated: 2023/07/18 19:11:02 by tanas            ###   ########.fr        #
+#    Updated: 2023/07/19 08:37:21 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,17 +27,6 @@ OBJS:= $(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
 
 all : $(NAME)
 
-test : all test/test.c
-	$(CC) $(C_FLAGS) $(INCLUDES) test/test.c $(NAME) -o test/testfile $(LD)
-
-### tree diagram
-ast : test
-	./test/testfile $(index) > test/test.dot
-	dot -Tpng test/test.dot > test/test.png
-
-cleanast :
-	@rm -f test/test.png test/testfile test/test.dot
-
 $(NAME) : $(OBJS)
 	@ar -rcs $@ $^
 	@echo $(GREEN_B)"Parser Ready. ✅\n"$(COLOUR_RESET)
@@ -50,7 +39,7 @@ $(OBJS_DIR)%.o : %.c
 clean :
 	@rm -rf $(OBJS_DIR)
 
-fclean : clean cleanast
+fclean : clean
 	@rm -f $(NAME)
 
 re : fclean all

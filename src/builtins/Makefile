@@ -6,7 +6,7 @@
 #    By: tanas <tanas@student.42abudhabi.ae>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/16 22:46:50 by tanas             #+#    #+#              #
-#    Updated: 2023/07/16 22:55:55 by tanas            ###   ########.fr        #
+#    Updated: 2023/07/18 19:19:33 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,14 +21,14 @@ INCLUDES:= -I ../../include -I ../../libft/include
 LIBFT:= ../../libft/libft.a
 LD:= -lreadline $(LIBFT)
 
-SRCS:= echo.c
+SRCS:= echo.c export.c pwd.c unset.c
 OBJS_DIR:= builtin_objs/
 OBJS:= $(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
 
 all: $(NAME)
 
 test: all test.c
-	$(CC) $(C_FLAGS) $(INCLUDES) test.c $(NAME) $(LIBFT) -o $@
+	$(CC) $(C_FLAGS) $(INCLUDES) test.c $(NAME) -o $@ $(LD)
 
 $(NAME) : $(OBJS)
 	@ar -rcs $@ $^

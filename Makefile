@@ -6,7 +6,7 @@
 #    By: tanas <tanas@student.42abudhabi.ae>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/14 14:38:29 by tanas             #+#    #+#              #
-#    Updated: 2023/07/18 19:12:47 by tanas            ###   ########.fr        #
+#    Updated: 2023/07/19 10:40:56 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,14 +15,14 @@ GREEN_B = "\033[1;32m"
 RED_BI = "\033[1;3;31m"
 BLUE_I = "\033[3;34m"
 YELLOW = "\033[0;33m"
-COLOUR_RESET = "\033[0m"
+RESET = "\033[0m"
 
 NAME = minishell
 C_FLAGS = -Wall -Wextra -Werror -g3
 LIBFT = libft/libft.a
 PARSER = src/parser/parser.a
-BUILTINS = builtins/builtins.a
-LD_FLAGS = -lreadline $(PARSER) $(LIBFT) $(BUILTINS)
+BUILTINS = src/builtins/builtins.a
+LD = -lreadline $(PARSER) $(BUILTINS) $(LIBFT)
 INCLUDES = -I include/ -I libft/include
 
 SRCS_DIR = src/
@@ -34,28 +34,25 @@ OBJS_LIST = $(SRCS_LIST:.c=.o)
 OBJS = $(addprefix $(OBJS_DIR), $(OBJS_LIST))
 
 all : $(NAME)
-test : C_FLAGS += -D TEST
+
 test : all
-	@mkdir -p png
 
-$(NAME) : $(LIBFT) $(OBJS) parser builtins
-	@$(CC) $(C_FLAGS) $(INCLUDES) $(OBJS) -o $(NAME) $(LD_FLAGS)
-	@echo $(GREEN_B)"$(NAME) is ready. ✅\n"$(COLOUR_RESET)
+$(NAME) : $(LIBFT) $(OBJS) libraries
+	@$(CC) $(C_FLAGS) $(INCLUDES) $(OBJS) -o $(NAME) $(LD)
+	@echo $(GREEN_B)"$(NAME) is ready. ✅\n"$(RESET)
 
-$(OBJS_DIR)%.o : $(SRCS_DIR)%.c $(HEADERS)
+$(OBJS_DIR)%.o : $(SRCS_DIR)%.c
 	@mkdir -p $(OBJS_DIR)
 	@$(CC) $(C_FLAGS) $(INCLUDES) -c $< -o $@
-	@echo $(BLUE_I)"Compiling $<."$(COLOUR_RESET)
+	@echo $(BLUE_I)"Compiling $<."$(RESET)
 
 $(LIBFT) :
-	@echo $(YELLOW)"Creating $(LIBFT)"$(COLOUR_RESET)
+	@echo $(YELLOW)"Creating $(LIBFT)"$(RESET)
 	@make -sC libft
-	@echo $(GREEN_B)"\nLibft is ready. ✅\n"$(COLOUR_RESET)
+	@echo $(GREEN_B)"\nLibft is ready. ✅\n"$(RESET)
 
-parser :
+libraries :
 	@make -sC src/parser
-
-builtins :
 	@make -sC src/builtins
 
 clean :
@@ -63,15 +60,15 @@ clean :
 	@make clean -sC src/parser
 	@make clean -sC src/builtins
 	@rm -rf $(OBJS_DIR)
-	@echo $(RED_BI)"\nRemoving all object directories and files"$(COLOUR_RESET)
+	@echo $(RED_BI)"\nRemoving all object directories and files"$(RESET)
 
 fclean : clean
 	@rm -f $(NAME)
 	@make fclean -sC libft
 	@make fclean -sC src/parser
 	@make fclean -sC src/builtins
-	@echo $(RED_BI)"Removing $(NAME) and all libraries\n"$(COLOUR_RESET)
+	@echo $(RED_BI)"Removing $(NAME) and all libraries\n"$(RESET)
 
 re : fclean all
 
-.PHONY : all clean fclean re builtins parser C_FLAGS
+.PHONY : all clean fclean re libraries

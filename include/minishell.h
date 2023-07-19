@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42abudhabi.ae>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/07/13 04:02:12 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/07/19 10:30:06 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,8 @@
 # define RED_B "\033[1;31m"
 # define WHITE "\033[0m"
 
-// TYPEDEFS
 void	receive_signal(void);
 char	get_token(char **incmd, char *tkend, char **q, char **eq);
-
-// queue api, might not be needed
-// t_queue	*create_queue(void);
-// void	enqueue(void *new, t_queue *q);
+t_cmd	*get_cmd(char **envp);
 
 #endif
