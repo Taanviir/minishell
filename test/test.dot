@@ -1,0 +1,25 @@
+digraph Tree {
+   Node_0x55ce63b09fb0 [label="|"]
+   Node_0x55ce63b09fb0 -> Node_0x55ce63b09e10
+   Node_0x55ce63b09fb0 -> Node_0x55ce63b09f60
+   Node_0x55ce63b09e10 [label="ls" shape=box style=filled color=darkslategray4]
+   Node_0x55ce63b09e10 -> Node_0x55ce63b09e101
+   Node_0x55ce63b09e101 [shape=box color=darkslategray4 label="
+-l
+"]
+   Node_0x55ce63b09f60 [label="|"]
+   Node_0x55ce63b09f60 -> Node_0x55ce63b09e90
+   Node_0x55ce63b09f60 -> Node_0x55ce63b09f00
+   Node_0x55ce63b09e90 [label="grep" shape=box style=filled color=darkslategray4]
+   Node_0x55ce63b09e90 -> Node_0x55ce63b09e901
+   Node_0x55ce63b09e901 [shape=box color=darkslategray4 label="
+random
+"]
+   Node_0x55ce63b09f00 [label="std: 1 to info.txt"]
+   Node_0x55ce63b09f00 -> Node_0x55ce63b09ee0
+   Node_0x55ce63b09ee0 [label="wc" shape=box style=filled color=darkslategray4]
+   Node_0x55ce63b09ee0 -> Node_0x55ce63b09ee01
+   Node_0x55ce63b09ee01 [shape=box color=darkslategray4 label="
+-l
+"]
+}

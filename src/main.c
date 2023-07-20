@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42abudhabi.ae>        +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/07/19 10:33:58 by tanas            ###   ########.fr       */
+/*   Updated: 2023/07/20 12:40:50 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+#include "../test/test.h"
 /*
 	get input
 	parse input
@@ -19,6 +19,21 @@
 	free
 	exit
 */
+#ifdef TEST
+t_cmd	*get_cmd(char **envp)
+{
+	t_cmd	*root;
+	char	*line;
+
+	line = readline(MAGENTA_B"ghost@shell → "WHITE);
+	if (!line || !*line)
+		return (0);
+	add_history(line);
+	root = parsecmd(line, envp);
+	test(root);
+	return (root);
+}
+#else
 t_cmd	*get_cmd(char **envp)
 {
 	t_cmd	*root;
@@ -31,10 +46,11 @@ t_cmd	*get_cmd(char **envp)
 	root = parsecmd(line, envp);
 	return (root);
 }
+#endif
 
 int	main(int argc , char **argv __attribute__((unused)), char **envp)
 {
-	t_cmd	*root;
+	// t_cmd	*root;
 
 	if (argc != 1)
 	{
@@ -45,8 +61,8 @@ int	main(int argc , char **argv __attribute__((unused)), char **envp)
 	// minishell loop
 	while (1)
 	{
-		root = get_cmd(envp);
-		printf("%i\n", root->type);
+		// root = 
+		get_cmd(envp);
 	}
 	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 #    By: tanas <tanas@student.42abudhabi.ae>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/14 14:38:29 by tanas             #+#    #+#              #
-#    Updated: 2023/07/19 10:40:56 by tanas            ###   ########.fr        #
+#    Updated: 2023/07/20 13:33:53 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,11 +19,15 @@ RESET = "\033[0m"
 
 NAME = minishell
 C_FLAGS = -Wall -Wextra -Werror -g3
+INCLUDES = -I include/ -I libft/include -I test/
+
 LIBFT = libft/libft.a
 PARSER = src/parser/parser.a
 BUILTINS = src/builtins/builtins.a
+
+TESTER = test/test.a
+
 LD = -lreadline $(PARSER) $(BUILTINS) $(LIBFT)
-INCLUDES = -I include/ -I libft/include
 
 SRCS_DIR = src/
 SRCS_LIST = main.c signal.c
@@ -35,7 +39,10 @@ OBJS = $(addprefix $(OBJS_DIR), $(OBJS_LIST))
 
 all : $(NAME)
 
-test : all
+test : C_FLAGS += -D TEST
+test : $(LIBFT) $(OBJS) libraries
+	@$(CC) $(C_FLAGS) $(INCLUDES) $(OBJS) -o test_shell $(LD) $(TESTER)
+	@echo $(GREEN_B)"$(NAME) (Test Build) is ready. ✅\n"$(RESET)
 
 $(NAME) : $(LIBFT) $(OBJS) libraries
 	@$(CC) $(C_FLAGS) $(INCLUDES) $(OBJS) -o $(NAME) $(LD)
@@ -54,8 +61,10 @@ $(LIBFT) :
 libraries :
 	@make -sC src/parser
 	@make -sC src/builtins
+	@make -sC test
 
 clean :
+	@make clean -sC test
 	@make clean -sC libft
 	@make clean -sC src/parser
 	@make clean -sC src/builtins
@@ -63,7 +72,8 @@ clean :
 	@echo $(RED_BI)"\nRemoving all object directories and files"$(RESET)
 
 fclean : clean
-	@rm -f $(NAME)
+	@rm -f $(NAME) test_shell
+	@make fclean -sC test
 	@make fclean -sC libft
 	@make fclean -sC src/parser
 	@make fclean -sC src/builtins
