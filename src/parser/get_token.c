@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_token.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42abudhabi.ae>        +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/02 07:38:08 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/07/16 22:26:32 by tanas            ###   ########.fr       */
+/*   Updated: 2023/07/23 17:06:47 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,10 @@
 // #define ALL
 /* define ALL for testing all test cases in input array */
 
-static bool    is_opr(char c)
+static bool	is_opr(char c)
 {
-    return (c == '<' || c == '|' || c == '>' || c == '&' || c == ';' ||
-            c == '(' || c == ')' || c == '{' || c == '}' || c == '=');
-}
-
-static bool	check(char c)
-{
-	return (!ft_is_whitespace(c) && !is_opr(c));
+	return (c == '<' || c == '|' || c == '>' || c == '&' || c == ';' 
+		|| c == '(' || c == ')' || c == '{' || c == '}' || c == '=');
 }
 
 /* returns the type of a token,
@@ -41,11 +36,15 @@ static char	find_type(char **scan)
 			return ('+');
 		return (**scan);
 	}
-	in_quote = (**scan == '\"' || **scan == '\'');
-	while (scan[0][1] && (in_quote || check(scan[0][1])))
+	if (**scan == '\"' || **scan == '\'')
+		in_quote = **scan;
+	else
+		in_quote = 0;
+	while (scan[0][1] && (in_quote
+		|| (!ft_is_whitespace(scan[0][1]) && !is_opr(scan[0][1]))))
 	{
 		*scan += 1;
-		if (!(*scan - in_quote))
+		if (!(**scan - in_quote))
 			return ('a');
 	}
 	return ('a');
@@ -82,28 +81,3 @@ char	get_token(char **buffer_start, char *buffer_end,
 	*buffer_start = scan;
 	return (token_type);
 }
-
-// #ifdef ALL
-// int main(int argc, char **argv)
-// {
-// 	char *b_start;
-// 	char *b_end;
-// 	char *q;
-// 	char *eq;
-// 	char ret;
-
-// 	b_start = "echo \"hello world!\"";
-// 	b_end = b_start + strlen(b_start);
-// 	printf("case : '%s'\n", b_start);
-// 	while (*b_start) {
-// 		q = b_start;
-// 		eq = b_start;
-// 		ret = get_token(&b_start, b_end, &q, &eq);
-// 		printf("%-30.*s", (int)(eq - q), q);
-// 		printf("\ttype : %c\n", ret);
-// 	}
-// 	printf("-------------------------------------------------------\n");
-
-// }
-// #endif
-

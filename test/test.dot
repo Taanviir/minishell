@@ -1,25 +1,33 @@
 digraph Tree {
-   Node_0x55ce63b09fb0 [label="|"]
-   Node_0x55ce63b09fb0 -> Node_0x55ce63b09e10
-   Node_0x55ce63b09fb0 -> Node_0x55ce63b09f60
-   Node_0x55ce63b09e10 [label="ls" shape=box style=filled color=darkslategray4]
-   Node_0x55ce63b09e10 -> Node_0x55ce63b09e101
-   Node_0x55ce63b09e101 [shape=box color=darkslategray4 label="
+   Node_0x562a9d796160 [label=";"]
+   Node_0x562a9d796160 -> Node_0x562a9d795fc0
+   Node_0x562a9d796160 -> Node_0x562a9d795fe0
+   Node_0x562a9d795fc0 [label="|"]
+   Node_0x562a9d795fc0 -> Node_0x562a9d795ad0
+   Node_0x562a9d795fc0 -> Node_0x562a9d795fa0
+   Node_0x562a9d795ad0 [label="ls" shape=box style=filled color=darkslategray4]
+   Node_0x562a9d795ad0 -> Node_0x562a9d795ad01
+   Node_0x562a9d795ad01 [shape=box color=darkslategray4 label="
 -l
 "]
-   Node_0x55ce63b09f60 [label="|"]
-   Node_0x55ce63b09f60 -> Node_0x55ce63b09e90
-   Node_0x55ce63b09f60 -> Node_0x55ce63b09f00
-   Node_0x55ce63b09e90 [label="grep" shape=box style=filled color=darkslategray4]
-   Node_0x55ce63b09e90 -> Node_0x55ce63b09e901
-   Node_0x55ce63b09e901 [shape=box color=darkslategray4 label="
-random
+   Node_0x562a9d795fa0 [label="|"]
+   Node_0x562a9d795fa0 -> Node_0x562a9d795c50
+   Node_0x562a9d795fa0 -> Node_0x562a9d795f70
+   Node_0x562a9d795c50 [label="grep" shape=box style=filled color=darkslategray4]
+   Node_0x562a9d795c50 -> Node_0x562a9d795c501
+   Node_0x562a9d795c501 [shape=box color=darkslategray4 label="
+'ok'
 "]
-   Node_0x55ce63b09f00 [label="std: 1 to info.txt"]
-   Node_0x55ce63b09f00 -> Node_0x55ce63b09ee0
-   Node_0x55ce63b09ee0 [label="wc" shape=box style=filled color=darkslategray4]
-   Node_0x55ce63b09ee0 -> Node_0x55ce63b09ee01
-   Node_0x55ce63b09ee01 [shape=box color=darkslategray4 label="
+   Node_0x562a9d795f70 [label="std: 1 to output.txt"]
+   Node_0x562a9d795f70 -> Node_0x562a9d795df0
+   Node_0x562a9d795df0 [label="wc" shape=box style=filled color=darkslategray4]
+   Node_0x562a9d795df0 -> Node_0x562a9d795df01
+   Node_0x562a9d795df01 [shape=box color=darkslategray4 label="
 -l
+"]
+   Node_0x562a9d795fe0 [label="cat" shape=box style=filled color=darkslategray4]
+   Node_0x562a9d795fe0 -> Node_0x562a9d795fe01
+   Node_0x562a9d795fe01 [shape=box color=darkslategray4 label="
+output.txt
 "]
 }

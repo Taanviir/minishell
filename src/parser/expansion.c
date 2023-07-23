@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 02:28:01 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/07/11 22:10:28 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/07/23 16:42:33 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,14 +69,15 @@ char	*expand(char *q, char *eq, char **envp)
 	char	*sub;
 
 	buffer[1] = 0;
-	expanded_string = malloc(1);
-	if (!expanded_string)
-		return (0);
+	expanded_string = NULL; //malloc(1);
+	// if (!expanded_string)
+	// 	return (0);
 	while (q < eq)
 	{
 		if (*q == '$' && !ft_is_whitespace(*(q + 1)))
 		{
 			sub = substitute(&q, envp);
+			q++;
 			if (sub)
 				expanded_string = ft_strjoin(expanded_string, sub);
 		}

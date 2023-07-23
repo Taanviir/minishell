@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   constructor.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 21:13:29 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/07/07 03:18:42 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/07/23 17:30:39 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "minishell.h"
 /* Constructors */
 //! all constructors malloc */
 t_cmd	*construct_exec(void)
@@ -35,7 +35,7 @@ t_cmd	*construct_redircmd(t_cmd *command, char *fp, char *efp, int mode, int fd)
 	cmd->efp = efp;
 	cmd->mode = mode;
 	cmd->fd = fd;
-	return ((t_cmd *)cmd);
+	return ((t_cmd *) cmd);
 }
 
 t_cmd	*construct_pipecmd(t_cmd *left, t_cmd *right)
@@ -46,7 +46,7 @@ t_cmd	*construct_pipecmd(t_cmd *left, t_cmd *right)
 	cmd->type = PIPE;
 	cmd->left = left;
 	cmd->right = right;
-	return ((t_cmd *)cmd);
+	return ((t_cmd *) cmd);
 }
 
 t_cmd	*construct_seqcmd(t_cmd *left, t_cmd *right)
@@ -57,7 +57,7 @@ t_cmd	*construct_seqcmd(t_cmd *left, t_cmd *right)
 	cmd->type = SEQUENCE;
 	cmd->left = left;
 	cmd->right = right;
-	return((t_cmd *)cmd);
+	return ((t_cmd *) cmd);
 }
 
 t_cmd	*construct_bgcmd(t_cmd *cmd)
@@ -67,5 +67,5 @@ t_cmd	*construct_bgcmd(t_cmd *cmd)
 	bgcmd = ft_calloc(sizeof(t_bgcmd), 1);
 	bgcmd->type = BG;
 	bgcmd->cmd = cmd;
-	return((t_cmd *)bgcmd);
+	return ((t_cmd *) bgcmd);
 }

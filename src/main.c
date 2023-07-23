@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/07/20 12:40:50 by codespace        ###   ########.fr       */
+/*   Updated: 2023/07/23 17:05:42 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ t_cmd	*get_cmd(char **envp)
 	add_history(line);
 	root = parsecmd(line, envp);
 	test(root);
+	free(line);
 	return (root);
 }
 #else
@@ -44,6 +45,7 @@ t_cmd	*get_cmd(char **envp)
 		return (0);
 	add_history(line);
 	root = parsecmd(line, envp);
+	free(line);
 	return (root);
 }
 #endif

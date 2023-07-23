@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 02:29:24 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/07/13 02:36:34 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/07/23 17:30:29 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,11 +111,11 @@ t_cmd	*parseexec(char **b_start, char *b_end, char **envp)
 
 	argc = 0;
 	ret = construct_exec();
-	cmd = (t_exec *)ret;
+	cmd = (t_exec *) ret;
 	ret = parseredir(ret, b_start, b_end);
 	while (!peek(b_start, b_end, "|&;"))
 	{
-		if (!(token=get_token(b_start, b_end, &q, &eq)))
+		if (!(token = get_token(b_start, b_end, &q, &eq)))
 			break ;
 		if (token != 'a')
 			write(2, "sytnax", 7);
@@ -136,7 +136,7 @@ t_cmd	*parseexec(char **b_start, char *b_end, char **envp)
 	}
 	cmd->argv[argc] = 0;
 	cmd->eargv[argc] = 0;
-	return ret;
+	return (ret);
 }
 
 t_cmd	*nullterminate(t_cmd *cmd)
@@ -198,4 +198,3 @@ t_cmd	*parsecmd(char *b_start, char **envp)
 	nullterminate(root);
 	return (root);
 }
-
