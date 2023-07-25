@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/07/23 17:05:42 by tanas            ###   ########.fr       */
+/*   Updated: 2023/07/25 21:51:29 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ t_cmd	*get_cmd(char **envp)
 		return (0);
 	add_history(line);
 	root = parsecmd(line, envp);
-	free(line);
 	return (root);
 }
 #endif
@@ -63,8 +62,8 @@ int	main(int argc , char **argv __attribute__((unused)), char **envp)
 	// minishell loop
 	while (1)
 	{
-		// root = 
-		get_cmd(envp);
+		// get_cmd(envp);
+		runcmd(get_cmd(envp), envp);
 	}
 	return (EXIT_SUCCESS);
 }

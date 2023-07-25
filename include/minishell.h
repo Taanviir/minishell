@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42abudhabi.ae>        +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/07/19 10:30:06 by tanas            ###   ########.fr       */
+/*   Updated: 2023/07/25 22:39:45 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # include <stdbool.h> // bool
 # include <stdint.h>
 #include <assert.h>
+#include <sys/wait.h> // is wait not allowed?
 # include "../libft/include/libft.h" // libft
 # include "tokenizer.h"
 # include "tokenizer/type.h"

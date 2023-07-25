@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tanas <tanas@student.42abudhabi.ae>        +#+  +:+       +#+         #
+#    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/18 14:50:05 by sabdelra          #+#    #+#              #
-#    Updated: 2023/07/19 08:37:21 by tanas            ###   ########.fr        #
+#    Updated: 2023/07/25 21:45:45 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ INCLUDES:= -I ../../include -I ../../libft/include
 LIBFT:= ../../libft/libft.a
 LD:= -lreadline $(LIBFT)
 
-SRCS:= get_token.c parser.c expansion.c constructor.c
+SRCS:= get_token.c parser.c expansion.c constructor.c execution.c
 OBJS_DIR:= parser_objs/
 OBJS:= $(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
 
