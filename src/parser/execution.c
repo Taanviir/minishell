@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 20:00:29 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/07/25 23:05:46 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/07/26 00:04:49 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,10 @@ static char	*get_fp(char *program_name, char **envp)
 
 	i = 0;
 	fp = NULL;
-	while (ft_strncmp(*envp, "PATH=", 5))
+	while (*envp && ft_strncmp(*envp, "PATH=", 5))
 		envp++;
+	if (!*envp)
+		return (NULL);
 	path = ft_split(*envp + 5, ':');
 	while (path[i])
 	{
@@ -48,7 +50,7 @@ static void	execute_cmd(t_cmd	*cmd, char **envp)
 	execcmd = (t_exec *)cmd;
 	if (!execcmd->argv[0]) // no command
 		exit(EXIT_FAILURE);
-	execve(get_fp(execcmd->argv[0], envp), execcmd->argv, envp);
+	execve(get_fp(execcmd->argv[0], envp), execcmd->argv, envp); // what happens when you pass execve a NULL
 	write(2, "program not found\n", 18);
 }
 

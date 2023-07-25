@@ -6,19 +6,13 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/07/25 21:51:29 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/07/25 23:56:22 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "../test/test.h"
-/*
-	get input
-	parse input
-	execute
-	free
-	exit
-*/
+
 #ifdef TEST
 t_cmd	*get_cmd(char **envp)
 {
@@ -51,8 +45,6 @@ t_cmd	*get_cmd(char **envp)
 
 int	main(int argc , char **argv __attribute__((unused)), char **envp)
 {
-	// t_cmd	*root;
-
 	if (argc != 1)
 	{
 		printf(RED_B"Error: %s\n"WHITE, strerror(E2BIG));
@@ -61,9 +53,6 @@ int	main(int argc , char **argv __attribute__((unused)), char **envp)
 	// receive_signal();
 	// minishell loop
 	while (1)
-	{
-		// get_cmd(envp);
 		runcmd(get_cmd(envp), envp);
-	}
 	return (EXIT_SUCCESS);
 }
