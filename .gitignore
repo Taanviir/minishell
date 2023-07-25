@@ -54,3 +54,8 @@ dkms.conf
 
 # vs code
 .vscode/
+
+# testing output
+test/test.dot
+test/test.png
+
