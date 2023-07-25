@@ -82,7 +82,7 @@ static void execute_pipe(t_cmd *cmd, char **envp)
 		close(p[1]);
 		runcmd(pipecmd->left, envp);
 	}
-	if (!fork())
+	else if (!fork()) // to avoid 3rd children
 	{
 		dup2(p[0], STDIN_FILENO);
 		close(p[0]);
