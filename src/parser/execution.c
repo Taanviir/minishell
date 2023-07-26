@@ -40,7 +40,8 @@ static char	*get_fp(char *program_name, char **envp)
 		i++;
 	}
 	free(path);
-	return (NULL);
+	write(2, "program not found\n", 18);
+	exit (EXIT_FAILURE);
 }
 
 static void	execute_cmd(t_cmd	*cmd, char **envp)
@@ -48,10 +49,11 @@ static void	execute_cmd(t_cmd	*cmd, char **envp)
 	t_exec		*execcmd;
 
 	execcmd = (t_exec *)cmd;
-	if (!execcmd->argv[0]) // no command
+	if (!execcmd->argv[0])
 		exit(EXIT_FAILURE);
-	execve(get_fp(execcmd->argv[0], envp), execcmd->argv, envp); // what happens when you pass execve a NULL
-	write(2, "program not found\n", 18);
+	if (!fork())
+		execve(get_fp(execcmd->argv[0], envp), execcmd->argv, envp);
+	wait(NULL);
 }
 
 static void execute_redir(t_cmd *cmd, char **envp)
@@ -61,7 +63,7 @@ static void execute_redir(t_cmd *cmd, char **envp)
 
 	redircmd = (t_redircmd *)cmd;
 	new_fd = open(redircmd->fp, redircmd->mode);
-	if (new_fd < 0) // open error
+	if (new_fd < 0)
 		write(2, "failed to open\n", 16);
 	dup2(new_fd, redircmd->fd);
 	runcmd(redircmd->cmd, envp);
@@ -82,7 +84,7 @@ static void execute_pipe(t_cmd *cmd, char **envp)
 		close(p[1]);
 		runcmd(pipecmd->left, envp);
 	}
-	else if (!fork()) // to avoid 3rd children
+	else if (!fork())
 	{
 		dup2(p[0], STDIN_FILENO);
 		close(p[0]);
