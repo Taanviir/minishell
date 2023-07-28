@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/25 20:00:29 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/07/26 00:04:49y sabdelra         ###   ########.fr       */
+/*   Created: 2023/07/26 23:07:04 by tanas             #+#    #+#             */
+/*   Updated: 2023/07/28 16:05:45 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,45 +18,48 @@ static char	*get_fp(char *program_name, char **envp)
 	char	**path;
 	int		i;
 
-	i = 0;
-	fp = NULL;
 	while (*envp && ft_strncmp(*envp, "PATH=", 5))
 		envp++;
 	if (!*envp)
 		return (NULL);
 	path = ft_split(*envp + 5, ':');
-	while (path[i])
+	fp = NULL;
+	i = -1;
+	while (path[++i])
 	{
 		fp = ft_strjoin(ft_strjoin(ft_strdup(path[i]), "/"), program_name);
-		if (!access(fp, X_OK))
+		if (access(fp, X_OK) == F_OK)
+			break ;
+		else
 		{
-			while (path[i])
-				free(path[i++]);
-			free(path);
-			return (fp);
+			free(fp);
+			fp = NULL;
 		}
-		free(path[i]);
-		free(fp);
-		i++;
 	}
-	free(path);
-	write(2, "program not found\n", 18);
-	exit (EXIT_FAILURE);
+	free_double_ptr((void **) path);
+	return (fp);
 }
 
 static void	execute_cmd(t_cmd	*cmd, char **envp)
 {
-	t_exec		*execcmd;
+	t_exec	*execcmd;
+	char	*fp;
 
 	execcmd = (t_exec *)cmd;
 	if (!execcmd->argv[0])
 		exit(EXIT_FAILURE);
 	if (!fork())
-		execve(get_fp(execcmd->argv[0], envp), execcmd->argv, envp);
+	{
+		fp = get_fp(execcmd->argv[0], envp);
+		if (!fp)
+			ft_error("program not found", 1);
+		execve(fp, execcmd->argv, envp);
+		free(fp);
+	}
 	wait(NULL);
 }
 
-static void execute_redir(t_cmd *cmd, char **envp)
+static void	execute_redir(t_cmd *cmd, char **envp)
 {
 	t_redircmd	*redircmd;
 	int			new_fd;
@@ -64,12 +67,12 @@ static void execute_redir(t_cmd *cmd, char **envp)
 	redircmd = (t_redircmd *)cmd;
 	new_fd = open(redircmd->fp, redircmd->mode);
 	if (new_fd < 0)
-		write(2, "failed to open\n", 16);
+		write(2, "\n", 16);
 	dup2(new_fd, redircmd->fd);
 	runcmd(redircmd->cmd, envp);
 }
 
-static void execute_pipe(t_cmd *cmd, char **envp)
+static void	execute_pipe(t_cmd *cmd, char **envp)
 {
 	t_pipecmd	*pipecmd;
 	int			p[2];
@@ -97,7 +100,7 @@ static void execute_pipe(t_cmd *cmd, char **envp)
 	wait(NULL);
 }
 
-static void execute_bgcmd(t_cmd *cmd, char **envp)
+static void	execute_bgcmd(t_cmd *cmd, char **envp)
 {
 	t_bgcmd	*bgcmd;
 
@@ -106,7 +109,7 @@ static void execute_bgcmd(t_cmd *cmd, char **envp)
 		runcmd(bgcmd->cmd, envp);
 }
 
-static void execute_seq(t_cmd *cmd, char **envp)
+static void	execute_seq(t_cmd *cmd, char **envp)
 {
 	t_seqcmd	*seqcmd;
 
@@ -117,19 +120,19 @@ static void execute_seq(t_cmd *cmd, char **envp)
 	runcmd(seqcmd->right, envp);
 }
 
-typedef void(*execute)(t_cmd *cmd, char **envp);
-execute executers[5] = {
-	execute_cmd,
-	execute_redir,
-	execute_pipe,
-	execute_seq,
-	execute_bgcmd
-};
+typedef void(*t_execute)(t_cmd *cmd, char **envp);
 
 void	runcmd(t_cmd *cmd, char **envp)
 {
-	if (!cmd)
-		exit(EXIT_FAILURE);
+	t_execute	executers[5];
+
+	executers[0] = execute_cmd;
+	executers[1] = execute_redir;
+	executers[2] = execute_pipe;
+	executers[3] = execute_seq;
+	executers[4] = execute_bgcmd;
+	if (!cmd) // get_cmd returns null if empty line is returned from readline which triggers this condition
+		return ;
 	executers[cmd->type](cmd, envp);
 }
 

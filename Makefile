@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
+#    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/14 14:38:29 by tanas             #+#    #+#              #
-#    Updated: 2023/07/25 21:45:23 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/07/26 22:39:56 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,10 +23,11 @@ INCLUDES = -I include/ -I libft/include -I test/
 LIBFT = libft/libft.a
 PARSER = src/parser/parser.a
 BUILTINS = src/builtins/builtins.a
+EXECUTION = src/execution/execution.a
 
 TESTER = test/test.a
 
-LD = -lreadline $(PARSER) $(BUILTINS) $(LIBFT)
+LD = -lreadline $(PARSER) $(BUILTINS) $(EXECUTION) $(LIBFT)
 
 SRCS_DIR = src/
 SRCS_LIST = main.c signal.c
@@ -39,11 +40,12 @@ OBJS = $(addprefix $(OBJS_DIR), $(OBJS_LIST))
 all : $(NAME)
 
 test : C_FLAGS += -D TEST
-test : $(LIBFT) $(OBJS) libraries
+test : $(LIBFT) libraries $(OBJS)
+	@make -sC test
 	@$(CC) $(C_FLAGS) $(INCLUDES) $(OBJS) -o test_shell $(LD) $(TESTER)
 	@echo $(GREEN_B)"$(NAME) (Test Build) is ready. ✅\n"$(RESET)
 
-$(NAME) : $(LIBFT) $(OBJS) libraries
+$(NAME) : $(LIBFT) libraries $(OBJS)
 	@$(CC) $(C_FLAGS) $(INCLUDES) $(OBJS) -o $(NAME) $(LD)
 	@echo $(GREEN_B)"$(NAME) is ready. ✅\n"$(RESET)
 
@@ -60,13 +62,14 @@ $(LIBFT) :
 libraries :
 	@make -sC src/parser
 	@make -sC src/builtins
-	@make -sC test
+	@make -sC src/execution
 
 clean :
 	@make clean -sC test
 	@make clean -sC libft
 	@make clean -sC src/parser
 	@make clean -sC src/builtins
+	@make clean -sC src/execution
 	@rm -rf $(OBJS_DIR)
 	@echo $(RED_BI)"\nRemoving all object directories and files"$(RESET)
 
@@ -76,6 +79,7 @@ fclean : clean
 	@make fclean -sC libft
 	@make fclean -sC src/parser
 	@make fclean -sC src/builtins
+	@make fclean -sC src/execution
 	@echo $(RED_BI)"Removing $(NAME) and all libraries\n"$(RESET)
 
 re : fclean all

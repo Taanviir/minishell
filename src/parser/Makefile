@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
+#    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/18 14:50:05 by sabdelra          #+#    #+#              #
-#    Updated: 2023/07/25 21:45:45 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/07/26 22:44:43 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ INCLUDES:= -I ../../include -I ../../libft/include
 LIBFT:= ../../libft/libft.a
 LD:= -lreadline $(LIBFT)
 
-SRCS:= get_token.c parser.c expansion.c constructor.c execution.c
+SRCS:= get_token.c parser.c expansion.c constructor.c
 OBJS_DIR:= parser_objs/
 OBJS:= $(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
 
@@ -29,7 +29,7 @@ all : $(NAME)
 
 $(NAME) : $(OBJS)
 	@ar -rcs $@ $^
-	@echo $(GREEN_B)"Parser Ready. ✅\n"$(COLOUR_RESET)
+	@echo $(GREEN_B)"Parser is ready. ✅\n"$(COLOUR_RESET)
 
 $(OBJS_DIR)%.o : %.c
 	@mkdir -p $(OBJS_DIR)

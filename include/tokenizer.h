@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/18 14:59:44 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/07/02 07:20:55by sabdelra         ###   ########.fr       */
+/*   Created: 2023/07/27 01:25:28 by tanas             #+#    #+#             */
+/*   Updated: 2023/07/27 01:26:58 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ typedef struct s_seqcmd
 	t_cmd	*right;
 }	t_seqcmd;
 
-typedef struct	s_bgcmd
+typedef struct s_bgcmd
 {
 	int		type;
 	t_cmd	*cmd;
@@ -74,6 +74,7 @@ t_cmd	*construct_redircmd(t_cmd *command, char *fp, char *efp, int mode, int fd)
 t_cmd	*construct_pipecmd(t_cmd *left, t_cmd *right);
 t_cmd	*construct_seqcmd(t_cmd *left, t_cmd *right);
 t_cmd	*construct_bgcmd(t_cmd *cmd);
+
 /* executors */
 void	runcmd(t_cmd *cmd, char **envp);
 

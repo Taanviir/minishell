@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 02:29:24 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/07/23 17:30:29 by tanas            ###   ########.fr       */
+/*   Updated: 2023/07/28 15:35:55 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,8 @@ t_cmd	*parseexec(char **b_start, char *b_end, char **envp)
 	ret = parseredir(ret, b_start, b_end);
 	while (!peek(b_start, b_end, "|&;"))
 	{
-		if (!(token = get_token(b_start, b_end, &q, &eq)))
+		token = get_token(b_start, b_end, &q, &eq);
+		if (!token)
 			break ;
 		if (token != 'a')
 			write(2, "sytnax", 7);
@@ -150,14 +151,12 @@ t_cmd	*nullterminate(t_cmd *cmd)
 
 	if (!cmd)
 		return (0);
-	if (!(i = 0) && cmd->type == EXEC)
+	i = -1;
+	if (cmd->type == EXEC)
 	{
 		execmd = (t_exec *)cmd;
-		while (execmd->argv[i])
-		{
+		while (execmd->argv[++i])
 			*execmd->eargv[i] = 0;
-			i++;
-		}
 	}
 	else if (cmd->type == REDIR)
 	{

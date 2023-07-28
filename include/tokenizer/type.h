@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 17:48:19 by tanas             #+#    #+#             */
-/*   Updated: 2023/06/18 17:50:11 by tanas            ###   ########.fr       */
+/*   Updated: 2023/07/27 01:25:14 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,6 @@
 #endif
 
 // TODO test commands from (bin, wrong, ./, )
-// in case of 2 commands with similar names, one in /bin and the other in ./ which has higher priority
+// in case of 2 commands with similar names, 
+// one in /bin and the other in ./ which has higher priority
 // priority is location in split[index]

@@ -3,29 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42abudhabi.ae>        +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 02:39:33 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/07/20 13:53:55 by tanas            ###   ########.fr       */
+/*   Updated: 2023/07/27 21:59:42 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int main(int argc, char **argv, char **envp)
+void ft_pwd(void)
 {
-	if (argc != 1)
-	{
-		write(2, "pwd: too many arguments\n", 25);
-		return (1);
-	}
-	argv++;
-	while (ft_strncmp("PWD=", *envp, 4))
-		envp++;
-	while (*(*envp + 4))
-	{
-		write(1, *envp + 4, 1);
-		(*envp)++;
-	}
-	ft_putchar_fd('\n',1);
+	char	*path;
+
+	path = getcwd(NULL, 0);
+	// if ()
+	free(path);
 }

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tanas <tanas@student.42abudhabi.ae>        +#+  +:+       +#+         #
+#    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/18 16:13:46 by tanas             #+#    #+#              #
-#    Updated: 2023/07/18 19:22:05 by tanas            ###   ########.fr        #
+#    Updated: 2023/07/27 01:48:28 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ OBJS = $(subst $(SRCS_DIR), $(OBJS_DIR), $(SRCS:.c=.o)) # changing .c to .o for 
 
 ### COLOURS
 YELLOW = "\033[0;33m"
-COLOUR_RESET = "\033[0m"
+RESET = "\033[0m"
 
 all : $(NAME)
 
@@ -47,7 +47,7 @@ $(NAME) : $(OBJS)
 $(OBJS_DIR)%.o : $(SRCS_DIR)%.c
 	@mkdir -p $(OBJS_DIR) $(OBJS_SUBDIRS)
 	@$(CC) $(C_FLAGS) -I include -c $< -o $@
-	@echo $(YELLOW)".\c"$(COLOUR_RESET)
+	@echo $(YELLOW)".\c"$(RESET)
 
 clean :
 	@rm -rf $(OBJS_DIR)
