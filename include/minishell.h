@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/07/25 22:39:45 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/07/29 16:25:48 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,6 @@
 
 void	receive_signal(void);
 char	get_token(char **incmd, char *tkend, char **q, char **eq);
-t_cmd	*get_cmd(char **envp);
+t_cmd	*get_cmd(char **envp, char *line);
 
 #endif
