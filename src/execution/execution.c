@@ -12,22 +12,18 @@
 
 #include "minishell.h"
 
-static char	*get_fp(char *program_name, char **envp)
+static char	*get_fp(char *program_name)
 {
 	char	*fp;
 	char	**path;
 	int		i;
 
-	while (*envp && ft_strncmp(*envp, "PATH=", 5))
-		envp++;
-	if (!*envp)
-		return (NULL);
-	path = ft_split(*envp + 5, ':');
+	path = ft_split(getenv("PATH"), ':');
 	fp = NULL;
 	i = -1;
 	while (path[++i])
 	{
-		fp = ft_strjoin(ft_strjoin(ft_strdup(path[i]), "/"), program_name);
+		fp = ft_bigjoin(3, path[i], "/", program_name);
 		if (access(fp, X_OK) == F_OK)
 			break ;
 		else
@@ -40,7 +36,27 @@ static char	*get_fp(char *program_name, char **envp)
 	return (fp);
 }
 
-static void	execute_cmd(t_cmd	*cmd, char **envp)
+static int	execute_builtin(t_exec *builtin, char **envp)
+{
+	(void) envp;
+	if (!ft_strncmp(builtin->argv[0], "echo", 4))
+		return (ft_echo(builtin->argv), 0);
+	if (!ft_strncmp(builtin->argv[0], "cd", 2))
+		return (ft_cd(builtin->argv), 0);
+	else if (!ft_strncmp(builtin->argv[0], "pwd", 3))
+		return (ft_pwd(), 0);
+// 	else if (!ft_strncmp(builtin->argv[0], "export", 6))
+// 		return (ft_export(builtin->argv), 0);
+// 	else if (!ft_strncmp(builtin->argv[0], "unset", 5))
+// 		return (ft_unset(builtin->argv), 0);
+	else if (!ft_strncmp(builtin->argv[0], "env", 3))
+		return (ft_env(envp), 0);
+	else if (!ft_strncmp(builtin->argv[0], "exit", 4))
+		return (ft_exit(), 0);
+	return (1);
+}
+
+static void	execute_cmd(t_cmd *cmd, char **envp)
 {
 	t_exec	*execcmd;
 	char	*fp;
@@ -48,11 +64,15 @@ static void	execute_cmd(t_cmd	*cmd, char **envp)
 	execcmd = (t_exec *)cmd;
 	if (!execcmd->argv[0])
 		exit(EXIT_FAILURE);
-	fp = get_fp(execcmd->argv[0], envp);
-	if (!fp)
-		ft_error("program not found", 1);
+	if (!execute_builtin(execcmd, envp))
+		return ;
+	fp = get_fp(execcmd->argv[0]);
 	if (!fork())
+	{
+		if (!fp)
+			ft_error("command not found", 3);
 		execve(fp, execcmd->argv, envp);
+	}
 	wait(0);
 	free(fp);
 }
@@ -65,9 +85,10 @@ static void	execute_redir(t_cmd *cmd, char **envp)
 	redircmd = (t_redircmd *)cmd;
 	new_fd = open(redircmd->fp, redircmd->mode);
 	if (new_fd < 0)
-		write(2, "\n", 2);
+		write(2, "file not found\n", 2);
 	dup2(new_fd, redircmd->fd);
 	runcmd(redircmd->cmd, envp);
+	close(new_fd);
 }
 
 static void	execute_pipe(t_cmd *cmd, char **envp)
@@ -75,6 +96,7 @@ static void	execute_pipe(t_cmd *cmd, char **envp)
 	t_pipecmd	*pipecmd;
 	int			p[2];
 	pid_t		pid[2];
+
 	pipecmd = (t_pipecmd *)cmd;
 	if (pipe(p) < 0)
 		write(2, "failed to pipe\n", 16);
@@ -133,7 +155,7 @@ void	runcmd(t_cmd *cmd, char **envp)
 	executers[2] = execute_pipe;
 	executers[3] = execute_seq;
 	executers[4] = execute_bgcmd;
-	if (!cmd) // get_cmd returns null if empty line is returned from readline which triggers this condition
+	if (!cmd)
 		return ;
 	executers[cmd->type](cmd, envp);
 }

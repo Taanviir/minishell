@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 02:28:01 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/07/27 02:30:39 by tanas            ###   ########.fr       */
+/*   Updated: 2023/07/30 23:38:04 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,7 @@ char	*expand(char *q, char *eq, char **envp)
 	char	*sub;
 
 	buffer[1] = 0;
-	expanded_string = NULL; //malloc(1);
-	// if (!expanded_string)
-	// 	return (0);
+	expanded_string = NULL;
 	while (q < eq)
 	{
 		if (*q == '$' && !ft_is_whitespace(*(q + 1)))
@@ -79,12 +77,12 @@ char	*expand(char *q, char *eq, char **envp)
 			sub = substitute(&q, envp);
 			q++;
 			if (sub)
-				expanded_string = ft_strjoin(expanded_string, sub);
+				expanded_string = ft_strjoin_m(expanded_string, sub);
 		}
 		else
 		{
 			buffer[0] = *q;
-			expanded_string = ft_strjoin(expanded_string, buffer);
+			expanded_string = ft_strjoin_m(expanded_string, buffer);
 		}
 		q++;
 	}

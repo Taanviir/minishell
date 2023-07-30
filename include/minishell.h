@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/07/29 16:25:48 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/07/31 00:15:07 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,21 @@
 # include <stdbool.h> // bool
 # include <stdint.h>
 #include <assert.h>
-#include <sys/wait.h> // is wait not allowed?
+# include <sys/wait.h> // is wait not allowed?
 # include "../libft/include/libft.h" // libft
 # include "tokenizer.h"
 # include "tokenizer/type.h"
 # include "builtins.h"
 
+typedef struct s_signal
+{
+    int	sigint;
+    int	sigquit;
+    int exit_status;
+}	t_signal;
+
 // EXIT_STATUS
-// extern int exit_status;
+extern t_signal g_signal;
 
 // ERROR CODES
 # define ERR_ARGS 1
@@ -46,6 +53,7 @@
 // COLOR CODES
 # define MAGENTA_B "\033[1;35m"
 # define RED_B "\033[1;31m"
+# define BLUE "\033[1;94m"
 # define WHITE "\033[0m"
 
 void	receive_signal(void);

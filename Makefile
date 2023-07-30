@@ -6,7 +6,7 @@
 #    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/14 14:38:29 by tanas             #+#    #+#              #
-#    Updated: 2023/07/26 22:39:56 by tanas            ###   ########.fr        #
+#    Updated: 2023/07/31 01:25:52 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ EXECUTION = src/execution/execution.a
 
 TESTER = test/test.a
 
-LD = -lreadline $(PARSER) $(BUILTINS) $(EXECUTION) $(LIBFT)
+LD = -lreadline $(PARSER) $(EXECUTION) $(BUILTINS) $(LIBFT)
 
 SRCS_DIR = src/
 SRCS_LIST = main.c signal.c
@@ -42,7 +42,7 @@ all : $(NAME)
 test : C_FLAGS += -D TEST
 test : $(LIBFT) libraries $(OBJS)
 	@make -sC test
-	@$(CC) $(C_FLAGS) $(INCLUDES) $(OBJS) -o test_shell $(LD) $(TESTER)
+	$(CC) $(C_FLAGS) $(INCLUDES) $(OBJS) -o test_shell $(LD) $(TESTER)
 	@echo $(GREEN_B)"$(NAME) (Test Build) is ready. ✅\n"$(RESET)
 
 $(NAME) : $(LIBFT) libraries $(OBJS)

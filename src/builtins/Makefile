@@ -6,7 +6,7 @@
 #    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/16 22:46:50 by tanas             #+#    #+#              #
-#    Updated: 2023/07/26 22:45:02 by tanas            ###   ########.fr        #
+#    Updated: 2023/07/31 01:17:11 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,17 +18,12 @@ COLOUR_RESET:= "\033[0m"
 NAME:= builtins.a
 C_FLAGS:= -Wall -Werror -Wextra -ggdb3
 INCLUDES:= -I ../../include -I ../../libft/include
-LIBFT:= ../../libft/libft.a
-LD:= -lreadline $(LIBFT)
 
-SRCS:= echo.c export.c pwd.c unset.c
-OBJS_DIR:= builtin_objs/
+SRCS:= builtins.c ft_cd.c environment.c
+OBJS_DIR:= builtins_objs/
 OBJS:= $(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
 
 all: $(NAME)
-
-test: all test.c
-	$(CC) $(C_FLAGS) $(INCLUDES) test.c $(NAME) -o $@ $(LD)
 
 $(NAME) : $(OBJS)
 	@ar -rcs $@ $^
