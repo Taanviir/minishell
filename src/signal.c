@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 18:55:49 by tanas             #+#    #+#             */
-/*   Updated: 2023/07/31 02:04:46 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/01 01:25:24 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ static void	signal_handler(int signum)
 {
 	if (signum == SIGINT)
 	{
-		// printf("SIGINT received\n");
-		rl_replace_line("", 0);
+		printf("\n");
 		rl_on_new_line();
+		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 	else if (signum == SIGQUIT)

@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:25:28 by tanas             #+#    #+#             */
-/*   Updated: 2023/07/30 21:10:38 by tanas            ###   ########.fr       */
+/*   Updated: 2023/07/31 20:21:09 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct s_exec
 	int		type;
 	char	**argv;
 	char	**eargv;
-}	 t_exec;
+}	t_exec;
 
 typedef struct s_redircmd
 {
@@ -78,4 +78,4 @@ t_cmd	*construct_bgcmd(t_cmd *cmd);
 /* executors */
 void	runcmd(t_cmd *cmd, char **envp);
 
-# endif
+#endif

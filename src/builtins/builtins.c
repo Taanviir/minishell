@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void    ft_pwd(void)
+void	ft_pwd(void)
 {
 	char	*path;
 
@@ -23,7 +23,7 @@ void    ft_pwd(void)
 
 void	ft_echo(char **argv)
 {
-	bool    show_newline;
+	bool	show_newline;
 	int		i;
 
 	show_newline = true;
@@ -46,5 +46,6 @@ void	ft_echo(char **argv)
 
 int	ft_exit(void)
 {
-    exit(0);
+	printf("exit\n");
+	exit(EXIT_SUCCESS);
 }

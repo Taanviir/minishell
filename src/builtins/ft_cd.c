@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:54:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/07/31 01:44:05 by tanas            ###   ########.fr       */
+/*   Updated: 2023/07/31 20:59:42 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,13 @@ void	ft_cd(char **argv)
 		printf("cd: too many arguments\n");
 		return ;
 	}
-	if (!argv[1])
+	if (!argv[1] || argv[1][0] == '~')
 		path = getenv("HOME");
 	else if (!ft_strncmp(argv[1], "-", 1))
+	{
 		path = getenv("OLDPWD");
+		printf("%s\n", path);
+	}
 	else
 		path = argv[1];
 	if (chdir(path) == -1)

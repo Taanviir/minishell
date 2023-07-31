@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/07/31 00:15:07 by tanas            ###   ########.fr       */
+/*   Updated: 2023/07/31 20:22:53 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # include <fcntl.h> // open
 # include <stdbool.h> // bool
 # include <stdint.h>
-#include <assert.h>
+// #include <assert.h>
 # include <sys/wait.h> // is wait not allowed?
 # include "../libft/include/libft.h" // libft
 # include "tokenizer.h"
@@ -39,13 +39,13 @@
 
 typedef struct s_signal
 {
-    int	sigint;
-    int	sigquit;
-    int exit_status;
+	int	sigint;
+	int	sigquit;
+	int	exit_status;
 }	t_signal;
 
 // EXIT_STATUS
-extern t_signal g_signal;
+extern t_signal	g_signal;
 
 // ERROR CODES
 # define ERR_ARGS 1

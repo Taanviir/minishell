@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/07/31 00:52:27 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/01 00:23:45 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,14 @@ t_cmd	*get_cmd(char **envp, char *line)
 {
 	t_cmd	*root;
 
+	dir = getcwd(NULL, 0);
+	prompt = ft_bigjoin(6, MAGENTA_B, "ghost@shell:", BLUE, dir, " → ", WHITE);
 	line = readline(MAGENTA_B"ghost@shell → "WHITE);
-	if (!line || !*line)
-		return (free(line), NULL);
+	free(prompt);
+	free(dir);
+	if (!line)
+		return (ft_exit(), NULL);
 	add_history(line);
-	// char	line[] = "echo 'hello'";
 	root = parsecmd(line, envp);
 	test(root);
 	return (root);
@@ -39,10 +42,10 @@ t_cmd	*get_cmd(char **envp, char *line)
 	dir = getcwd(NULL, 0);
 	prompt = ft_bigjoin(6, MAGENTA_B, "ghost@shell:", BLUE, dir, " → ", WHITE);
 	line = readline(prompt);
-	if (!line || !*line)
-		return (NULL);
 	free(prompt);
 	free(dir);
+	if (!line)
+		return (ft_exit(), NULL);
 	add_history(line);
 	root = parsecmd(line, envp);
 	return (root);
