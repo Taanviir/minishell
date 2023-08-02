@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 02:29:24 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/02 20:16:25 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/02 22:41:59 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,13 +72,17 @@ t_cmd	*parseline(char **b_start, char *b_end, char **envp)
 	cmd = parsepipe(b_start, b_end, envp);
 	while (peek(b_start, b_end, "&"))
 	{
-		get_token(b_start, b_end, 0, 0);
-		cmd = construct_bgcmd(cmd);
+		if(!get_token(b_start, b_end, 0, 0))
+			write(2, "syntax error near unexpected token `&'\n", 39);
+		else
+			cmd = construct_bgcmd(cmd);
 	}
 	if (peek(b_start, b_end, ";"))
 	{
-		get_token(b_start, b_end, 0, 0);
-		cmd = construct_seqcmd(cmd, parseline(b_start, b_end, envp));
+		if(!get_token(b_start, b_end, 0, 0))
+			write(2, "syntax error near unexpected token `;'\n", 39);
+		else
+			cmd = construct_seqcmd(cmd, parseline(b_start, b_end, envp));
 	}
 	return (cmd);
 }
