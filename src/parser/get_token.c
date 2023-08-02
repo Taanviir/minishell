@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_token.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/02 07:38:08 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/07/31 01:31:22 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/02 20:09:14 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 static bool	is_opr(char c)
 {
 	return (c == '<' || c == '|' || c == '>' || c == '&' || c == ';'
-		|| c == '(' || c == ')' || c == '{' || c == '}' || c == '=');
+		|| c == '(' || c == ')' || c == '{' || c == '}');
 }
 
 /* returns the type of a token,
@@ -38,14 +38,13 @@ static char	find_type(char **scan)
 	}
 	if (**scan == '\"' || **scan == '\'')
 		in_quote = **scan;
-	else
-		in_quote = 0;
+
 	while (scan[0][1] && (in_quote
 		|| (!ft_is_whitespace(scan[0][1]) && !is_opr(scan[0][1]))))
 	{
 		*scan += 1;
-		if (!(**scan - in_quote))
-			return ('a');
+		if (!(**scan -  in_quote))
+			return ('q');
 	}
 	return ('a');
 }
@@ -69,12 +68,12 @@ char	get_token(char **buffer_start, char *buffer_end,
 	scan = *buffer_start;
 	while (scan < buffer_end && ft_is_whitespace(*scan))
 		scan++;
-	if (token_start)
+	if (token_start) // no need
 		*token_start = scan;
 	token_type = find_type(&scan);
 	if (*scan)
 		scan++;
-	if (token_end)
+	if (token_end) // no need
 		*token_end = scan;
 	while (scan < buffer_end && ft_is_whitespace(*scan))
 		scan++;

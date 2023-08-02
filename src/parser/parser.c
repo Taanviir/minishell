@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 02:29:24 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/07/31 01:26:04 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/02 20:16:25 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,11 @@ t_cmd	*parseexec(char **b_start, char *b_end, char **envp)
 		token = get_token(b_start, b_end, &q, &eq);
 		if (!token)
 			break ;
-		if (token != 'a')
+		if (token == 'q') {
+			q += 1;
+			eq -= 1;
+		}
+		if (token != 'a' || token != 'q')
 			write(2, "sytnax", 7);
 		if (*q == '$' || *q == '\"' || *q == '\'')
 		{

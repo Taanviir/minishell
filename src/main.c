@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/01 00:23:45 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/02 16:29:58 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ t_signal	g_signal;
 t_cmd	*get_cmd(char **envp, char *line)
 {
 	t_cmd	*root;
+	char	*dir;
+	char	*prompt;
 
 	dir = getcwd(NULL, 0);
 	prompt = ft_bigjoin(6, MAGENTA_B, "ghost@shell:", BLUE, dir, " → ", WHITE);
@@ -65,6 +67,6 @@ int	main(int argc, char **argv __attribute__((unused)), char **envp)
 		runcmd(get_cmd(envp, line), envp);
 		free(line);
 	}
-	rl_clear_history();
+	// rl_clear_history();
 	return (EXIT_SUCCESS);
 }
