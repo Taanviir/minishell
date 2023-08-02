@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 02:29:24 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/02 22:41:59 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/02 23:08:15 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,8 +126,8 @@ t_cmd	*parseexec(char **b_start, char *b_end, char **envp)
 			q += 1;
 			eq -= 1;
 		}
-		if (token != 'a' || token != 'q')
-			write(2, "sytnax", 7);
+		if (token != 'a' && token != 'q')
+			write(2, "syntax", 7);
 		if (*q == '$' || *q == '\"' || *q == '\'')
 		{
 			cmd->argv[argc] = expand(q, eq, envp);

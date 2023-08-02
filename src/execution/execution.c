@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 20:24:32 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/01 00:25:34 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/02 23:06:20 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,7 @@ static void	execute_cmd(t_cmd *cmd, char **envp)
 
 	execcmd = (t_exec *)cmd;
 	if (!execcmd->argv[0])
-		return ;//exit(EXIT_FAILURE);
-	int i = -1;
-	while(execcmd->argv[++i])
-		printf("argv[%d] = %s\n", i, execcmd->argv[i]);
+		return ;
 	if (!execute_builtin(execcmd, envp))
 		return ;
 	fp = get_fp(execcmd->argv[0]);
