@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/02 07:38:08 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/02 20:09:14 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/02 22:09:17 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ static char	find_type(char **scan)
 		if (!(**scan -  in_quote))
 			return ('q');
 	}
+	if (in_quote)
+		return (0);
 	return ('a');
 }
 

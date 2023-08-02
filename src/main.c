@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/02 16:29:58 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/02 22:00:26 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "../test/test.h"
 
 t_signal	g_signal;
+
 
 #ifdef TEST
 t_cmd	*get_cmd(char **envp, char *line)
