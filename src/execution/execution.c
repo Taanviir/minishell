@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 20:24:32 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/03 06:20:06 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/03 20:44:37 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,42 +33,46 @@ static char *get_fp(char *program_name) {
   return (fp);
 }
 
-static int execute_builtin(t_exec *builtin, char **envp) {
-  (void)envp;
-  if (!ft_strncmp(builtin->argv[0], "echo", 4))
-    return (ft_echo(builtin->argv), 0);
-  if (!ft_strncmp(builtin->argv[0], "cd", 2))
-    return (ft_cd(builtin->argv), 0);
-  else if (!ft_strncmp(builtin->argv[0], "pwd", 3))
-    return (ft_pwd(), 0);
-  // 	else if (!ft_strncmp(builtin->argv[0], "export", 6))
-  // 		return (ft_export(builtin->argv), 0);
-  // 	else if (!ft_strncmp(builtin->argv[0], "unset", 5))
-  // 		return (ft_unset(builtin->argv), 0);
-  else if (!ft_strncmp(builtin->argv[0], "env", 3))
-    return (ft_env(envp), 0);
-  else if (!ft_strncmp(builtin->argv[0], "exit", 4))
-    return (ft_exit(), 0);
-  return (1);
+static int	execute_builtin(t_exec *cmd, char **envp)
+{
+	(void) envp;
+	if (!ft_strncmp(cmd->argv[0], "echo", ft_strlen(cmd->argv[0])))
+		return (ft_echo(cmd->argv), 0);
+	if (!ft_strncmp(cmd->argv[0], "cd", ft_strlen(cmd->argv[0])))
+		return (ft_cd(cmd->argv), 0);
+	else if (!ft_strncmp(cmd->argv[0], "pwd", ft_strlen(cmd->argv[0])))
+		return (ft_pwd(), 0);
+	// else if (!ft_strncmp(cmd->argv[0], "export", ft_strlen(cmd->argv[0])))
+	// 	return (ft_export(cmd->argv, envp), 0);
+// 	else if (!ft_strncmp(cmd->argv[0], "unset", ft_strlen(cmd->argv[0])))
+// 		return (ft_unset(cmd->argv, envp), 0);
+	else if (!ft_strncmp(cmd->argv[0], "env", ft_strlen(cmd->argv[0])))
+		return (ft_env(envp), 0);
+	else if (!ft_strncmp(cmd->argv[0], "exit", ft_strlen(cmd->argv[0])))
+		return (ft_exit(EXIT_SUCCESS), 0);
+	return (1);
 }
 
-static void execute_cmd(t_cmd *cmd, char **envp) {
-  t_exec *execcmd;
-  char *fp;
+static void	execute_cmd(t_cmd *cmd, char **envp)
+{
+	t_exec	*execcmd;
+	char	*fp;
 
-  execcmd = (t_exec *)cmd;
-  if (!execcmd->argv[0])
-    return;
-  if (!execute_builtin(execcmd, envp))
-    return;
-  fp = get_fp(execcmd->argv[0]);
-  if (!fork()) {
-    if (!fp)
-      ft_error("command not found", 3);
-    execve(fp, execcmd->argv, envp);
-  }
-  wait(0);
-  free(fp);
+	execcmd = (t_exec *)cmd;
+	if (!execcmd->argv[0])
+		return ;
+	if (!execute_builtin(execcmd, envp))
+		return ;
+	fp = get_fp(execcmd->argv[0]);
+	if (!fork())
+	{
+		if (!fp)
+			ft_error("command not found", 3);
+		execve(fp, execcmd->argv, envp);
+    free(fp);
+	}
+	wait(0);
+	free(fp);
 }
 
 static void execute_redir(t_cmd *cmd, char **envp) {
@@ -148,7 +152,3 @@ void runcmd(t_cmd *cmd, char **envp) {
     return;
   executers[cmd->type](cmd, envp);
 }
-
-// int main(int argc, char **argv, char **envp){
-// 	printf("%s\n", get_fp("ls", envp));
-// }
