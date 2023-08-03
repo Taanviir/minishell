@@ -59,3 +59,7 @@ dkms.conf
 test/test.dot
 test/test.png
 
+# Compiling
+compile_commands.json
+.cache/
+*.txt
