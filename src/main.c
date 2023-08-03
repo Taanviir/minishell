@@ -12,6 +12,7 @@
 
 #include "../test/test.h"
 #include "minishell.h"
+#include <stddef.h>
 #include <unistd.h>
 
 t_signal g_signal;
@@ -42,8 +43,8 @@ t_cmd *get_cmd(char **envp, char *line) {
 
   dir = getcwd(NULL, 0);
   prompt = ft_bigjoin(6, MAGENTA_B, "ghost@shell:", BLUE, dir, " → ", WHITE);
-  dup2(STDERR_FILENO, STDOUT_FILENO);
-  line = readline(prompt);
+  write(2, prompt, ft_strlen(prompt));
+  line = readline(NULL);
   free(prompt);
   free(dir);
   if (!line)
