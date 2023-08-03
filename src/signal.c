@@ -21,26 +21,22 @@ In interactive mode:
 ◦ ctrl-\ does nothing. -> SIGQUIT
 */
 
-static void	signal_handler(int signum)
-{
-	if (signum == SIGINT)
-	{
-		printf("\n");
-		rl_on_new_line();
-		// rl_replace_line("", 0);
-		rl_redisplay();
-	}
-	else if (signum == SIGQUIT)
-		return ;
+static void signal_handler(int signum) {
+  if (signum == SIGINT) {
+    printf("\n");
+    rl_on_new_line();
+    rl_replace_line("", 0);
+    rl_redisplay();
+  } else if (signum == SIGQUIT)
+    return;
 }
 
-void	receive_signal(void)
-{
-	struct sigaction	action;
+void receive_signal(void) {
+  struct sigaction action;
 
-	action.sa_handler = signal_handler;
-	sigemptyset(&action.sa_mask);
-	action.sa_flags = 0;
-	sigaction(SIGINT, &action, NULL);
-	sigaction(SIGQUIT, &action, NULL);
+  action.sa_handler = signal_handler;
+  sigemptyset(&action.sa_mask);
+  action.sa_flags = 0;
+  sigaction(SIGINT, &action, NULL);
+  sigaction(SIGQUIT, &action, NULL);
 }
