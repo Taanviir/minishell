@@ -38,6 +38,7 @@ $(OBJS_DIR)%.o : %.c
 
 clean :
 	@rm -rf $(OBJS_DIR)
+	@rm -f test.dot test.png
 
 fclean : clean
 	@rm -f $(NAME)

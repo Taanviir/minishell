@@ -45,7 +45,7 @@ test : $(LIBFT) libraries $(OBJS)
 	$(CC) $(C_FLAGS) $(INCLUDES) $(OBJS) -o test_shell $(LD) $(TESTER)
 	@echo $(GREEN_B)"$(NAME) (Test Build) is ready. ✅\n"$(RESET)
 
-$(NAME) : $(LIBFT) libraries $(OBJS)
+$(NAME) : $(LIBFT) libraries $(OBJS) 
 	@$(CC) $(C_FLAGS) $(INCLUDES) $(OBJS) -o $(NAME) $(LD)
 	@echo $(GREEN_B)"$(NAME) is ready. ✅\n"$(RESET)
 
