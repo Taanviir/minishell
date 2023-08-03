@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/02 07:38:08 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/02 23:09:36 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/03 02:30:38 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ char	get_token(char **buffer_start, char *buffer_end,
 	while (scan < buffer_end && ft_is_whitespace(*scan))
 		scan++;
 	*buffer_start = scan;
-	if (!(token_start - token_end))
-		return (0);
+	// if (!(token_start - token_end))
+	// 	return (0);
 	return (token_type);
 }

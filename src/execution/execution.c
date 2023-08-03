@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 20:24:32 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/02 23:06:20 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/03 06:20:06 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,13 +95,13 @@ static void	execute_pipe(t_cmd *cmd, char **envp)
 {
 	t_pipecmd	*pipecmd;
 	int			p[2];
-	pid_t		pid[2];
+	// pid_t		pid[2];
 
 	pipecmd = (t_pipecmd *)cmd;
 	if (pipe(p) < 0)
 		write(2, "failed to pipe\n", 16);
-	pid[0] = fork();
-	if (!pid[0])
+	// pid[0] = fork();
+	if (!fork())
 	{
 		dup2(p[1], STDOUT_FILENO);
 		close(p[0]);
@@ -109,8 +109,8 @@ static void	execute_pipe(t_cmd *cmd, char **envp)
 		runcmd(pipecmd->left, envp);
 		exit(0);
 	}
-	pid[1] = fork();
-	if (!pid[1])
+	// pid[1] = fork();
+	else if (!fork())
 	{
 		dup2(p[0], STDIN_FILENO);
 		close(p[0]);
@@ -120,8 +120,10 @@ static void	execute_pipe(t_cmd *cmd, char **envp)
 	}
 	close(p[0]);
 	close(p[1]);
-	waitpid(pid[0], NULL, 0);
-	waitpid(pid[1], NULL, 0);
+	// waitpid(pid[0], NULL, 0);
+	// waitpid(pid[1], NULL, 0);
+	wait(0);
+	wait(0);
 }
 
 static void	execute_bgcmd(t_cmd *cmd, char **envp)
@@ -129,8 +131,11 @@ static void	execute_bgcmd(t_cmd *cmd, char **envp)
 	t_bgcmd	*bgcmd;
 
 	bgcmd = (t_bgcmd *)cmd;
-	if (!fork())
+	if (!fork()){
 		runcmd(bgcmd->cmd, envp);
+		exit(0);
+	}
+	wait(0);
 }
 
 static void	execute_seq(t_cmd *cmd, char **envp)
@@ -138,8 +143,10 @@ static void	execute_seq(t_cmd *cmd, char **envp)
 	t_seqcmd	*seqcmd;
 
 	seqcmd = (t_seqcmd *)cmd;
-	if (!fork())
+	if (!fork()) {
 		runcmd(seqcmd->left, envp);
+		exit(0);
+	}
 	wait(NULL);
 	runcmd(seqcmd->right, envp);
 }

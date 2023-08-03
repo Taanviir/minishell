@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 02:29:24 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/02 23:08:15 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/03 05:38:59y sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,9 @@ t_cmd	*parsepipe(char **b_start, char *b_end, char **envp)
 	if (peek(b_start, b_end, "|"))
 	{
 		get_token(b_start, b_end, 0, 0);
+		if (*b_start == b_end) {
+			write(2, "syntax error near unexpected token `|'\n", 39);
+		}
 		cmd = construct_pipecmd(cmd, parsepipe(b_start, b_end, envp));
 	}
 	return (cmd);
@@ -70,19 +73,19 @@ t_cmd	*parseline(char **b_start, char *b_end, char **envp)
 	t_cmd	*cmd;
 
 	cmd = parsepipe(b_start, b_end, envp);
-	while (peek(b_start, b_end, "&"))
-	{
-		if(!get_token(b_start, b_end, 0, 0))
+	while (peek(b_start, b_end, "&")) {
+		get_token(b_start, b_end, 0, 0);
+		if (*b_start == b_end) {
 			write(2, "syntax error near unexpected token `&'\n", 39);
-		else
-			cmd = construct_bgcmd(cmd);
+		}
+		cmd = construct_bgcmd(cmd);
 	}
-	if (peek(b_start, b_end, ";"))
-	{
-		if(!get_token(b_start, b_end, 0, 0))
+	while (peek(b_start, b_end, ";")) {
+		get_token(b_start, b_end, 0, 0);
+		if (*b_start == b_end) {
 			write(2, "syntax error near unexpected token `;'\n", 39);
-		else
-			cmd = construct_seqcmd(cmd, parseline(b_start, b_end, envp));
+		}
+		cmd = construct_seqcmd(cmd, parseline(b_start, b_end, envp));
 	}
 	return (cmd);
 }
@@ -201,7 +204,7 @@ t_cmd	*parsecmd(char *b_start, char **envp)
 	b_end = ft_strlen(b_start) + b_start;
 	root = parseline(&b_start, b_end, envp);
 	if (peek(&b_start, b_end, ""))
-		write(2, "SYNTAX MF", 10);
+		write(2, "SYNTAX MF\n", 11);
 	nullterminate(root);
 	return (root);
 }
