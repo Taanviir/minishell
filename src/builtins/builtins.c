@@ -44,8 +44,9 @@ void	ft_echo(char **argv)
 		ft_putchar_fd('\n', 1);
 }
 
-int	ft_exit(void)
+int	ft_exit(int err_num)
 {
+	g_signal.exit_status = err_num;
 	printf("exit\n");
-	exit(EXIT_SUCCESS);
+	exit(g_signal.exit_status);
 }

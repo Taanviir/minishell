@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/02 07:38:08 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/07/31 01:31:22 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/02 18:26:22 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 static bool	is_opr(char c)
 {
 	return (c == '<' || c == '|' || c == '>' || c == '&' || c == ';'
-		|| c == '(' || c == ')' || c == '{' || c == '}' || c == '=');
+		|| c == '(' || c == ')' || c == '{' || c == '}');
 }
 
 /* returns the type of a token,
@@ -27,7 +27,6 @@ static char	find_type(char **scan)
 {
 	int	in_quote;
 
-	in_quote = 0;
 	if (!**scan)
 		return (0);
 	else if (is_opr(**scan))
@@ -36,10 +35,9 @@ static char	find_type(char **scan)
 			return ('+');
 		return (**scan);
 	}
+	in_quote = 0;
 	if (**scan == '\"' || **scan == '\'')
 		in_quote = **scan;
-	else
-		in_quote = 0;
 	while (scan[0][1] && (in_quote
 		|| (!ft_is_whitespace(scan[0][1]) && !is_opr(scan[0][1]))))
 	{

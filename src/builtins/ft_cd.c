@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:54:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/07/31 20:59:42 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/03 19:57:27 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@ void	ft_cd(char **argv)
 	}
 	else
 		path = argv[1];
-	if (chdir(path) == -1)
-		printf("cd: no such file or directory: %s\n", path);
+	if (chdir(path) != -1)
+		return ;
+	//update $OLDPWD
+	printf("cd: no such file or directory: %s\n", path);
+	// else
 }

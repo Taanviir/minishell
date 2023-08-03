@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 02:29:24 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/07/31 01:26:04 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/02 17:47:38 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,9 +151,9 @@ t_cmd	*nullterminate(t_cmd *cmd)
 
 	if (!cmd)
 		return (0);
-	i = -1;
 	if (cmd->type == EXEC)
 	{
+		i = -1;
 		execmd = (t_exec *)cmd;
 		while (execmd->argv[++i])
 			*execmd->eargv[i] = 0;
@@ -190,6 +190,8 @@ t_cmd	*parsecmd(char *b_start, char **envp)
 	char	*b_end;
 	t_cmd	*root;
 
+	if (!b_start[0])
+		return (free(b_start), NULL);
 	b_end = ft_strlen(b_start) + b_start;
 	root = parseline(&b_start, b_end, envp);
 	if (peek(&b_start, b_end, ""))
