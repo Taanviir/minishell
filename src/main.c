@@ -12,6 +12,8 @@
 
 #include "../test/test.h"
 #include "minishell.h"
+#include <readline/readline.h>
+#include <stdio.h>
 
 t_signal g_signal;
 
@@ -62,8 +64,8 @@ t_cmd *get_cmd(char **envp, char *line) {
   dir = get_dir();
   prompt = ft_bigjoin(3, MAGENTA_B "ghost@shell:" BLUE, dir, " → " WHITE);
   write(2, prompt, ft_strlen(prompt)); //! writing prompt to stderr
-  write(1, "\1", 1);
-  line = readline(NULL);
+  rl_already_prompted = 1;
+  line = readline(prompt);
   free(prompt);
   free(dir);
   if (!line)
