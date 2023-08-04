@@ -29,39 +29,42 @@ int peek(char **b_start, char *b_end, const char *str) {
 
 //! error here exit properly */
 t_cmd *parseredir(t_cmd *cmd, char **b_start, char *b_end) {
-  int redirection;
-  char *q;
-  char *eq;
+	int redirection;
+	char *q;
+	char *eq;
 
-  while (peek(b_start, b_end, "<>")) {
-    redirection = get_token(b_start, b_end, 0, 0);
-    if (get_token(b_start, b_end, &q, &eq) != 'a')
-      write(2, "no file", 8);
-    else if (redirection == '<')
-      cmd = construct_redircmd(cmd, q, eq, O_RDONLY, STDIN_FILENO);
-    else if (redirection == '>')
-      cmd = construct_redircmd(cmd, q, eq, O_WRONLY | O_CREAT | O_TRUNC,
-                               STDOUT_FILENO);
-    else if (redirection == '+')
-      cmd = construct_redircmd(cmd, q, eq, O_WRONLY | O_CREAT | O_APPEND,
-                               STDOUT_FILENO);
-  }
-  return (cmd);
+	while (peek(b_start, b_end, "<>")) {
+	redirection = get_token(b_start, b_end, 0, 0);
+	if (get_token(b_start, b_end, &q, &eq) != 'a')
+		write(2, "no file", 8);
+	else if (redirection == '<')
+		cmd = construct_redircmd(cmd, q, eq, O_RDONLY, STDIN_FILENO);
+	else if (redirection == '>')
+		cmd = construct_redircmd(cmd, q, eq, O_WRONLY | O_CREAT | O_TRUNC,
+								STDOUT_FILENO);
+	else if (redirection == '+')
+		cmd = construct_redircmd(cmd, q, eq, O_WRONLY | O_CREAT | O_APPEND,
+								STDOUT_FILENO);
+	else if (redirection == '-') //! here-doc
+		cmd = construct_redircmd(cmd, q, eq, O_WRONLY | O_CREAT | O_APPEND,
+								STDOUT_FILENO);
+	}
+	return (cmd);
 }
 
 //! heredoc if unclosed pipe
 t_cmd *parsepipe(char **b_start, char *b_end, char **envp) {
-  t_cmd *cmd;
+	t_cmd *cmd;
 
-  cmd = parseexec(b_start, b_end, envp);
-  if (peek(b_start, b_end, "|")) {
-    get_token(b_start, b_end, 0, 0);
-    if (*b_start == b_end) {
-      write(2, "syntax error near unexpected token `|'\n", 39);
-    }
-    cmd = construct_pipecmd(cmd, parsepipe(b_start, b_end, envp));
-  }
-  return (cmd);
+	cmd = parseexec(b_start, b_end, envp);
+	if (peek(b_start, b_end, "|")) {
+		get_token(b_start, b_end, 0, 0);
+	if (*b_start == b_end) {
+		write(2, "syntax error near unexpected token `|'\n", 39);
+		}
+			cmd = construct_pipecmd(cmd, parsepipe(b_start, b_end, envp));
+	}
+	return (cmd);
 }
 
 //! heredoc if unclosed pipe
@@ -103,42 +106,42 @@ static t_exec *inc_argsize(t_exec *cmd, size_t argc) {
 
 //! fix exit
 t_cmd *parseexec(char **b_start, char *b_end, char **envp) {
-  char *q;
-  char *eq;
-  int token;
-  size_t argc;
-  t_exec *cmd;
-  t_cmd *ret;
+	char *q;
+	char *eq;
+	int token;
+	size_t argc;
+	t_exec *cmd;
+	t_cmd *ret;
 
-  argc = 0;
-  ret = construct_exec();
-  cmd = (t_exec *)ret;
-  ret = parseredir(ret, b_start, b_end);
-  while (!peek(b_start, b_end, "|&;")) {
-    token = get_token(b_start, b_end, &q, &eq);
-    if (!token)
-      break;
-    if (token == 'q') {
-      q += 1;
-      eq -= 1;
-    }
-    if (token != 'a' && token != 'q')
-      write(2, "syntax", 7);
-    if (*q == '$' || *q == '\"' || *q == '\'') {
-      cmd->argv[argc] = expand(q, eq, envp);
-      cmd->eargv[argc] = cmd->argv[argc] + ft_strlen(cmd->argv[argc]);
-    } else {
-      cmd->argv[argc] = q;
-      cmd->eargv[argc] = eq;
-    }
-    argc++;
-    if (argc > (ARGC - 1))
-      cmd = inc_argsize(cmd, argc);
-    ret = parseredir(ret, b_start, b_end);
-  }
-  cmd->argv[argc] = 0;
-  cmd->eargv[argc] = 0;
-  return (ret);
+	argc = 0;
+	ret = construct_exec();
+	cmd = (t_exec *)ret;
+	ret = parseredir(ret, b_start, b_end);
+	while (!peek(b_start, b_end, "|&;")) {
+		token = get_token(b_start, b_end, &q, &eq);
+		if (!token)
+			break;
+		if (token == 'q') {
+			q += 1;
+			eq -= 1;
+	}
+	if (token != 'a' && token != 'q')
+		write(2, "syntax", 7);
+	if (*q == '$' || *q == '\"' || *q == '\'') {
+		cmd->argv[argc] = expand(q, eq, envp);
+		cmd->eargv[argc] = cmd->argv[argc] + ft_strlen(cmd->argv[argc]);
+	} else {
+		cmd->argv[argc] = q;
+		cmd->eargv[argc] = eq;
+	}
+	argc++;
+	if (argc > (ARGC - 1))
+		cmd = inc_argsize(cmd, argc);
+	ret = parseredir(ret, b_start, b_end);
+	}
+	cmd->argv[argc] = 0;
+	cmd->eargv[argc] = 0;
+	return (ret);
 }
 
 t_cmd *nullterminate(t_cmd *cmd) {
@@ -188,3 +191,4 @@ t_cmd *parsecmd(char *b_start, char **envp) {
     write(2, "SYNTAX MF\n", 11);
   nullterminate(root);
   return (root);
+}

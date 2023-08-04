@@ -6,13 +6,13 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 20:24:32 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/03 20:44:37 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/04 22:31:39 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char *get_fp(char *program_name) {
+static char *get_fp(char *program_name, bool *absolute_path) {
   char *fp;
   char **path;
   int i;
@@ -20,6 +20,10 @@ static char *get_fp(char *program_name) {
   path = ft_split(getenv("PATH"), ':');
   fp = NULL;
   i = -1;
+  if (program_name[0] == '/') {
+	*absolute_path = true;
+	return(program_name);
+  }
   while (path[++i]) {
     fp = ft_bigjoin(3, path[i], "/", program_name);
     if (!access(fp, X_OK))
@@ -57,22 +61,32 @@ static void	execute_cmd(t_cmd *cmd, char **envp)
 {
 	t_exec	*execcmd;
 	char	*fp;
+	bool	absolute_path; //!
 
+	absolute_path = false;
 	execcmd = (t_exec *)cmd;
 	if (!execcmd->argv[0])
 		return ;
 	if (!execute_builtin(execcmd, envp))
 		return ;
-	fp = get_fp(execcmd->argv[0]);
+	fp = get_fp(execcmd->argv[0], &absolute_path);
 	if (!fork())
 	{
 		if (!fp)
 			ft_error("command not found", 3);
 		execve(fp, execcmd->argv, envp);
-    free(fp);
+		if (!absolute_path)
+			free(fp);
+		else {
+			write(2, "minishell: ", 11);
+			write(2, fp, ft_strlen(fp));
+			perror(": ");
+		}
+		exit(0);
 	}
 	wait(0);
-	free(fp);
+	if (!absolute_path)
+		free(fp);
 }
 
 static void execute_redir(t_cmd *cmd, char **envp) {
