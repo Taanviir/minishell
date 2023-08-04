@@ -20,9 +20,9 @@ static char *get_fp(char *program_name, bool *absolute_path) {
   path = ft_split(getenv("PATH"), ':');
   fp = NULL;
   i = -1;
-  if (program_name[0] == '/') {
-	*absolute_path = true;
-	return(program_name);
+  if (program_name[0] == '/' || program_name[0] == '.') {
+    *absolute_path = true;
+    return (program_name);
   }
   while (path[++i]) {
     fp = ft_bigjoin(3, path[i], "/", program_name);
@@ -37,56 +37,53 @@ static char *get_fp(char *program_name, bool *absolute_path) {
   return (fp);
 }
 
-static int	execute_builtin(t_exec *cmd, char **envp)
-{
-	(void) envp;
-	if (!ft_strncmp(cmd->argv[0], "echo", ft_strlen(cmd->argv[0])))
-		return (ft_echo(cmd->argv), 0);
-	if (!ft_strncmp(cmd->argv[0], "cd", ft_strlen(cmd->argv[0])))
-		return (ft_cd(cmd->argv), 0);
-	else if (!ft_strncmp(cmd->argv[0], "pwd", ft_strlen(cmd->argv[0])))
-		return (ft_pwd(), 0);
-	// else if (!ft_strncmp(cmd->argv[0], "export", ft_strlen(cmd->argv[0])))
-	// 	return (ft_export(cmd->argv, envp), 0);
-// 	else if (!ft_strncmp(cmd->argv[0], "unset", ft_strlen(cmd->argv[0])))
-// 		return (ft_unset(cmd->argv, envp), 0);
-	else if (!ft_strncmp(cmd->argv[0], "env", ft_strlen(cmd->argv[0])))
-		return (ft_env(envp), 0);
-	else if (!ft_strncmp(cmd->argv[0], "exit", ft_strlen(cmd->argv[0])))
-		return (ft_exit(EXIT_SUCCESS), 0);
-	return (1);
+static int execute_builtin(t_exec *cmd, char **envp) {
+  (void)envp;
+  if (!ft_strncmp(cmd->argv[0], "echo", ft_strlen(cmd->argv[0])))
+    return (ft_echo(cmd->argv), 0);
+  if (!ft_strncmp(cmd->argv[0], "cd", ft_strlen(cmd->argv[0])))
+    return (ft_cd(cmd->argv), 0);
+  else if (!ft_strncmp(cmd->argv[0], "pwd", ft_strlen(cmd->argv[0])))
+    return (ft_pwd(), 0);
+  // else if (!ft_strncmp(cmd->argv[0], "export", ft_strlen(cmd->argv[0])))
+  // 	return (ft_export(cmd->argv, envp), 0);
+  // 	else if (!ft_strncmp(cmd->argv[0], "unset", ft_strlen(cmd->argv[0])))
+  // 		return (ft_unset(cmd->argv, envp), 0);
+  else if (!ft_strncmp(cmd->argv[0], "env", ft_strlen(cmd->argv[0])))
+    return (ft_env(envp), 0);
+  else if (!ft_strncmp(cmd->argv[0], "exit", ft_strlen(cmd->argv[0])))
+    return (ft_exit(EXIT_SUCCESS), 0);
+  return (1);
 }
 
-static void	execute_cmd(t_cmd *cmd, char **envp)
-{
-	t_exec	*execcmd;
-	char	*fp;
-	bool	absolute_path; //!
+static void execute_cmd(t_cmd *cmd, char **envp) {
+  t_exec *execcmd;
+  char *fp;
+  bool absolute_path; //!
 
-	absolute_path = false;
-	execcmd = (t_exec *)cmd;
-	if (!execcmd->argv[0])
-		return ;
-	if (!execute_builtin(execcmd, envp))
-		return ;
-	fp = get_fp(execcmd->argv[0], &absolute_path);
-	if (!fork())
-	{
-		if (!fp)
-			ft_error("command not found", 3);
-		execve(fp, execcmd->argv, envp);
-		if (!absolute_path)
-			free(fp);
-		else {
-			write(2, "minishell: ", 11);
-			write(2, fp, ft_strlen(fp));
-			perror(": ");
-		}
-		exit(0);
-	}
-	wait(0);
-	if (!absolute_path)
-		free(fp);
+  absolute_path = false;
+  execcmd = (t_exec *)cmd;
+  if (!execcmd->argv[0])
+    return;
+  if (!execute_builtin(execcmd, envp))
+    return;
+  fp = get_fp(execcmd->argv[0], &absolute_path);
+  if (!fork()) {
+    if (!fp)
+      ft_error("command not found", 3);
+    execve(fp, execcmd->argv, envp);
+    if (!absolute_path)
+      free(fp);
+    else {
+      write(2, "minishell: ", 11);
+      write(2, fp, ft_strlen(fp));
+      perror(": ");
+    }
+    exit(0);
+  }
+  wait(0);
+  if (!absolute_path)
+    free(fp);
 }
 
 static void execute_redir(t_cmd *cmd, char **envp) {
