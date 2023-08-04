@@ -64,8 +64,9 @@ t_cmd *get_cmd(char **envp, char *line) {
   dir = get_dir();
   prompt = ft_bigjoin(3, MAGENTA_B "ghost@shell:" BLUE, dir, " → " WHITE);
   write(2, prompt, ft_strlen(prompt)); //! writing prompt to stderr
-  rl_already_prompted = 1;
+  rl_already_prompted = 1;             // i think this is it
   line = readline(prompt);
+  rl_already_prompted = 0;
   free(prompt);
   free(dir);
   if (!line)

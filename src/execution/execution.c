@@ -37,6 +37,7 @@ static char *get_fp(char *program_name, bool *absolute_path) {
   return (fp);
 }
 
+//!
 static int execute_builtin(t_exec *cmd, char **envp) {
   (void)envp;
   if (!ft_strncmp(cmd->argv[0], "echo", ft_strlen(cmd->argv[0])))
@@ -89,14 +90,18 @@ static void execute_cmd(t_cmd *cmd, char **envp) {
 static void execute_redir(t_cmd *cmd, char **envp) {
   t_redircmd *redircmd;
   int new_fd;
+  int save_fd;
 
   redircmd = (t_redircmd *)cmd;
+  save_fd = dup(redircmd->fd);
   new_fd = open(redircmd->fp, redircmd->mode, S_IRWXU);
   if (new_fd < 0)
     write(2, "file not found\n", 2);
   dup2(new_fd, redircmd->fd);
-  runcmd(redircmd->cmd, envp);
   close(new_fd);
+  runcmd(redircmd->cmd, envp);
+  dup2(save_fd, redircmd->fd);
+  close(save_fd);
 }
 
 static void execute_pipe(t_cmd *cmd, char **envp) {
