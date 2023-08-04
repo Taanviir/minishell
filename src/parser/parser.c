@@ -181,10 +181,11 @@ t_cmd *parsecmd(char *b_start, char **envp) {
   t_cmd *root;
 
   if (!b_start[0])
-		return (free(b_start), NULL);
+    return (free(b_start), NULL);
   b_end = ft_strlen(b_start) + b_start;
   root = parseline(&b_start, b_end, envp);
   if (peek(&b_start, b_end, ""))
     write(2, "SYNTAX MF\n", 11);
   nullterminate(root);
   return (root);
+}
