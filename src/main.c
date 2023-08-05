@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/03 20:53:34 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/05 12:55:21 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,17 @@ t_cmd *get_cmd(char **envp, char *line) {
 	return (root);
 }
 #else
-t_cmd *get_cmd(char **envp, char *line) {
-  char *dir;
-  char *prompt;
-  t_cmd *root;
+t_cmd *get_cmd(char **envp, char *line)
+{
+	char	*dir;
+	char	*prompt;
+	t_cmd	*root;
 
 	dir = get_dir();
 	prompt = ft_bigjoin(3, MAGENTA_B"ghost@shell:"BLUE, dir, " → "WHITE);
-  write(2, prompt, ft_strlen(prompt));
-  line = readline(NULL);
-  free(prompt);
+	// write(2, prompt, ft_strlen(prompt));
+	line = readline(prompt);
+	free(prompt);
 	free(dir);
 	if (!line)
 		return (ft_exit(0), NULL);
@@ -89,6 +90,6 @@ int main(int argc, char **argv __attribute__((unused)), char **envp) {
     runcmd(get_cmd(envp, line), envp);
     free(line);
   }
-  rl_clear_history();
+//   rl_clear_history();
   return (EXIT_SUCCESS);
 }

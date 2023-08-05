@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 20:24:32 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/03 20:44:37 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/05 14:41:55 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,22 +33,33 @@ static char *get_fp(char *program_name) {
   return (fp);
 }
 
+static int  get_len(char *str1, char *str2)
+{
+	int	length1;
+	int	length2;
+
+	length1 = ft_strlen(str1);
+	length2 = ft_strlen(str2);
+	if (length1 > length2)
+		return (length1);
+	return (length2);
+}
+
 static int	execute_builtin(t_exec *cmd, char **envp)
 {
-	(void) envp;
-	if (!ft_strncmp(cmd->argv[0], "echo", ft_strlen(cmd->argv[0])))
+	if (!ft_strncmp(cmd->argv[0], "echo", get_len(cmd->argv[0], "echo")))
 		return (ft_echo(cmd->argv), 0);
-	if (!ft_strncmp(cmd->argv[0], "cd", ft_strlen(cmd->argv[0])))
-		return (ft_cd(cmd->argv), 0);
-	else if (!ft_strncmp(cmd->argv[0], "pwd", ft_strlen(cmd->argv[0])))
+	if (!ft_strncmp(cmd->argv[0], "cd", get_len(cmd->argv[0], "cd")))
+		return (ft_cd(cmd->argv, envp), 0);
+	else if (!ft_strncmp(cmd->argv[0], "pwd", get_len(cmd->argv[0], "pwd")))
 		return (ft_pwd(), 0);
-	// else if (!ft_strncmp(cmd->argv[0], "export", ft_strlen(cmd->argv[0])))
-	// 	return (ft_export(cmd->argv, envp), 0);
-// 	else if (!ft_strncmp(cmd->argv[0], "unset", ft_strlen(cmd->argv[0])))
+	else if (!ft_strncmp(cmd->argv[0], "export", get_len(cmd->argv[0], "export")))
+		return (ft_export(cmd->argv, envp), 0);
+// 	else if (!ft_strncmp(cmd->argv[0], "unset", get_len(cmd->argv[0], "unset")))
 // 		return (ft_unset(cmd->argv, envp), 0);
-	else if (!ft_strncmp(cmd->argv[0], "env", ft_strlen(cmd->argv[0])))
+	else if (!ft_strncmp(cmd->argv[0], "env", get_len(cmd->argv[0], "env")))
 		return (ft_env(envp), 0);
-	else if (!ft_strncmp(cmd->argv[0], "exit", ft_strlen(cmd->argv[0])))
+	else if (!ft_strncmp(cmd->argv[0], "exit", get_len(cmd->argv[0], "exit")))
 		return (ft_exit(EXIT_SUCCESS), 0);
 	return (1);
 }
@@ -64,10 +75,13 @@ static void	execute_cmd(t_cmd *cmd, char **envp)
 	if (!execute_builtin(execcmd, envp))
 		return ;
 	fp = get_fp(execcmd->argv[0]);
+	if (!fp)
+	{
+		printf("%s: command not found\n", fp);
+		return ;
+	}
 	if (!fork())
 	{
-		if (!fp)
-			ft_error("command not found", 3);
 		execve(fp, execcmd->argv, envp);
     free(fp);
 	}

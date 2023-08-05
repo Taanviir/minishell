@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 18:55:49 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/02 16:06:43 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/05 11:40:15 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void signal_handler(int signum) {
   if (signum == SIGINT) {
     printf("\n");
     rl_on_new_line();
-    rl_replace_line("", 0);
+    // rl_replace_line("", 0);
     rl_redisplay();
   } else if (signum == SIGQUIT)
     return;
