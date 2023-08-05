@@ -3,13 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
+#    By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/14 14:38:29 by tanas             #+#    #+#              #
-#    Updated: 2023/07/31 01:25:52 by tanas            ###   ########.fr        #
+#    Updated: 2023/08/05 13:37:34 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+# READLINE_DIR:= $(shell brew --prefix readline)
+# READLINE_LIB:= -lreadline -lhistory -L$(READLINE_DIR)/lib
 ### COLOURS
 GREEN_B = "\033[1;32m"
 RED_BI = "\033[1;3;31m"
@@ -19,15 +21,17 @@ RESET = "\033[0m"
 
 NAME = minishell
 C_FLAGS = -Wall -Wextra -Werror -g3
-INCLUDES = -I include/ -I libft/include -I test/
+INCLUDES = -I include/ -I libft/include -I test/ -I/usr/local/Cellar/readline/8.2.1/include/readline
 LIBFT = libft/libft.a
 PARSER = src/parser/parser.a
 BUILTINS = src/builtins/builtins.a
 EXECUTION = src/execution/execution.a
+# READLINE:= -l/usr/local/Cellar/readline/8.2.1/lib/libhistory.a
+
 
 TESTER = test/test.a
 
-LD = -lreadline $(PARSER) $(EXECUTION) $(BUILTINS) $(LIBFT)
+LD =  -L/usr/local/Cellar/readline/8.2.1/lib $(PARSER) $(EXECUTION) $(BUILTINS) $(LIBFT) -lreadline -lhistory
 
 SRCS_DIR = src/
 SRCS_LIST = main.c signal.c
@@ -45,7 +49,7 @@ test : $(LIBFT) libraries $(OBJS)
 	$(CC) $(C_FLAGS) $(INCLUDES) $(OBJS) -o test_shell $(LD) $(TESTER)
 	@echo $(GREEN_B)"$(NAME) (Test Build) is ready. ✅\n"$(RESET)
 
-$(NAME) : $(LIBFT) libraries $(OBJS) 
+$(NAME) : $(LIBFT) libraries $(OBJS)
 	@$(CC) $(C_FLAGS) $(INCLUDES) $(OBJS) -o $(NAME) $(LD)
 	@echo $(GREEN_B)"$(NAME) is ready. ✅\n"$(RESET)
 

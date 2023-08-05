@@ -30,12 +30,28 @@ int peek(char **b_start, char *b_end, const char *str) {
 //! error here exit properly */
 t_cmd *parseredir(t_cmd *cmd, char **b_start, char *b_end) {
 	int redirection;
+	int hc_pipe[2];
 	char *q;
 	char *eq;
+	char *del;
 
 	while (peek(b_start, b_end, "<>")) {
 	redirection = get_token(b_start, b_end, 0, 0);
-	if (get_token(b_start, b_end, &q, &eq) != 'a')
+	if (redirection == '-')
+	{
+		if (!pipe(hc_pipe)) {
+			cmd = construct_redircmd(cmd, q, eq, O_RDONLY, hc_pipe[0]);
+			if (get_token(b_start, b_end, &q, &eq) != 'a') // quotes and expansion case != 'q'
+			del = get_del(q, eq);
+			here_doc(hc_pipe[1], del);
+			if (del)
+				free(del);
+			close(hc_pipe[0]);
+			close(hc_pipe[1]);
+		}
+		// else error
+	}
+	else if (get_token(b_start, b_end, &q, &eq) != 'a')
 		write(2, "no file", 8);
 	else if (redirection == '<')
 		cmd = construct_redircmd(cmd, q, eq, O_RDONLY, STDIN_FILENO);
@@ -43,9 +59,6 @@ t_cmd *parseredir(t_cmd *cmd, char **b_start, char *b_end) {
 		cmd = construct_redircmd(cmd, q, eq, O_WRONLY | O_CREAT | O_TRUNC,
 								STDOUT_FILENO);
 	else if (redirection == '+')
-		cmd = construct_redircmd(cmd, q, eq, O_WRONLY | O_CREAT | O_APPEND,
-								STDOUT_FILENO);
-	else if (redirection == '-') //! here-doc
 		cmd = construct_redircmd(cmd, q, eq, O_WRONLY | O_CREAT | O_APPEND,
 								STDOUT_FILENO);
 	}

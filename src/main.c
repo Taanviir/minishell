@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/04 21:44:38 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/04 21:44:38by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,8 @@ t_cmd *get_cmd(char **envp, char *line) {
   dir = get_dir();
   prompt = ft_bigjoin(3, MAGENTA_B "ghost@shell:" BLUE, dir, " → " WHITE);
   write(2, prompt, ft_strlen(prompt)); //! writing prompt to stderr
-  rl_already_prompted = 1;             // i think this is it
-  line = readline(prompt);
-  rl_already_prompted = 0;
+  rl_already_prompted = 1;
+  line = readline(NULL);
   free(prompt);
   free(dir);
   if (!line)
@@ -88,6 +87,6 @@ int main(int argc, char **argv __attribute__((unused)), char **envp) {
     runcmd(get_cmd(envp, line), envp);
     free(line);
   }
-  //   rl_clear_history();
+    // rl_clear_history();
   return (EXIT_SUCCESS);
 }
