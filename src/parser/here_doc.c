@@ -6,7 +6,7 @@
 /*   By: eva-1 <eva-1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 17:52:34 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/06 19:38:46 by eva-1            ###   ########.fr       */
+/*   Updated: 2023/08/06 22:42:59 by eva-1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,20 @@ char *get_del(char *q, char *eq) {
 void here_doc(int fd, char *del) {
   char *line;
 
+  if (!*del){
+    write(STDERR_FILENO, "minishell: syntax error near unexpected token `newline'\n", 56);
+    return ;
+  }
   while (true) {
     line = readline(">"); 
-    if (!line || (del && !ft_strncmp(del, line, get_len(del, line)))) {
-      free(line);
+    if (!line || (del && !ft_strncmp(del, line, get_len(del, line))))
       break;
-    }
     write(fd, line, ft_strlen(line));
     write(fd, "\n", 1);
     free(line);
   }
+  free(line);
+  free(del);
 }
 
 // int main(void) {

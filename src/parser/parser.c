@@ -6,7 +6,7 @@
 /*   By: eva-1 <eva-1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:19:12 by eva-1             #+#    #+#             */
-/*   Updated: 2023/08/06 19:03:51 by eva-1            ###   ########.fr       */
+/*   Updated: 2023/08/06 22:45:32 by eva-1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,23 +35,19 @@ t_cmd *parseredir(t_cmd *cmd, char **b_start, char *b_end) {
   int hc_pipe[2];
   char *q;
   char *eq;
-  char *del;
+  // char *del;
 
   while (peek(b_start, b_end, "<>")) {
     redirection = get_token(b_start, b_end, 0, 0);
     if (redirection == '-') {
       if (!pipe(hc_pipe)) {
         cmd = construct_redircmd(cmd, 0, (char *)&hc_pipe[0], O_RDONLY, STDIN_FILENO);
-        if (get_token(b_start, b_end, &q, &eq) == 'a') // quotes and expansion case != 'q'
-          del = get_del(q, eq);
-        else // no del case
-          del = 0;
-        here_doc(hc_pipe[1], del);
-        if (del)
-          free(del);
+        get_token(b_start, b_end, &q, &eq);
+        here_doc(hc_pipe[1], get_del(q, eq));
         close(hc_pipe[1]); // don't close read end, still needed during execution
       }
-      // else pipe error
+      else //! pipe error
+        perror(":");
     } else if (get_token(b_start, b_end, &q, &eq) != 'a')
       write(2, "no file", 8);
     else if (redirection == '<')
