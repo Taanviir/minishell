@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   constructor.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eva-1 <eva-1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 21:13:29 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/03 06:20:41 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/06 18:42:57 by eva-1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,12 @@ t_cmd	*construct_redircmd(t_cmd *command, char *fp, char *efp, int mode, int fd)
 	cmd = ft_calloc(sizeof(t_redircmd), 1);
 	cmd->type = REDIR;
 	cmd->cmd = command;
-	cmd->fp = fp;
-	cmd->efp = efp;
+	if (fp == 0) //! here_doc case
+		cmd->here_doc = *(int *)efp; // read_end of the pipe
+	else {
+		cmd->fp = fp;
+		cmd->efp = efp;
+	}
 	cmd->mode = mode;
 	cmd->fd = fd;
 	return ((t_cmd *) cmd);

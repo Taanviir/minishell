@@ -63,9 +63,10 @@ t_cmd *get_cmd(char **envp, char *line) {
 
   dir = get_dir();
   prompt = ft_bigjoin(3, MAGENTA_B "ghost@shell:" BLUE, dir, " → " WHITE);
-  write(2, prompt, ft_strlen(prompt)); //! writing prompt to stderr
-  rl_already_prompted = 1;
-  line = readline(NULL);
+  //! way too many problems caused by this shit
+  // write(2, prompt, ft_strlen(prompt)); //! writing prompt to stderr
+  // rl_already_prompted = 1;
+  line = readline(prompt);
   free(prompt);
   free(dir);
   if (!line)
@@ -87,6 +88,6 @@ int main(int argc, char **argv __attribute__((unused)), char **envp) {
     runcmd(get_cmd(envp, line), envp);
     free(line);
   }
-    // rl_clear_history();
+  rl_clear_history();
   return (EXIT_SUCCESS);
 }

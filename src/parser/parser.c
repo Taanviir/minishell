@@ -3,12 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eva-1 <eva-1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/13 02:29:24 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/03 05:38:59y sabdelra         ###   ########.fr       */
+/*   Created: 2023/08/06 16:19:12 by eva-1             #+#    #+#             */
+/*   Updated: 2023/08/06 19:03:51 by eva-1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
 
 #include "minishell.h"
 
@@ -29,55 +31,54 @@ int peek(char **b_start, char *b_end, const char *str) {
 
 //! error here exit properly */
 t_cmd *parseredir(t_cmd *cmd, char **b_start, char *b_end) {
-	int redirection;
-	int hc_pipe[2];
-	char *q;
-	char *eq;
-	char *del;
+  int redirection;
+  int hc_pipe[2];
+  char *q;
+  char *eq;
+  char *del;
 
-	while (peek(b_start, b_end, "<>")) {
-	redirection = get_token(b_start, b_end, 0, 0);
-	if (redirection == '-')
-	{
-		if (!pipe(hc_pipe)) {
-			cmd = construct_redircmd(cmd, q, eq, O_RDONLY, hc_pipe[0]);
-			if (get_token(b_start, b_end, &q, &eq) != 'a') // quotes and expansion case != 'q'
-			del = get_del(q, eq);
-			here_doc(hc_pipe[1], del);
-			if (del)
-				free(del);
-			close(hc_pipe[0]);
-			close(hc_pipe[1]);
-		}
-		// else error
-	}
-	else if (get_token(b_start, b_end, &q, &eq) != 'a')
-		write(2, "no file", 8);
-	else if (redirection == '<')
-		cmd = construct_redircmd(cmd, q, eq, O_RDONLY, STDIN_FILENO);
-	else if (redirection == '>')
-		cmd = construct_redircmd(cmd, q, eq, O_WRONLY | O_CREAT | O_TRUNC,
-								STDOUT_FILENO);
-	else if (redirection == '+')
-		cmd = construct_redircmd(cmd, q, eq, O_WRONLY | O_CREAT | O_APPEND,
-								STDOUT_FILENO);
-	}
-	return (cmd);
+  while (peek(b_start, b_end, "<>")) {
+    redirection = get_token(b_start, b_end, 0, 0);
+    if (redirection == '-') {
+      if (!pipe(hc_pipe)) {
+        cmd = construct_redircmd(cmd, 0, (char *)&hc_pipe[0], O_RDONLY, STDIN_FILENO);
+        if (get_token(b_start, b_end, &q, &eq) == 'a') // quotes and expansion case != 'q'
+          del = get_del(q, eq);
+        else // no del case
+          del = 0;
+        here_doc(hc_pipe[1], del);
+        if (del)
+          free(del);
+        close(hc_pipe[1]); // don't close read end, still needed during execution
+      }
+      // else pipe error
+    } else if (get_token(b_start, b_end, &q, &eq) != 'a')
+      write(2, "no file", 8);
+    else if (redirection == '<')
+      cmd = construct_redircmd(cmd, q, eq, O_RDONLY, STDIN_FILENO);
+    else if (redirection == '>')
+      cmd = construct_redircmd(cmd, q, eq, O_WRONLY | O_CREAT | O_TRUNC,
+                               STDOUT_FILENO);
+    else if (redirection == '+')
+      cmd = construct_redircmd(cmd, q, eq, O_WRONLY | O_CREAT | O_APPEND,
+                               STDOUT_FILENO);
+  }
+  return (cmd);
 }
 
 //! heredoc if unclosed pipe
 t_cmd *parsepipe(char **b_start, char *b_end, char **envp) {
-	t_cmd *cmd;
+  t_cmd *cmd;
 
-	cmd = parseexec(b_start, b_end, envp);
-	if (peek(b_start, b_end, "|")) {
-		get_token(b_start, b_end, 0, 0);
-	if (*b_start == b_end) {
-		write(2, "syntax error near unexpected token `|'\n", 39);
-		}
-			cmd = construct_pipecmd(cmd, parsepipe(b_start, b_end, envp));
-	}
-	return (cmd);
+  cmd = parseexec(b_start, b_end, envp);
+  if (peek(b_start, b_end, "|")) {
+    get_token(b_start, b_end, 0, 0);
+    if (*b_start == b_end) {
+      write(2, "syntax error near unexpected token `|'\n", 39);
+    }
+    cmd = construct_pipecmd(cmd, parsepipe(b_start, b_end, envp));
+  }
+  return (cmd);
 }
 
 //! heredoc if unclosed pipe
@@ -119,42 +120,42 @@ static t_exec *inc_argsize(t_exec *cmd, size_t argc) {
 
 //! fix exit
 t_cmd *parseexec(char **b_start, char *b_end, char **envp) {
-	char *q;
-	char *eq;
-	int token;
-	size_t argc;
-	t_exec *cmd;
-	t_cmd *ret;
+  char *q;
+  char *eq;
+  int token;
+  size_t argc;
+  t_exec *cmd;
+  t_cmd *ret;
 
-	argc = 0;
-	ret = construct_exec();
-	cmd = (t_exec *)ret;
-	ret = parseredir(ret, b_start, b_end);
-	while (!peek(b_start, b_end, "|&;")) {
-		token = get_token(b_start, b_end, &q, &eq);
-		if (!token)
-			break;
-		if (token == 'q') {
-			q += 1;
-			eq -= 1;
-	}
-	if (token != 'a' && token != 'q')
-		write(2, "syntax", 7);
-	if (*q == '$' || *q == '\"' || *q == '\'') {
-		cmd->argv[argc] = expand(q, eq, envp);
-		cmd->eargv[argc] = cmd->argv[argc] + ft_strlen(cmd->argv[argc]);
-	} else {
-		cmd->argv[argc] = q;
-		cmd->eargv[argc] = eq;
-	}
-	argc++;
-	if (argc > (ARGC - 1))
-		cmd = inc_argsize(cmd, argc);
-	ret = parseredir(ret, b_start, b_end);
-	}
-	cmd->argv[argc] = 0;
-	cmd->eargv[argc] = 0;
-	return (ret);
+  argc = 0;
+  ret = construct_exec();
+  cmd = (t_exec *)ret;
+  ret = parseredir(ret, b_start, b_end);
+  while (!peek(b_start, b_end, "|&;")) {
+    token = get_token(b_start, b_end, &q, &eq);
+    if (!token)
+      break;
+    if (token == 'q') {
+      q += 1;
+      eq -= 1;
+    }
+    if (token != 'a' && token != 'q')
+      write(2, "syntax", 7);
+    if (*q == '$' || *q == '\"' || *q == '\'') {
+      cmd->argv[argc] = expand(q, eq, envp);
+      cmd->eargv[argc] = cmd->argv[argc] + ft_strlen(cmd->argv[argc]);
+    } else {
+      cmd->argv[argc] = q;
+      cmd->eargv[argc] = eq;
+    }
+    argc++;
+    if (argc > (ARGC - 1))
+      cmd = inc_argsize(cmd, argc);
+    ret = parseredir(ret, b_start, b_end);
+  }
+  cmd->argv[argc] = 0;
+  cmd->eargv[argc] = 0;
+  return (ret);
 }
 
 t_cmd *nullterminate(t_cmd *cmd) {
@@ -175,7 +176,8 @@ t_cmd *nullterminate(t_cmd *cmd) {
   } else if (cmd->type == REDIR) {
     redircmd = (t_redircmd *)cmd;
     nullterminate(redircmd->cmd);
-    *redircmd->efp = 0;
+    if (redircmd->fp) //! here_doc case
+      *redircmd->efp = 0;
   } else if (cmd->type == PIPE) {
     pipecmd = (t_pipecmd *)cmd;
     nullterminate(pipecmd->left);
@@ -197,7 +199,7 @@ t_cmd *parsecmd(char *b_start, char **envp) {
   t_cmd *root;
 
   if (!b_start[0])
-		return (free(b_start), NULL);
+    return (free(b_start), NULL);
   b_end = ft_strlen(b_start) + b_start;
   root = parseline(&b_start, b_end, envp);
   if (peek(&b_start, b_end, ""))

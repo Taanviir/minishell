@@ -39,6 +39,7 @@ typedef struct s_redircmd
 	t_cmd	*cmd;
 	char	*fp;
 	char	*efp;
+	int 	here_doc; //! here_doc case
 	int		mode;
 	int		fd;
 }	t_redircmd;

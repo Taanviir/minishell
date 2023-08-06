@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eva-1 <eva-1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 17:52:34 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/05 19:48:35 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/06 19:38:46 by eva-1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,53 +14,48 @@
 // #include <stdlib.h>
 
 // remove its the same as tanvir
-static int  get_len(char *str1, char *str2)
-{
-	int	length1;
-	int	length2;
+static int get_len(char *str1, char *str2) {
+  int length1;
+  int length2;
 
-	length1 = ft_strlen(str1);
-	length2 = ft_strlen(str2);
-	if (length1 > length2)
-		return (length1);
-	return (length2);
+  length1 = ft_strlen(str1);
+  length2 = ft_strlen(str2);
+  if (length1 > length2)
+    return (length1);
+  return (length2);
 }
 
 // gets the delimeter from get_token, q and eq
 char *get_del(char *q, char *eq) {
-	char	*del;
-	int	i;
+  char *del;
+  int i;
 
-	i = 0;
-	del = malloc(sizeof(char) * (eq - q) + 1);
-	if (!del)
-		perror("malloc failed in get_del");
-	while (q < eq) {
-		del[i] = *q;
-		q++;
-		i++;
-	}
-	del[i] = 0;
-	return (del);
+  i = 0;
+  del = malloc(sizeof(char) * (eq - q) + 1);
+  if (!del)
+    perror("malloc failed in get_del");
+  while (q < eq) {
+    del[i] = *q;
+    q++;
+    i++;
+  }
+  del[i] = 0;
+  return (del);
 }
 
-void here_doc(int fd, char *del)
-{
-	char *line;
+void here_doc(int fd, char *del) {
+  char *line;
 
-	line = malloc(1);
-	line[0] = 0;
-	// compare with del or EOF
-	while (*line != EOF && ft_strncmp(del, line, get_len(del, line))) {
-		if (!*line)
-			free(line);
-		else {
-			line = readline(">");
-			write(fd, line, ft_strlen(line));
-			// maybe add a new line here
-			free(line);
-		}
-	}
+  while (true) {
+    line = readline(">"); 
+    if (!line || (del && !ft_strncmp(del, line, get_len(del, line)))) {
+      free(line);
+      break;
+    }
+    write(fd, line, ft_strlen(line));
+    write(fd, "\n", 1);
+    free(line);
+  }
 }
 
 // int main(void) {
