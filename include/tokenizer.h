@@ -80,7 +80,7 @@ t_cmd	*construct_bgcmd(t_cmd *cmd);
 void	runcmd(t_cmd *cmd, char **envp);
 
 /* here_document */
-char	*get_del(char *q, char *eq);
-void	here_doc(int fd, char *del);
+void	here_doc(int fd, char *del, char **envp);
+char	*get_delimiter(char *q, char *eq);
 
 #endif

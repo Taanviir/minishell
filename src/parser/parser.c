@@ -6,14 +6,14 @@
 /*   By: eva-1 <eva-1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:19:12 by eva-1             #+#    #+#             */
-/*   Updated: 2023/08/06 22:45:32 by eva-1            ###   ########.fr       */
+/*   Updated: 2023/08/07 02:30:25 by eva-1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 
 #include "minishell.h"
-
+//! all these functions need to be static only parsecmd
 t_cmd *parseexec(char **b_start, char *b_end, char **envp);
 
 /* str is a string of characters to look for
@@ -30,12 +30,11 @@ int peek(char **b_start, char *b_end, const char *str) {
 }
 
 //! error here exit properly */
-t_cmd *parseredir(t_cmd *cmd, char **b_start, char *b_end) {
+t_cmd *parseredir(t_cmd *cmd, char **b_start, char *b_end, char **envp) {
   int redirection;
   int hc_pipe[2];
   char *q;
   char *eq;
-  // char *del;
 
   while (peek(b_start, b_end, "<>")) {
     redirection = get_token(b_start, b_end, 0, 0);
@@ -43,7 +42,7 @@ t_cmd *parseredir(t_cmd *cmd, char **b_start, char *b_end) {
       if (!pipe(hc_pipe)) {
         cmd = construct_redircmd(cmd, 0, (char *)&hc_pipe[0], O_RDONLY, STDIN_FILENO);
         get_token(b_start, b_end, &q, &eq);
-        here_doc(hc_pipe[1], get_del(q, eq));
+        here_doc(hc_pipe[1], get_delimiter(q, eq), envp);
         close(hc_pipe[1]); // don't close read end, still needed during execution
       }
       else //! pipe error
@@ -126,7 +125,7 @@ t_cmd *parseexec(char **b_start, char *b_end, char **envp) {
   argc = 0;
   ret = construct_exec();
   cmd = (t_exec *)ret;
-  ret = parseredir(ret, b_start, b_end);
+  ret = parseredir(ret, b_start, b_end, envp);
   while (!peek(b_start, b_end, "|&;")) {
     token = get_token(b_start, b_end, &q, &eq);
     if (!token)
@@ -147,7 +146,7 @@ t_cmd *parseexec(char **b_start, char *b_end, char **envp) {
     argc++;
     if (argc > (ARGC - 1))
       cmd = inc_argsize(cmd, argc);
-    ret = parseredir(ret, b_start, b_end);
+    ret = parseredir(ret, b_start, b_end, envp);
   }
   cmd->argv[argc] = 0;
   cmd->eargv[argc] = 0;
