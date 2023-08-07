@@ -1,7 +1,14 @@
 {
-   readline_common_leak
-   Memcheck:Leak
-   match-leak-kinds: possible,definite
-   fun:rl_initialize
-}
+	leak readline
+	  Memcheck:leak
 
+	  ...
+   fun:readline
+}
+{
+	leak add_history
+	Memcheck:leak
+
+	...
+   fun:add_history
+}
