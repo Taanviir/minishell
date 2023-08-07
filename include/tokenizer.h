@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:25:28 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/06 14:04:13 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/07 19:54:56 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ t_cmd	*construct_seqcmd(t_cmd *left, t_cmd *right);
 t_cmd	*construct_bgcmd(t_cmd *cmd);
 
 /* here_document */
-void	here_doc(int fd, char *del, char **envp);
-char	*get_delimiter(char *q, char *eq);
+void	here_doc(const int fd, char *del, char **envp);
+char	*get_delimiter(char *q, const char *eq);
 
 #endif

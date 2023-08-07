@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/07 11:55:10 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/07 21:23:13 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,8 @@ void	runcmd(t_cmd *cmd, char **envp, t_env **env);
 
 // UTILS
 int		length(char *str1, char *str2);
+
+// free_tree
+void free_tree(t_cmd *cmd);
 
 #endif
