@@ -6,7 +6,7 @@
 /*   By: eva-1 <eva-1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 19:55:59 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/08 01:44:34 by eva-1            ###   ########.fr       */
+/*   Updated: 2023/08/08 02:02:14 by eva-1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,24 @@ void free_cmd(t_cmd *cmd)
 	free(exec);
 }
 
+void	free_redir(t_cmd *cmd)
+{
+	t_redircmd *redir;
+
+	redir = (t_redircmd *)cmd;
+	free_tree(redir->cmd);
+	free(redir);	
+}
+
 
 typedef void (*t_free)(t_cmd *cmd);
 
 void free_tree(t_cmd *cmd)
 {
-	t_free tree_free[1];
+	t_free tree_free[2];
 
 	tree_free[0] = free_cmd;
-	// tree_free[1] = free_redir;
+	tree_free[1] = free_redir;
 	// tree_free[2] = free_pipe;
 	// tree_free[3] = free_seq;
 	// tree_free[4] = free_bgcmd;
