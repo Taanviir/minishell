@@ -6,7 +6,7 @@
 #    By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/14 14:38:29 by tanas             #+#    #+#              #
-#    Updated: 2023/08/05 13:37:34 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/08/07 12:48:58 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ RESET = "\033[0m"
 
 NAME = minishell
 C_FLAGS = -Wall -Wextra -Werror -g3
-INCLUDES = -I include/ -I libft/include -I test/ -I/usr/local/Cellar/readline/8.2.1/include/readline
+INCLUDES = -I include/ -I libft/include -I test/
 LIBFT = libft/libft.a
 PARSER = src/parser/parser.a
 BUILTINS = src/builtins/builtins.a
@@ -31,7 +31,7 @@ EXECUTION = src/execution/execution.a
 
 TESTER = test/test.a
 
-LD =  -L/usr/local/Cellar/readline/8.2.1/lib $(PARSER) $(EXECUTION) $(BUILTINS) $(LIBFT) -lreadline -lhistory
+LD =   $(PARSER) $(EXECUTION) $(BUILTINS) $(LIBFT) -lreadline
 
 SRCS_DIR = src/
 SRCS_LIST = main.c signal.c

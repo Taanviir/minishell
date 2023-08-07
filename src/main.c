@@ -88,6 +88,6 @@ int main(int argc, char **argv __attribute__((unused)), char **envp) {
     runcmd(get_cmd(envp, line), envp);
     free(line);
   }
-  rl_clear_history();
+//   rl_clear_history();
   return (EXIT_SUCCESS);
 }

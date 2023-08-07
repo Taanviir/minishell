@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eva-1 <eva-1@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 20:24:32 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/06 18:49:12 by eva-1            ###   ########.fr       */
+/*   Updated: 2023/08/07 15:25:11 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static char *get_fp(char *program_name, bool *absolute_path) {
   path = ft_split(getenv("PATH"), ':');
   fp = NULL;
   i = -1;
-  if (program_name[0] == '/' || program_name[0] == '.') {
+  if (!access(program_name, X_OK)) {
     *absolute_path = true;
     return (program_name);
   }
@@ -75,11 +75,9 @@ static void execute_cmd(t_cmd *cmd, char **envp) {
     execve(fp, execcmd->argv, envp);
     if (!absolute_path)
       free(fp);
-    else {
-      write(2, "minishell: ", 11);
-      write(2, fp, ft_strlen(fp));
-      perror(": ");
-    }
+	write(2, "minishell: ", 11);
+	write(2, fp, ft_strlen(fp));
+	perror(": ");
     exit(0);
   }
   wait(0);
@@ -96,7 +94,7 @@ static void execute_redir(t_cmd *cmd, char **envp) {
   save_fd = dup(redircmd->fd); // saving previous std in/out
   if (!redircmd->here_doc) //! normal redirection
     new_fd = open(redircmd->fp, redircmd->mode, S_IRWXU);
-  else 
+  else
     new_fd = redircmd->here_doc;
   if (new_fd < 0)
     write(2, "file not found\n", 2);
@@ -139,10 +137,12 @@ static void execute_bgcmd(t_cmd *cmd, char **envp) {
 
   bgcmd = (t_bgcmd *)cmd;
   if (!fork()) {
+	//! we handling bg or no?
+	puts("child bg\n");
     runcmd(bgcmd->cmd, envp);
     exit(0);
   }
-  wait(0);
+//   wait(0);
 }
 
 static void execute_seq(t_cmd *cmd, char **envp) {
