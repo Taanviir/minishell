@@ -6,7 +6,7 @@
 /*   By: eva-1 <eva-1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 19:55:59 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/08 02:02:14 by eva-1            ###   ########.fr       */
+/*   Updated: 2023/08/08 02:57:48 by eva-1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,46 @@ void	free_redir(t_cmd *cmd)
 	free(redir);	
 }
 
+void	free_pipe(t_cmd *cmd)
+{
+	t_pipecmd *pipecmd;
+
+	pipecmd = (t_pipecmd *)cmd;
+	free_tree(pipecmd->left);
+	free_tree(pipecmd->right);
+	free(pipecmd);
+}
+
+void	free_seq(t_cmd *cmd)
+{
+	t_seqcmd	*seqcmd;
+	
+	seqcmd = (t_seqcmd *)cmd;
+	free_tree(seqcmd->left);
+	free_tree(seqcmd->right);
+	free(seqcmd);
+}
+
+void	free_bgcmd(t_cmd *cmd)
+{
+	t_bgcmd	*bgcmd;
+
+	bgcmd = (t_bgcmd *)cmd;
+	free_tree(bgcmd->cmd);
+	free(bgcmd);
+}
 
 typedef void (*t_free)(t_cmd *cmd);
 
 void free_tree(t_cmd *cmd)
 {
-	t_free tree_free[2];
+	t_free tree_free[5];
 
 	tree_free[0] = free_cmd;
 	tree_free[1] = free_redir;
-	// tree_free[2] = free_pipe;
-	// tree_free[3] = free_seq;
-	// tree_free[4] = free_bgcmd;
+	tree_free[2] = free_pipe;
+	tree_free[3] = free_seq;
+	tree_free[4] = free_bgcmd;
 	if (!cmd)
 		return;
 	tree_free[cmd->type](cmd);

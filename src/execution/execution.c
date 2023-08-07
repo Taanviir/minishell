@@ -6,7 +6,7 @@
 /*   By: eva-1 <eva-1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 20:24:32 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/08 01:39:48 by eva-1            ###   ########.fr       */
+/*   Updated: 2023/08/08 03:21:35 by eva-1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,12 @@ static void execute_cmd(t_cmd *cmd, char **envp, t_env **env) {
 	write(2, "minishell: ", 11);
 	write(2, fp, ft_strlen(fp));
 	perror(": ");
+	free_tree(cmd);
     exit(0);
   }
   wait(0);
-  if (!absolute_path)
-    free(fp);
+	if (!absolute_path)
+		free(fp);
 }
 // the here-doc case does this one completely different
 static void execute_redir(t_cmd *cmd, char **envp, t_env **env) {
@@ -128,12 +129,14 @@ static void execute_pipe(t_cmd *cmd, char **envp, t_env **env)
 		close(p[0]);
 		close(p[1]);
 		runcmd(pipecmd->left, envp, env);
+		free_tree(cmd);
 		exit(0);
 	} else if (!fork()) {
 		dup2(p[0], STDIN_FILENO);
 		close(p[0]);
 		close(p[1]);
 		runcmd(pipecmd->right, envp, env);
+		free_tree(cmd);
 		exit(0);
 	}
 	close(p[0]);
@@ -151,6 +154,7 @@ static void execute_bgcmd(t_cmd *cmd, char **envp, t_env **env)
 	if (!fork())
 	{
 		runcmd(bgcmd->cmd, envp, env);
+		free_tree(cmd);
 		exit(0);
 	}
 	wait(0);
@@ -164,6 +168,7 @@ static void execute_seq(t_cmd *cmd, char **envp, t_env **env)
 	if (!fork())
 	{
 		runcmd(seqcmd->left, envp, env);
+		free_tree(cmd);
 		exit(0);
 	}
 	wait(NULL);
