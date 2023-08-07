@@ -80,7 +80,7 @@ int	ft_export(char **argv, char **envp, t_env **env)
 	int		i;
 	t_env	*temp;
 
-	if (!argv[1])
+	if (!argv[1] && envp)
 		return (print_env_list(envp), 1);
 	i = 0;
 	while (argv[++i])
@@ -99,7 +99,6 @@ int	ft_export(char **argv, char **envp, t_env **env)
 		}
 		if (temp->next == *env)
 			add_node_bottom(env, argv[i]);
-		printf("%s\n", temp->next->name);
 	}
 	return (0);
 }

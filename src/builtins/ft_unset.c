@@ -33,7 +33,7 @@ int	ft_unset(char **argv, t_env **env)
 			}
 			temp = temp->next;
 			if (temp == *env)
-				break;
+				break ;
 		}
 	}
 	return (0);

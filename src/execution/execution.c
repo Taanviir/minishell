@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 20:24:32 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/07 14:31:49 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/07 15:22:21 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ static char *get_fp(char *program_name) {
 	char **path;
 	int i;
 
-	if (access(program_name, X_OK) == 0)
-		return (ft_strdup(program_name));
 	path = ft_split(getenv("PATH"), ':');
 	fp = NULL;
 	i = -1;

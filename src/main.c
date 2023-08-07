@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/07 14:15:50 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/07 15:15:26 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ int main(int argc, char **argv __attribute__((unused)), char **envp)
 	if (argc != 1)
 		return (printf(RED_B "Error: %s\n" WHITE, strerror(E2BIG)), ERR_ARGS);
 	receive_signal();
+	// unset env that need to be unset
 	environment_init(&env, envp);
 	while (g_signal.exit_status == 0)
 	{

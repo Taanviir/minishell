@@ -6,15 +6,31 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:54:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/07 14:39:25 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/07 15:27:34 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	set_and_export(char **argv, t_env **env, char *old_path)
+{
+	char	*path;
+
+	path = getcwd(NULL, 0);
+	argv[0] = "export";
+	argv[1] = ft_strjoin("OLDPWD=", old_path);
+	argv[2] = ft_strjoin("PWD=", path);
+	ft_export(argv, NULL, env);
+	free(argv[1]);
+	free(argv[2]);
+	free(old_path);
+	free(path);
+}
+
 int	ft_cd(char **argv, t_env **env)
 {
 	char	*path;
+	char	*old_path;
 
 	if (argv[2])
 		return (printf("minishell: cd: too many arguments\n"), 1);
@@ -29,15 +45,13 @@ int	ft_cd(char **argv, t_env **env)
 	}
 	else
 		path = argv[1];
-	if (chdir(path) == -1)
-		return (printf("minishell: cd: no such file or directory: %s\n", path), 3);
-	//update $OLDPWD and $PWD
-	// free(argv[1]);
-	// path = getcwd(NULL, 0);
-	// argv[1] = ft_strjoin("PWD=", path);
-	// free(argv[1]);
-	// free(path);
-	// ft_export(argv, env);	
-	//! OLDPWD needs to be unset when minishell is launched
+	old_path = getcwd(NULL, 0);
+	if (chdir(path) == 0)
+		set_and_export(argv, env, old_path);
+	else
+	{
+		free(old_path);
+		return (printf("cd: no such file or directory: %s\n", path), 3);
+	}
 	return (0);
 }
