@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 20:24:32 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/07 15:22:21 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/07 16:19:49 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static int	execute_builtin(t_exec *cmd, char **envp, t_env **env)
 	return (1);
 }
 
-static void execute_cmd(t_cmd *cmd, char **envp) {
+static void execute_cmd(t_cmd *cmd, char **envp, t_env **env) {
   t_exec *execcmd;
   char *fp;
   bool absolute_path; //!
@@ -73,7 +73,7 @@ static void execute_cmd(t_cmd *cmd, char **envp) {
   execcmd = (t_exec *)cmd;
   if (!execcmd->argv[0])
     return;
-  if (!execute_builtin(execcmd, envp))
+  if (!execute_builtin(execcmd, envp, env))
     return;
   fp = get_fp(execcmd->argv[0], &absolute_path);
   if (!fp)
