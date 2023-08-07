@@ -21,23 +21,20 @@ static char	*get_dir(void)
 	char	*last;
 	char	*temp;
 
-	dir = getcwd(NULL, 0);
-	if (!ft_strncmp(dir, getenv("HOME"), ft_strlen(dir)))
-	{
-		free(dir);
-		dir = ft_strdup("[~]");
-	}
-	else
-	{
-		last = ft_strrchr(dir, '/');
-		if (last)
-		{
-			temp = ft_bigjoin(3, "[", last + 1, "]");
-			free(dir);
-			dir = temp;
-		}
-	}
-	return (dir);
+
+  dir = getcwd(NULL, 0);
+  if (!ft_strncmp(dir, getenv("HOME"), ft_strlen(dir))) {
+    free(dir);
+    dir = ft_strdup("[~]");
+  } else {
+    last = ft_strrchr(dir, '/');
+    if (last) {
+      temp = ft_bigjoin(3, "[", last + 1, "]");
+      free(dir);
+      dir = temp;
+    }
+  }
+  return (dir);
 }
 
 #ifdef TEST
@@ -46,17 +43,17 @@ t_cmd *get_cmd(char **envp, char *line) {
   char *dir;
   char *prompt;
 
-	dir = get_dir();
-	prompt = ft_bigjoin(3, MAGENTA_B"ghost@shell:"BLUE, dir, " → "WHITE);
-	line = readline(MAGENTA_B"ghost@shell → "WHITE);
-	free(prompt);
-	free(dir);
-	if (!line)
-		return (ft_exit(), NULL);
-	add_history(line);
-	root = parsecmd(line, envp);
-	test(root);
-	return (root);
+  dir = get_dir();
+  prompt = ft_bigjoin(3, MAGENTA_B "ghost@shell:" BLUE, dir, " → " WHITE);
+  line = readline(MAGENTA_B "ghost@shell → " WHITE);
+  free(prompt);
+  free(dir);
+  if (!line)
+    return (ft_exit(), NULL);
+  add_history(line);
+  root = parsecmd(line, envp);
+  test(root);
+  return (root);
 }
 #else
 t_cmd *get_cmd(char **envp, char *line)
@@ -65,17 +62,20 @@ t_cmd *get_cmd(char **envp, char *line)
 	char	*prompt;
 	t_cmd	*root;
 
-	dir = get_dir();
-	prompt = ft_bigjoin(3, MAGENTA_B"ghost@shell:"BLUE, dir, " → "WHITE);
-	// write(2, prompt, ft_strlen(prompt));
-	line = readline(prompt);
-	free(prompt);
-	free(dir);
-	if (!line)
-		return (ft_exit(0), NULL);
-	add_history(line);
-	root = parsecmd(line, envp);
-	return (root);
+  dir = get_dir();
+  prompt = ft_bigjoin(3, MAGENTA_B "ghost@shell:" BLUE, dir, " → " WHITE);
+  //! way too many problems caused by this shit
+  // write(2, prompt, ft_strlen(prompt)); //! writing prompt to stderr
+  // rl_already_prompted = 1;
+  line = readline(prompt);
+  free(prompt);
+  free(dir);
+  if (!line)
+    return (ft_exit(0), NULL);
+  add_history(line);
+  root = parsecmd(line, envp);
+  return (root);
+
 }
 #endif
 
@@ -83,6 +83,7 @@ int main(int argc, char **argv __attribute__((unused)), char **envp)
 {
 	char	*line;
 	t_env	*env;
+
 
 	if (argc != 1)
 		return (printf(RED_B "Error: %s\n" WHITE, strerror(E2BIG)), ERR_ARGS);

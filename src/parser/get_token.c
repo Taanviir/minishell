@@ -18,28 +18,30 @@ static bool is_opr(char c) {
 
 /* returns the type of a token,
 helper function for get_token */
-static char find_type(char **scan) {
-  int in_quote;
+	static char find_type(char **scan) {
+	int in_quote;
 
-  in_quote = 0;
-  if (!**scan)
-    return (0);
-  else if (is_opr(**scan)) {
-    if (!ft_strncmp(*scan, ">>", 2) && ((*scan)++))
-      return ('+');
-    return (**scan);
-  }
-  if (**scan == '\"' || **scan == '\'')
-    in_quote = **scan;
-  while (scan[0][1] &&
-         (in_quote || (!ft_is_whitespace(scan[0][1]) && !is_opr(scan[0][1])))) {
-    *scan += 1;
-    if (!(**scan - in_quote))
-      return ('q');
-  }
-  if (in_quote) //! maybe return u to handle unclosed quote
-    return (0);
-  return ('a');
+	in_quote = 0;
+	if (!**scan)
+		return (0);
+	else if (is_opr(**scan)) {
+		if (!ft_strncmp(*scan, ">>", 2) && ((*scan)++))
+			return ('+');
+		else if (!ft_strncmp(*scan, "<<", 2) && ((*scan)++))
+			return ('-');
+		return (**scan);
+	}
+	if (**scan == '\"' || **scan == '\'')
+		in_quote = **scan;
+	while (scan[0][1] &&
+			(in_quote || (!ft_is_whitespace(scan[0][1]) && !is_opr(scan[0][1])))) {
+		*scan += 1;
+			if (!(**scan - in_quote))
+				return ('q');
+	}
+	if (in_quote) //! maybe return u to handle unclosed quote
+		return (0);
+	return ('a');
 }
 
 /*

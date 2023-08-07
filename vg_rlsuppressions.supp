@@ -1,0 +1,7 @@
+{
+   readline_common_leak
+   Memcheck:Leak
+   match-leak-kinds: possible,definite
+   fun:rl_initialize
+}
+

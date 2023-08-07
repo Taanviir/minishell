@@ -39,6 +39,7 @@ typedef struct s_redircmd
 	t_cmd	*cmd;
 	char	*fp;
 	char	*efp;
+	int 	here_doc; //! here_doc case
 	int		mode;
 	int		fd;
 }	t_redircmd;
@@ -76,5 +77,9 @@ t_cmd	*construct_redircmd(t_cmd *command, char *fp, char *efp, int mode, int fd)
 t_cmd	*construct_pipecmd(t_cmd *left, t_cmd *right);
 t_cmd	*construct_seqcmd(t_cmd *left, t_cmd *right);
 t_cmd	*construct_bgcmd(t_cmd *cmd);
+
+/* here_document */
+void	here_doc(int fd, char *del, char **envp);
+char	*get_delimiter(char *q, char *eq);
 
 #endif

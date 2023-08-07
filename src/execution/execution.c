@@ -12,27 +12,30 @@
 
 #include "minishell.h"
 
-static char *get_fp(char *program_name) {
-	char *fp;
-	char **path;
-	int i;
 
-	path = ft_split(getenv("PATH"), ':');
-	fp = NULL;
-	i = -1;
-	while (path[++i])
-	{
-		fp = ft_bigjoin(3, path[i], "/", program_name);
-		if (!access(fp, X_OK))
-			break;
-		else
-		{
-			free(fp);
-			fp = NULL;
-		}
-	}
-	free_double_ptr((void **)path);
-	return (fp);
+static char *get_fp(char *program_name, bool *absolute_path) {
+  char *fp;
+  char **path;
+  int i;
+
+  path = ft_split(getenv("PATH"), ':');
+  fp = NULL;
+  i = -1;
+  if (!access(program_name, X_OK)) {
+    *absolute_path = true;
+    return (program_name);
+  }
+  while (path[++i]) {
+    fp = ft_bigjoin(3, path[i], "/", program_name);
+    if (!access(fp, X_OK))
+      break;
+    else {
+      free(fp);
+      fp = NULL;
+    }
+  }
+  free_double_ptr((void **)path);
+  return (fp);
 }
 
 int	length(char *str1, char *str2)
@@ -61,43 +64,55 @@ static int	execute_builtin(t_exec *cmd, char **envp, t_env **env)
 	return (1);
 }
 
-static void	execute_cmd(t_cmd *cmd, char **envp, t_env **env)
-{
-	t_exec	*execcmd;
-	char	*fp;
+static void execute_cmd(t_cmd *cmd, char **envp) {
+  t_exec *execcmd;
+  char *fp;
+  bool absolute_path; //!
 
-	execcmd = (t_exec *)cmd;
-	if (!execcmd->argv[0])
-		return ;
-	if (!execute_builtin(execcmd, envp, env))
-		return ;
-	fp = get_fp(execcmd->argv[0]);
-	if (!fp)
+  absolute_path = false;
+  execcmd = (t_exec *)cmd;
+  if (!execcmd->argv[0])
+    return;
+  if (!execute_builtin(execcmd, envp))
+    return;
+  fp = get_fp(execcmd->argv[0], &absolute_path);
+  if (!fp)
 	{
 		printf("%s: command not found\n", fp);
 		return ;
 	}
-	if (!fork())
-	{
-		execve(fp, execcmd->argv, envp);
-		free(fp);
-	}
-	wait(0);
-	free(fp);
+  if (!fork()) {
+    execve(fp, execcmd->argv, envp);
+    if (!absolute_path)
+      free(fp);
+	write(2, "minishell: ", 11);
+	write(2, fp, ft_strlen(fp));
+	perror(": ");
+    exit(0);
+  }
+  wait(0);
+  if (!absolute_path)
+    free(fp);
 }
+// the here-doc case does this one completely different
+static void execute_redir(t_cmd *cmd, char **envp, t_env **env) {
+  t_redircmd *redircmd;
+  int new_fd;
+  int save_fd;
 
-static void execute_redir(t_cmd *cmd, char **envp, t_env **env)
-{
-	t_redircmd	*redircmd;
-	int			new_fd;
-
-	redircmd = (t_redircmd *)cmd;
-	new_fd = open(redircmd->fp, redircmd->mode, S_IRWXU);
-	if (new_fd < 0)
-		write(2, "file not found\n", 2);
-	dup2(new_fd, redircmd->fd);
-	runcmd(redircmd->cmd, envp, env);
-	close(new_fd);
+  redircmd = (t_redircmd *)cmd;
+  save_fd = dup(redircmd->fd); // saving previous std in/out
+  if (!redircmd->here_doc) //! normal redirection
+    new_fd = open(redircmd->fp, redircmd->mode, S_IRWXU);
+  else
+    new_fd = redircmd->here_doc;
+  if (new_fd < 0)
+    write(2, "file not found\n", 2);
+  dup2(new_fd, redircmd->fd); // replacing cmd->fd with the new fd (read pipe file/pipe, or write file/pipe)
+  close(new_fd);
+  runcmd(redircmd->cmd, envp, env);
+  dup2(save_fd, redircmd->fd);
+  close(save_fd);
 }
 
 static void execute_pipe(t_cmd *cmd, char **envp, t_env **env)
