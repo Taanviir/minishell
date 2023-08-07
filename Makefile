@@ -34,7 +34,7 @@ TESTER = test/test.a
 LD =   $(PARSER) $(EXECUTION) $(BUILTINS) $(LIBFT) -lreadline
 
 SRCS_DIR = src/
-SRCS_LIST = main.c signal.c
+SRCS_LIST = main.c signal.c environment.c
 SRCS = $(addprefix $(SRCS_DIR), $(SRCS_LIST))
 
 OBJS_DIR = obj/

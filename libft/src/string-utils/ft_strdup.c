@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 11:56:10 by tanas             #+#    #+#             */
-/*   Updated: 2022/11/16 12:51:32 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/06 00:12:32 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*ft_strdup(const char *s1)
 	if (!dup)
 		return (NULL);
 	i = 0;
-	while (s1[i])
+	while (s1 && s1[i])
 	{
 		dup[i] = s1[i];
 		i++;

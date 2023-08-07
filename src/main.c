@@ -3,24 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/04 21:44:38by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/07 15:15:26 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../test/test.h"
 #include "minishell.h"
-#include <readline/readline.h>
-#include <stdio.h>
 
 t_signal g_signal;
 
-char *get_dir(void) {
-  char *dir;
-  char *last;
-  char *temp;
+static char	*get_dir(void)
+{
+	char	*dir;
+	char	*last;
+	char	*temp;
+
 
   dir = getcwd(NULL, 0);
   if (!ft_strncmp(dir, getenv("HOME"), ft_strlen(dir))) {
@@ -56,10 +56,11 @@ t_cmd *get_cmd(char **envp, char *line) {
   return (root);
 }
 #else
-t_cmd *get_cmd(char **envp, char *line) {
-  char *dir;
-  char *prompt;
-  t_cmd *root;
+t_cmd *get_cmd(char **envp, char *line)
+{
+	char	*dir;
+	char	*prompt;
+	t_cmd	*root;
 
   dir = get_dir();
   prompt = ft_bigjoin(3, MAGENTA_B "ghost@shell:" BLUE, dir, " → " WHITE);
@@ -74,20 +75,28 @@ t_cmd *get_cmd(char **envp, char *line) {
   add_history(line);
   root = parsecmd(line, envp);
   return (root);
+
 }
 #endif
 
-int main(int argc, char **argv __attribute__((unused)), char **envp) {
-  char *line;
+int main(int argc, char **argv __attribute__((unused)), char **envp)
+{
+	char	*line;
+	t_env	*env;
 
-  if (argc != 1)
-    return (printf(RED_B "Error: %s\n" WHITE, strerror(E2BIG)), ERR_ARGS);
-  receive_signal();
-  while (g_signal.exit_status == 0) {
-    line = NULL;
-    runcmd(get_cmd(envp, line), envp);
-    free(line);
-  }
-//   rl_clear_history();
-  return (EXIT_SUCCESS);
+
+	if (argc != 1)
+		return (printf(RED_B "Error: %s\n" WHITE, strerror(E2BIG)), ERR_ARGS);
+	receive_signal();
+	// unset env that need to be unset
+	environment_init(&env, envp);
+	while (g_signal.exit_status == 0)
+	{
+		line = NULL;
+		runcmd(get_cmd(envp, line), envp, &env);
+		free(line);
+	}
+	free_env_list(&env);
+	// rl_clear_history();
+	return (EXIT_SUCCESS);
 }

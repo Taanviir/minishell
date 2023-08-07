@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 20:24:32 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/07 15:25:11 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/07 15:22:21 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 
 static char *get_fp(char *program_name, bool *absolute_path) {
   char *fp;
@@ -37,24 +38,30 @@ static char *get_fp(char *program_name, bool *absolute_path) {
   return (fp);
 }
 
-//!
-static int execute_builtin(t_exec *cmd, char **envp) {
-  (void)envp;
-  if (!ft_strncmp(cmd->argv[0], "echo", ft_strlen(cmd->argv[0])))
-    return (ft_echo(cmd->argv), 0);
-  if (!ft_strncmp(cmd->argv[0], "cd", ft_strlen(cmd->argv[0])))
-    return (ft_cd(cmd->argv), 0);
-  else if (!ft_strncmp(cmd->argv[0], "pwd", ft_strlen(cmd->argv[0])))
-    return (ft_pwd(), 0);
-  // else if (!ft_strncmp(cmd->argv[0], "export", ft_strlen(cmd->argv[0])))
-  // 	return (ft_export(cmd->argv, envp), 0);
-  // 	else if (!ft_strncmp(cmd->argv[0], "unset", ft_strlen(cmd->argv[0])))
-  // 		return (ft_unset(cmd->argv, envp), 0);
-  else if (!ft_strncmp(cmd->argv[0], "env", ft_strlen(cmd->argv[0])))
-    return (ft_env(envp), 0);
-  else if (!ft_strncmp(cmd->argv[0], "exit", ft_strlen(cmd->argv[0])))
-    return (ft_exit(EXIT_SUCCESS), 0);
-  return (1);
+int	length(char *str1, char *str2)
+{
+	if (ft_strlen(str1) > ft_strlen(str2))
+		return (ft_strlen(str1));
+	return (ft_strlen(str2));
+}
+
+static int	execute_builtin(t_exec *cmd, char **envp, t_env **env)
+{
+	if (!ft_strncmp(cmd->argv[0], "echo", length(cmd->argv[0], "echo")))
+		return (ft_echo(cmd->argv), 0);
+	if (!ft_strncmp(cmd->argv[0], "cd", length(cmd->argv[0], "cd")))
+		return (ft_cd(cmd->argv, env), 0);
+	else if (!ft_strncmp(cmd->argv[0], "pwd", length(cmd->argv[0], "pwd")))
+		return (ft_pwd(), 0);
+	else if (!ft_strncmp(cmd->argv[0], "export", length(cmd->argv[0], "export")))
+		return (ft_export(cmd->argv, envp, env), 0);
+	else if (!ft_strncmp(cmd->argv[0], "unset", length(cmd->argv[0], "unset")))
+		return (ft_unset(cmd->argv, env), 0);
+	else if (!ft_strncmp(cmd->argv[0], "env", length(cmd->argv[0], "env")))
+		return (ft_env(cmd->argv, env), 0);
+	else if (!ft_strncmp(cmd->argv[0], "exit", length(cmd->argv[0], "exit")))
+		return (ft_exit(EXIT_SUCCESS), 0);
+	return (1);
 }
 
 static void execute_cmd(t_cmd *cmd, char **envp) {
@@ -69,9 +76,12 @@ static void execute_cmd(t_cmd *cmd, char **envp) {
   if (!execute_builtin(execcmd, envp))
     return;
   fp = get_fp(execcmd->argv[0], &absolute_path);
+  if (!fp)
+	{
+		printf("%s: command not found\n", fp);
+		return ;
+	}
   if (!fork()) {
-    if (!fp)
-      ft_error("command not found", 3);
     execve(fp, execcmd->argv, envp);
     if (!absolute_path)
       free(fp);
@@ -85,7 +95,7 @@ static void execute_cmd(t_cmd *cmd, char **envp) {
     free(fp);
 }
 // the here-doc case does this one completely different
-static void execute_redir(t_cmd *cmd, char **envp) {
+static void execute_redir(t_cmd *cmd, char **envp, t_env **env) {
   t_redircmd *redircmd;
   int new_fd;
   int save_fd;
@@ -100,74 +110,78 @@ static void execute_redir(t_cmd *cmd, char **envp) {
     write(2, "file not found\n", 2);
   dup2(new_fd, redircmd->fd); // replacing cmd->fd with the new fd (read pipe file/pipe, or write file/pipe)
   close(new_fd);
-  runcmd(redircmd->cmd, envp);
+  runcmd(redircmd->cmd, envp, env);
   dup2(save_fd, redircmd->fd);
   close(save_fd);
 }
 
-static void execute_pipe(t_cmd *cmd, char **envp) {
-  t_pipecmd *pipecmd;
-  int p[2];
+static void execute_pipe(t_cmd *cmd, char **envp, t_env **env)
+{
+	t_pipecmd	*pipecmd;
+	int			p[2];
 
-  pipecmd = (t_pipecmd *)cmd;
-  if (pipe(p) < 0)
-    write(2, "failed to pipe\n", 16);
-  if (!fork()) {
-    dup2(p[1], STDOUT_FILENO);
-    close(p[0]);
-    close(p[1]);
-    runcmd(pipecmd->left, envp);
-    exit(0);
-  } else if (!fork()) {
-    dup2(p[0], STDIN_FILENO);
-    close(p[0]);
-    close(p[1]);
-    runcmd(pipecmd->right, envp);
-    exit(0);
-  }
-  close(p[0]);
-  close(p[1]);
-  wait(0);
-  wait(0);
+	pipecmd = (t_pipecmd *)cmd;
+	if (pipe(p) < 0)
+		write(2, "failed to pipe\n", 16);
+	if (!fork()) {
+		dup2(p[1], STDOUT_FILENO);
+		close(p[0]);
+		close(p[1]);
+		runcmd(pipecmd->left, envp, env);
+		exit(0);
+	} else if (!fork()) {
+		dup2(p[0], STDIN_FILENO);
+		close(p[0]);
+		close(p[1]);
+		runcmd(pipecmd->right, envp, env);
+		exit(0);
+	}
+	close(p[0]);
+	close(p[1]);
+	wait(0);
+	wait(0);
 }
 
 //! handle printf &
-static void execute_bgcmd(t_cmd *cmd, char **envp) {
-  t_bgcmd *bgcmd;
+static void execute_bgcmd(t_cmd *cmd, char **envp, t_env **env)
+{
+	t_bgcmd	*bgcmd;
 
-  bgcmd = (t_bgcmd *)cmd;
-  if (!fork()) {
-	//! we handling bg or no?
-	puts("child bg\n");
-    runcmd(bgcmd->cmd, envp);
-    exit(0);
-  }
-//   wait(0);
+	bgcmd = (t_bgcmd *)cmd;
+	if (!fork())
+	{
+		runcmd(bgcmd->cmd, envp, env);
+		exit(0);
+	}
+	wait(0);
 }
 
-static void execute_seq(t_cmd *cmd, char **envp) {
-  t_seqcmd *seqcmd;
+static void execute_seq(t_cmd *cmd, char **envp, t_env **env)
+{
+	t_seqcmd	*seqcmd;
 
-  seqcmd = (t_seqcmd *)cmd;
-  if (!fork()) {
-    runcmd(seqcmd->left, envp);
-    exit(0);
-  }
-  wait(NULL);
-  runcmd(seqcmd->right, envp);
+	seqcmd = (t_seqcmd *)cmd;
+	if (!fork())
+	{
+		runcmd(seqcmd->left, envp, env);
+		exit(0);
+	}
+	wait(NULL);
+	runcmd(seqcmd->right, envp, env);
 }
 
-typedef void (*t_execute)(t_cmd *cmd, char **envp);
+typedef void (*t_execute)(t_cmd *cmd, char **envp, t_env **env);
 
-void runcmd(t_cmd *cmd, char **envp) {
-  t_execute executers[5];
+void runcmd(t_cmd *cmd, char **envp, t_env **env)
+{
+	t_execute executers[5];
 
-  executers[0] = execute_cmd;
-  executers[1] = execute_redir;
-  executers[2] = execute_pipe;
-  executers[3] = execute_seq;
-  executers[4] = execute_bgcmd;
-  if (!cmd)
-    return;
-  executers[cmd->type](cmd, envp);
+	executers[0] = execute_cmd;
+	executers[1] = execute_redir;
+	executers[2] = execute_pipe;
+	executers[3] = execute_seq;
+	executers[4] = execute_bgcmd;
+	if (!cmd)
+		return;
+	executers[cmd->type](cmd, envp, env);
 }

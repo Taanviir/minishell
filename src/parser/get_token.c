@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_token.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/02 07:38:08 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/04 21:31:17 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/06 14:05:45 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,24 +55,25 @@ helper function for get_token */
 ? note: buffer is the return of readline
 */
 char get_token(char **buffer_start, char *buffer_end, char **token_start,
-               char **token_end) {
-  char token_type;
-  char *scan;
+               char **token_end)
+{
+	char	token_type;
+	char	*scan;
 
-  scan = *buffer_start;
-  while (scan < buffer_end && ft_is_whitespace(*scan))
-    scan++;
-  if (token_start)
-    *token_start = scan;
-  token_type = find_type(&scan);
-  if (*scan)
-    scan++;
-  if (token_end)
-    *token_end = scan;
-  while (scan < buffer_end && ft_is_whitespace(*scan))
-    scan++;
-  *buffer_start = scan;
-  // if (!(token_start - token_end))
-  // 	return (0);
-  return (token_type);
+	scan = *buffer_start;
+	while (scan < buffer_end && ft_is_whitespace(*scan))
+		scan++;
+	if (token_start)
+		*token_start = scan;
+	token_type = find_type(&scan);
+	if (*scan)
+		scan++;
+	if (token_end)
+		*token_end = scan;
+	while (scan < buffer_end && ft_is_whitespace(*scan))
+		scan++;
+	*buffer_start = scan;
+	// if (!(token_start - token_end))
+	// 	return (0);
+	return (token_type);
 }

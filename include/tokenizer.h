@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:25:28 by tanas             #+#    #+#             */
-/*   Updated: 2023/07/31 20:21:09by stanas           ###   ########.fr       */
+/*   Updated: 2023/08/06 14:04:13 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,9 @@ typedef struct s_bgcmd
 	t_cmd	*cmd;
 }	t_bgcmd;
 
-char	get_token(char **b_start, char *b_end, char **q, char **eq);
+
+/* tokenizers */
+char	get_token(char **buffer_start, char *buffer_end, char **token_start, char **token_end);
 char	*expand(char *q, char *eq, char **envp);
 int		peek(char **b_start, char *b_end, const char *str);
 t_cmd	*parsecmd(char *b_start, char **envp);
@@ -75,9 +77,6 @@ t_cmd	*construct_redircmd(t_cmd *command, char *fp, char *efp, int mode, int fd)
 t_cmd	*construct_pipecmd(t_cmd *left, t_cmd *right);
 t_cmd	*construct_seqcmd(t_cmd *left, t_cmd *right);
 t_cmd	*construct_bgcmd(t_cmd *cmd);
-
-/* executors */
-void	runcmd(t_cmd *cmd, char **envp);
 
 /* here_document */
 void	here_doc(int fd, char *del, char **envp);
