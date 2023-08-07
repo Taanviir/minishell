@@ -6,7 +6,7 @@
 #    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/14 14:38:29 by tanas             #+#    #+#              #
-#    Updated: 2023/07/31 01:25:52 by tanas            ###   ########.fr        #
+#    Updated: 2023/08/06 13:59:10 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ TESTER = test/test.a
 LD = -lreadline $(PARSER) $(EXECUTION) $(BUILTINS) $(LIBFT)
 
 SRCS_DIR = src/
-SRCS_LIST = main.c signal.c
+SRCS_LIST = main.c signal.c environment.c
 SRCS = $(addprefix $(SRCS_DIR), $(SRCS_LIST))
 
 OBJS_DIR = obj/

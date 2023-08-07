@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/05 12:55:21 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/06 14:06:14 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 t_signal g_signal;
 
-char	*get_dir(void)
+static char	*get_dir(void)
 {
 	char	*dir;
 	char	*last;
@@ -79,17 +79,22 @@ t_cmd *get_cmd(char **envp, char *line)
 }
 #endif
 
-int main(int argc, char **argv __attribute__((unused)), char **envp) {
-  char *line;
+int main(int argc, char **argv __attribute__((unused)), char **envp)
+{
+	char	*line;
+	t_env	*env;
 
-  if (argc != 1)
-    return (printf(RED_B "Error: %s\n" WHITE, strerror(E2BIG)), ERR_ARGS);
-  receive_signal();
-  while (g_signal.exit_status == 0) {
-    line = NULL;
-    runcmd(get_cmd(envp, line), envp);
-    free(line);
-  }
-//   rl_clear_history();
-  return (EXIT_SUCCESS);
+	if (argc != 1)
+		return (printf(RED_B "Error: %s\n" WHITE, strerror(E2BIG)), ERR_ARGS);
+	receive_signal();
+	environment_init(&env, envp);
+	while (g_signal.exit_status == 0)
+	{
+		line = NULL;
+		runcmd(get_cmd(envp, line), envp, &env);
+		free(line);
+	}
+	free_env_list(&env);
+	rl_clear_history();
+	return (EXIT_SUCCESS);
 }

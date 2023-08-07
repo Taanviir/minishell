@@ -12,16 +12,17 @@
 
 #include "minishell.h"
 
-void	ft_pwd(void)
+int	ft_pwd(void)
 {
 	char	*path;
 
 	path = getcwd(NULL, 0);
 	printf("%s\n", path);
 	free(path);
+	return (0);
 }
 
-void	ft_echo(char **argv)
+int	ft_echo(char **argv)
 {
 	bool	show_newline;
 	int		i;
@@ -42,6 +43,7 @@ void	ft_echo(char **argv)
 	}
 	if (show_newline)
 		ft_putchar_fd('\n', 1);
+	return (0);
 }
 
 int	ft_exit(int err_num)
@@ -49,4 +51,21 @@ int	ft_exit(int err_num)
 	g_signal.exit_status = err_num;
 	printf("exit\n");
 	exit(g_signal.exit_status);
+}
+
+int	ft_env(char **argv, t_env **env)
+{
+	t_env	*temp;
+
+	if (argv[1])
+		return (printf("env: %s: No such file or directory\n", argv[1]), 1);
+	temp = *env;
+	while (temp)
+	{
+		printf("%s=%s\n", temp->name, temp->value);
+		temp = temp->next;
+		if (temp == *env)
+			break ;
+	}
+	return (0);
 }

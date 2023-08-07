@@ -6,13 +6,13 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:54:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/05 14:51:55 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/06 14:11:54 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_cd(char **argv, char **envp)
+int	ft_cd(char **argv, t_env **env)
 {
 	char	*path;
 
@@ -31,16 +31,17 @@ int	ft_cd(char **argv, char **envp)
 		path = argv[1];
 	if (chdir(path) == -1)
 		return (printf("minishell: cd: no such file or directory: %s\n", path), 3);
+	(void) env;
 	//update $OLDPWD and $PWD
-	argv[0] = "export";
-	argv[1] = ft_strjoin("OLDPWD=", path);
-	ft_export(argv, envp);
-	free(argv[1]);
+	// argv[0] = "export";
+	// argv[1] = ft_strjoin("OLDPWD=", path);
+	// ft_export(argv, env);
+	// free(argv[1]);
 	// path = getcwd(NULL, 0);
 	// argv[1] = ft_strjoin("PWD=", path);
 	// free(argv[1]);
 	// free(path);
-	// ft_export(argv, envp);	
+	// ft_export(argv, env);	
 	//! OLDPWD needs to be unset when minishell is launched
 	return (0);
 }
