@@ -6,7 +6,7 @@
 /*   By: eva-1 <eva-1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 20:24:32 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/08 03:21:35 by eva-1            ###   ########.fr       */
+/*   Updated: 2023/08/08 03:41:33 by eva-1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,22 +45,28 @@ int	length(char *str1, char *str2)
 	return (ft_strlen(str2));
 }
 
-static int	execute_builtin(t_exec *cmd, char **envp, t_env **env)
+static int	execute_builtin(t_cmd *cmd, char **envp, t_env **env)
 {
-	if (!ft_strncmp(cmd->argv[0], "echo", length(cmd->argv[0], "echo")))
-		return (ft_echo(cmd->argv), 0);
-	if (!ft_strncmp(cmd->argv[0], "cd", length(cmd->argv[0], "cd")))
-		return (ft_cd(cmd->argv, env), 0);
-	else if (!ft_strncmp(cmd->argv[0], "pwd", length(cmd->argv[0], "pwd")))
+	t_exec	*exec;
+
+	exec = (t_exec *)cmd;
+	if (!ft_strncmp(exec->argv[0], "echo", length(exec->argv[0], "echo")))
+		return (ft_echo(exec->argv), 0);
+	if (!ft_strncmp(exec->argv[0], "cd", length(exec->argv[0], "cd")))
+		return (ft_cd(exec->argv, env), 0);
+	else if (!ft_strncmp(exec->argv[0], "pwd", length(exec->argv[0], "pwd")))
 		return (ft_pwd(), 0);
-	else if (!ft_strncmp(cmd->argv[0], "export", length(cmd->argv[0], "export")))
-		return (ft_export(cmd->argv, envp, env), 0);
-	else if (!ft_strncmp(cmd->argv[0], "unset", length(cmd->argv[0], "unset")))
-		return (ft_unset(cmd->argv, env), 0);
-	else if (!ft_strncmp(cmd->argv[0], "env", length(cmd->argv[0], "env")))
-		return (ft_env(cmd->argv, env), 0);
-	else if (!ft_strncmp(cmd->argv[0], "exit", length(cmd->argv[0], "exit")))
+	else if (!ft_strncmp(exec->argv[0], "export", length(exec->argv[0], "export")))
+		return (ft_export(exec->argv, envp, env), 0);
+	else if (!ft_strncmp(exec->argv[0], "unset", length(exec->argv[0], "unset")))
+		return (ft_unset(exec->argv, env), 0);
+	else if (!ft_strncmp(exec->argv[0], "env", length(exec->argv[0], "env")))
+		return (ft_env(exec->argv, env), 0);
+	else if (!ft_strncmp(exec->argv[0], "exit", length(exec->argv[0], "exit"))){
+		//! shit's weird homie, can't exit mid program
+		free_tree(cmd);
 		return (ft_exit(EXIT_SUCCESS), 0);
+	}
 	return (1);
 }
 
@@ -73,7 +79,7 @@ static void execute_cmd(t_cmd *cmd, char **envp, t_env **env) {
   execcmd = (t_exec *)cmd;
   if (!execcmd->argv[0])
     return;
-  if (!execute_builtin(execcmd, envp, env))
+  if (!execute_builtin(cmd, envp, env))
     return;
   fp = get_fp(execcmd->argv[0], &absolute_path);
   if (!fp)
