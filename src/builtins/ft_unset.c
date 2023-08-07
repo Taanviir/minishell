@@ -12,19 +12,19 @@
 
 #include "minishell.h"
 
-int	ft_unset(char **argv, t_env *env)
+int	ft_unset(char **argv, t_env **env)
 {
 	int		i;
 	t_env	*temp;
-	//! needs testing
+
 	if (!argv[1])
 		return (0);
 	i = 0;
 	while (argv[++i])
 	{
 		i += is_name(argv[i][0], argv[i]);
-		temp = env;
-		while (temp->next != env)
+		temp = *env;
+		while (temp)
 		{
 			if (!ft_strncmp(argv[i], temp->name, name_len(argv[i])))
 			{
@@ -32,6 +32,8 @@ int	ft_unset(char **argv, t_env *env)
 				break ;
 			}
 			temp = temp->next;
+			if (temp == *env)
+				break;
 		}
 	}
 	return (0);

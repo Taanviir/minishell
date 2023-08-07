@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 20:24:32 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/07 02:24:42 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/07 14:31:49 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static int	execute_builtin(t_exec *cmd, char **envp, t_env **env)
 	else if (!ft_strncmp(cmd->argv[0], "export", length(cmd->argv[0], "export")))
 		return (ft_export(cmd->argv, envp, env), 0);
 	else if (!ft_strncmp(cmd->argv[0], "unset", length(cmd->argv[0], "unset")))
-		return (ft_unset(cmd->argv, *env), 0);
+		return (ft_unset(cmd->argv, env), 0);
 	else if (!ft_strncmp(cmd->argv[0], "env", length(cmd->argv[0], "env")))
 		return (ft_env(cmd->argv, env), 0);
 	else if (!ft_strncmp(cmd->argv[0], "exit", length(cmd->argv[0], "exit")))

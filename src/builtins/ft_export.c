@@ -99,6 +99,7 @@ int	ft_export(char **argv, char **envp, t_env **env)
 		}
 		if (temp->next == *env)
 			add_node_bottom(env, argv[i]);
+		printf("%s\n", temp->next->name);
 	}
 	return (0);
 }

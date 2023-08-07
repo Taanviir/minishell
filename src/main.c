@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/06 14:06:14 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/07 14:15:50 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,6 @@ int main(int argc, char **argv __attribute__((unused)), char **envp)
 		free(line);
 	}
 	free_env_list(&env);
-	rl_clear_history();
+	// rl_clear_history();
 	return (EXIT_SUCCESS);
 }
