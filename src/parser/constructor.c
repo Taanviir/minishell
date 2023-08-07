@@ -6,7 +6,7 @@
 /*   By: eva-1 <eva-1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 21:13:29 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/06 18:42:57 by eva-1            ###   ########.fr       */
+/*   Updated: 2023/08/08 01:27:38 by eva-1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ t_cmd	*construct_exec(void)
 	t_exec	*cmd;
 
 	cmd = ft_calloc(sizeof(t_exec), 1);
+	cmd->expanded = ft_calloc(sizeof(bool), ARGC);
 	cmd->argv = ft_calloc(sizeof(char *), ARGC);
 	cmd->eargv = ft_calloc(sizeof(char *), ARGC);
 	cmd->type = EXEC;

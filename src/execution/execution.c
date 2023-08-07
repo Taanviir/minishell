@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eva-1 <eva-1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 20:24:32 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/07 16:19:49 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/08 01:39:48 by eva-1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,7 @@ static void execute_seq(t_cmd *cmd, char **envp, t_env **env)
 
 typedef void (*t_execute)(t_cmd *cmd, char **envp, t_env **env);
 
-void runcmd(t_cmd *cmd, char **envp, t_env **env)
+t_cmd *runcmd(t_cmd *cmd, char **envp, t_env **env)
 {
 	t_execute executers[5];
 
@@ -182,6 +182,7 @@ void runcmd(t_cmd *cmd, char **envp, t_env **env)
 	executers[3] = execute_seq;
 	executers[4] = execute_bgcmd;
 	if (!cmd)
-		return;
+		return (NULL);
 	executers[cmd->type](cmd, envp, env);
+	return(cmd);
 }

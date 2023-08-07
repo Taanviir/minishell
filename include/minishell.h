@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eva-1 <eva-1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/07 21:23:13 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/08 01:39:23 by eva-1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	add_node_bottom(t_env **head, char *envp);
 t_cmd	*get_cmd(char **envp, char *line);
 
 // EXECUTION FUNCTION
-void	runcmd(t_cmd *cmd, char **envp, t_env **env);
+t_cmd	*runcmd(t_cmd *cmd, char **envp, t_env **env);
 
 // UTILS
 int		length(char *str1, char *str2);

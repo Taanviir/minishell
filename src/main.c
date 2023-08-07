@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eva-1 <eva-1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/07 21:22:34 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/08 01:40:02 by eva-1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ int main(int argc, char **argv __attribute__((unused)), char **envp)
 {
 	char	*line;
 	t_env	*env;
-	t_cmd	*root;
 
 
 	if (argc != 1)
@@ -95,12 +94,10 @@ int main(int argc, char **argv __attribute__((unused)), char **envp)
 	{
 		line = NULL;
 
-		root = get_cmd(envp, line);
-		runcmd(root, envp, &env);
+		free_tree(runcmd(get_cmd(envp, line), envp, &env));
 		free(line);
 	}
 	free_env_list(&env);
-	free_tree(root);
 	// rl_clear_history();
 	return (EXIT_SUCCESS);
 }

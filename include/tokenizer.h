@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eva-1 <eva-1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:25:28 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/07 19:54:56 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/08 01:20:17 by eva-1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ typedef struct s_cmd
 typedef struct s_exec
 {
 	int		type;
+	size_t	argc;
+	bool	*expanded; //! if argv has been expanded or no
 	char	**argv;
 	char	**eargv;
 }	t_exec;

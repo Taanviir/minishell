@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_tree.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eva-1 <eva-1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 19:55:59 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/07 21:23:24 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/08 01:44:34 by eva-1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,19 @@
 void free_cmd(t_cmd *cmd)
 {
 	t_exec *exec;
+	size_t	i;
 
 	exec = (t_exec *)cmd;
+	i = 0;
 	//! if one of the argv's is expanded it should be freed here need a flag for expanded
+	while (i < exec->argc) {
+		if (exec->expanded[i]) {
+			free(exec->argv[i]);
+			puts("here\n");
+		}
+		i++;
+	}
+	free(exec->expanded);
 	free(exec->argv);
 	free(exec->eargv);
 	free(exec);
