@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 20:24:32 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/08 05:26:17 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/08 20:38:47 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// TODO maybe doesn't belong here, maybe libft or a more global file
 int	length(char *str1, char *str2)
 {
 	if (ft_strlen(str1) > ft_strlen(str2))
@@ -19,8 +20,7 @@ int	length(char *str1, char *str2)
 	return (ft_strlen(str2));
 }
 
-//! flipped the logic here since it makes more sense to say if(execute_builtin) return, instead of !
-//! maybe also change it to bool since its a binary yes or no
+// TODO do something about this function it looks bad lol
 int	execute_builtin(t_cmd *cmd, char **envp, t_env **env)
 {
 	t_exec	*exec;
@@ -39,33 +39,13 @@ int	execute_builtin(t_cmd *cmd, char **envp, t_env **env)
 	else if (!ft_strncmp(exec->argv[0], "env", length(exec->argv[0], "env")))
 		return (ft_env(exec->argv, env), 1);
 	else if (!ft_strncmp(exec->argv[0], "exit", length(exec->argv[0], "exit"))){
-		//! shit's weird homie, can't exit mid program
+		// TODO shit's weird homie, can't exit mid program
 		free_tree(cmd);
 		return (ft_exit(EXIT_SUCCESS), 1);
 	}
 	return (0);
 }
 
-// the here-doc case does this one completely different
-static void execute_redir(t_cmd *cmd, char **envp, t_env **env) {
-  t_redircmd *redircmd;
-  int new_fd;
-  int save_fd;
-
-  redircmd = (t_redircmd *)cmd;
-  save_fd = dup(redircmd->fd); // saving previous std in/out
-  if (!redircmd->here_doc) //! normal redirection
-    new_fd = open(redircmd->fp, redircmd->mode, S_IRWXU);
-  else
-    new_fd = redircmd->here_doc;
-  if (new_fd < 0)
-    write(2, "file not found\n", 2);
-  dup2(new_fd, redircmd->fd); // replacing cmd->fd with the new fd (read pipe file/pipe, or write file/pipe)
-  close(new_fd);
-  runcmd(redircmd->cmd, envp, env);
-  dup2(save_fd, redircmd->fd);
-  close(save_fd);
-}
 
 static void execute_pipe(t_cmd *cmd, char **envp, t_env **env)
 {

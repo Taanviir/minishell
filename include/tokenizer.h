@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:25:28 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/08 14:11:16 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/08 21:15:11 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,5 +86,6 @@ char	*get_delimiter(char *q, const char *eq);
 // execution
 int		execute_builtin(t_cmd *cmd, char **envp, t_env **env);
 void	execute_cmd(t_cmd *cmd, char **envp, t_env **env);
+void	execute_redir(t_cmd *cmd, char **envp, t_env **env);
 
 #endif

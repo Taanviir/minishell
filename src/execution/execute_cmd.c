@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 19:44:15 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/08 19:47:07 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/08 21:13:36 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ static void	write_exec_error(char *program_name);
  *
  * @return Full path to the program if found; otherwise, NULL.
  */
-static char	*get_fp(char *program_name)
+static char	*get_full_path(char *program_name)
 {
-	char	*fp;
+	char	*full_path;
 	char	**path;
 	int		i;
 
@@ -36,15 +36,15 @@ static char	*get_fp(char *program_name)
 	// Iterate over directories in PATH, attempting to construct and verify the full path.
 	while (path[++i])
 	{
-		fp = ft_bigjoin(3, path[i], "/", program_name);
+		full_path = ft_bigjoin(3, path[i], "/", program_name);
 		// If the constructed path points to an executable file, break from the loop.
-		if (fp && !access(fp, X_OK))
+		if (full_path && !access(full_path, X_OK))
 			break ;
-		free(fp);
-		fp = NULL;
+		free(full_path);
+		full_path = NULL;
 	}
 	free_double_ptr((void **)path);
-	return (fp);
+	return (full_path);
 }
 
 /**
@@ -63,7 +63,7 @@ void	execute_cmd(t_cmd *cmd, char **envp, t_env **env)
 {
 	t_exec	*execcmd;
 	char	*program_name;
-	char	*fp;
+	char	*full_path;
 
 	// Typecast the cmd structure to access command-specific parameters.
 	execcmd = (t_exec *)cmd;
@@ -73,10 +73,10 @@ void	execute_cmd(t_cmd *cmd, char **envp, t_env **env)
 		return ;
 	else if (program_name && !fork()) // TODO: Add error handling for the fork call and program existence.
 	{
-		fp = get_fp(program_name);
-		// Attempt to execute as absolute path or from PATH. If both fail, write an error.
-		if ((execve(program_name, execcmd->argv, envp) && !fp)
-			|| (execve(fp, execcmd->argv, envp)))
+		full_path = get_full_path(program_name);
+		// Attempt to execute as absolute path or from PATH. If both fail, write an appropriate error.
+		if ((execve(program_name, execcmd->argv, envp) && !full_path)
+			|| (execve(full_path, execcmd->argv, envp)))
 			write_exec_error(program_name);
 		// Free command tree in the child process.
 		free_tree(cmd);
