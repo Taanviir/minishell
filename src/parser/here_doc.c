@@ -3,26 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 17:52:34 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/08 04:29:32 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/08 20:31:03 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* remove its the same as tanvir */ //!
-static int get_len(const char *str1, const char *str2) {
-  int length1;
-  int length2;
-
-  length1 = ft_strlen(str1);
-  length2 = ft_strlen(str2);
-  if (length1 > length2)
-    return (length1);
-  return (length2);
-}
 
 /**
  * Determines if a part of the provided string range is enclosed within quotes.
@@ -157,7 +145,7 @@ void here_doc(const int pipe_write, char *delimiter, char **envp) {
   // Continuously read input lines until the delimiter is matched.
   while (true) {
     line = readline(">");
-    if (!line || (delimiter && !ft_strncmp(delimiter, line, get_len(delimiter, line))))
+    if (!line || (delimiter && !ft_strncmp(delimiter, line, length(delimiter, line))))
       break;
     // If the delimiter isn't quoted, perform variable expansion.
     if (!quote) {
