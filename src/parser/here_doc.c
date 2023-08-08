@@ -6,12 +6,13 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 17:52:34 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/08 20:31:03 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/08 22:25:04 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// TODO fix remove_quote logic, echo to see how shell does parameter expansion
 /**
  * Determines if a part of the provided string range is enclosed within quotes.
  * If a quoted section is found, it modifies the string by truncating it at the
