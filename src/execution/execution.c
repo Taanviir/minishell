@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 20:24:32 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/08 20:38:47 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/08 21:49:45 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	length(char *str1, char *str2)
 	return (ft_strlen(str2));
 }
 
-// TODO do something about this function it looks bad lol
+// TODO do something about this function it looks bad lol can be moved to execute command
 int	execute_builtin(t_cmd *cmd, char **envp, t_env **env)
 {
 	t_exec	*exec;
@@ -44,36 +44,6 @@ int	execute_builtin(t_cmd *cmd, char **envp, t_env **env)
 		return (ft_exit(EXIT_SUCCESS), 1);
 	}
 	return (0);
-}
-
-
-static void execute_pipe(t_cmd *cmd, char **envp, t_env **env)
-{
-	t_pipecmd	*pipecmd;
-	int			p[2];
-
-	pipecmd = (t_pipecmd *)cmd;
-	if (pipe(p) < 0)
-		write(2, "failed to pipe\n", 16);
-	if (!fork()) {
-		dup2(p[1], STDOUT_FILENO);
-		close(p[0]);
-		close(p[1]);
-		runcmd(pipecmd->left, envp, env);
-		free_tree(cmd);
-		exit(0);
-	} else if (!fork()) {
-		dup2(p[0], STDIN_FILENO);
-		close(p[0]);
-		close(p[1]);
-		runcmd(pipecmd->right, envp, env);
-		free_tree(cmd);
-		exit(0);
-	}
-	close(p[0]);
-	close(p[1]);
-	wait(0);
-	wait(0);
 }
 
 //! handle printf &

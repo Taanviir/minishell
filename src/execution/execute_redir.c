@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 20:34:01 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/08 21:20:09 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/08 22:16:04 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	execute_redir(t_cmd *cmd, char **envp, t_env **env)
 	int			new_fd;
 	int			save_fd;
 
-	// Typecast the cmd structure to access command-specific parameters.
+	// Typecast the cmd structure to access redirection-specific parameters.
 	redircmd = (t_redircmd *)cmd;
 	// Save the previous standard in/out for restoration after command execution.
 	save_fd = dup(redircmd->fd);

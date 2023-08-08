@@ -6,7 +6,7 @@
 #    By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/18 14:50:05 by sabdelra          #+#    #+#              #
-#    Updated: 2023/08/08 21:15:26 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/08/08 22:14:19 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ NAME:= execution.a
 C_FLAGS:= -Wall -Werror -Wextra -ggdb3
 INCLUDES:= -I ../../include -I ../../libft/include
 
-SRCS:= execution.c execute_cmd.c execute_redir.c
+SRCS:= execution.c execute_cmd.c execute_redir.c execute_pipe.c
 OBJS_DIR:= execution_objs/
 OBJS:= $(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
 
