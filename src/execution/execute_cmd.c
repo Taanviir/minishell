@@ -5,41 +5,35 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/08 13:49:22 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/08 14:42:08 by sabdelra         ###   ########.fr       */
+/*   Created: 2023/08/08 19:44:15 by sabdelra          #+#    #+#             */
+/*   Updated: 2023/08/08 19:47:07 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// helper error function
+static void	write_exec_error(char *program_name);
+
 /**
- * @brief Retrieve the full path of a given program.
+ * Retrieve the full path of a given program.
  *
- * This function attempts to get the full path of the program by concatenating it
- * with paths from the environment variable PATH. Before attempting this, it checks
- * if the given program_name can be directly executed, indicating an absolute path.
- * If the path is absolute, the absolute_path flag is set to true.
+ * This function tries to find the full path of the program by checking each directory
+ * in the PATH environment variable.
  *
- * @param program_name The name of the program to search for.
- * @param absolute_path A pointer to a flag that is set if the path is absolute.
+ * @param program_name Name of the program to locate.
  *
- * @return The full path to the program if found, otherwise NULL.
+ * @return Full path to the program if found; otherwise, NULL.
  */
-static char	*get_fp(char *program_name, bool *absolute_path)
+static char	*get_fp(char *program_name)
 {
 	char	*fp;
 	char	**path;
 	int		i;
 
 	i = -1;
-	// Check if the program can be executed directly (indicating an absolute path).
-	if (program_name && !access(program_name, X_OK))
-	{
-		*absolute_path = true;
-		return (program_name);
-	}
-	path = ft_split(getenv("PATH"), ':');
-	// Iterate over each directory in the PATH, attempting to form the full path.
+	path = ft_split(getenv("PATH"), ':'); // TODO: Address potential issues with getenv
+	// Iterate over directories in PATH, attempting to construct and verify the full path.
 	while (path[++i])
 	{
 		fp = ft_bigjoin(3, path[i], "/", program_name);
@@ -53,37 +47,48 @@ static char	*get_fp(char *program_name, bool *absolute_path)
 	return (fp);
 }
 
+/**
+ * Execute a command, handling built-in commands and others.
+ *
+ * This function first checks if the command is a built-in; if it is, it executes the built-in.
+ * If not a built-in, it attempts to execute the command either as an absolute path or by
+ * locating it within the system's PATH environment variable. If the command fails to execute
+ * in both scenarios, an error message is displayed.
+ *
+ * @param cmd      A structure holding command details.
+ * @param envp     Custom environment structure
+ * @param env      Environment variables as key-value pairs.
+ */
 void	execute_cmd(t_cmd *cmd, char **envp, t_env **env)
 {
 	t_exec	*execcmd;
+	char	*program_name;
 	char	*fp;
-	bool	absolute_path;
 
-	absolute_path = false;
+	// Typecast the cmd structure to access command-specific parameters.
 	execcmd = (t_exec *)cmd;
-	if (!execcmd->argv[0]) // ! test with commenting this out
+	program_name = execcmd->argv[0];
+	// If the command is a builtin, execute it and return.
+	if (execute_builtin(cmd, envp, env))
 		return ;
-	if (execute_builtin(cmd, envp, env)) // attempt to execute as a builtin
-		return ;
-	fp = get_fp(execcmd->argv[0], &absolute_path); // concatenate the path to command (argv[0])
-	if (!fp)
+	else if (program_name && !fork()) // TODO: Add error handling for the fork call and program existence.
 	{
-		printf("%s: command not found\n", fp);
-		return ;
-	}
-	if (!fork()) {
-		execve(fp, execcmd->argv, envp);
-	if (!absolute_path)
-		free(fp);
-	write(2, "minishell: ", 11);
-	write(2, fp, ft_strlen(fp));
-	perror(": ");
-	free_tree(cmd);
-	exit(0);
+		fp = get_fp(program_name);
+		// Attempt to execute as absolute path or from PATH. If both fail, write an error.
+		if ((execve(program_name, execcmd->argv, envp) && !fp)
+			|| (execve(fp, execcmd->argv, envp)))
+			write_exec_error(program_name);
+		// Free command tree in the child process.
+		free_tree(cmd);
+		exit(0);
 	}
 	wait(0);
-	if (!absolute_path)
-		free(fp);
 }
 
-static void write_filepath
+// helper function that takes program name and writes error it encountered
+static void	write_exec_error(char *program_name)
+{
+	write(2, "minishell: ", 11);
+	write(2, program_name, ft_strlen(program_name));
+	perror(": ");
+}

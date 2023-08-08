@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eva-1 <eva-1@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:19:12 by eva-1             #+#    #+#             */
-/*   Updated: 2023/08/08 01:41:19 by eva-1            ###   ########.fr       */
+/*   Updated: 2023/08/08 19:37:11 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_cmd *parseredir(t_cmd *cmd, char **b_start, char *b_end, char **envp) {
         here_doc(hc_pipe[1], get_delimiter(q, eq), envp);
         close(hc_pipe[1]); // don't close read end, still needed during execution
       }
-      else //! pipe error
+      else //TODO pipe error
         perror(":");
     } else if (get_token(b_start, b_end, &q, &eq) != 'a')
       write(2, "no file", 8);

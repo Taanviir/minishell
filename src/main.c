@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eva-1 <eva-1@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/08 01:40:02 by eva-1            ###   ########.fr       */
+/*   Updated: 2023/08/08 18:03:40 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,14 +87,14 @@ int main(int argc, char **argv __attribute__((unused)), char **envp)
 
 	if (argc != 1)
 		return (printf(RED_B "Error: %s\n" WHITE, strerror(E2BIG)), ERR_ARGS);
-	receive_signal();
 	// unset env that need to be unset
 	environment_init(&env, envp);
 	while (g_signal.exit_status == 0)
 	{
 		line = NULL;
-
+		// default
 		free_tree(runcmd(get_cmd(envp, line), envp, &env));
+		receive_signal();
 		free(line);
 	}
 	free_env_list(&env);
