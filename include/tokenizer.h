@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eva-1 <eva-1@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:25:28 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/08 01:20:17 by eva-1            ###   ########.fr       */
+/*   Updated: 2023/08/08 04:09:16 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,9 @@ typedef struct s_bgcmd
 char	get_token(char **buffer_start, char *buffer_end, char **token_start, char **token_end);
 char	*expand(char *q, char *eq, char **envp);
 int		peek(char **b_start, char *b_end, const char *str);
+/* parsers */
+int		execute_builtin(t_cmd *cmd, char **envp, t_env **env);
+void	execute_cmd(t_cmd *cmd, char **envp, t_env **env);
 t_cmd	*parsecmd(char *b_start, char **envp);
 
 /* constructors */

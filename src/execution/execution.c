@@ -3,40 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eva-1 <eva-1@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 20:24:32 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/08 03:41:33 by eva-1            ###   ########.fr       */
+/*   Updated: 2023/08/08 05:26:17 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-
-static char *get_fp(char *program_name, bool *absolute_path) {
-  char *fp;
-  char **path;
-  int i;
-
-  path = ft_split(getenv("PATH"), ':');
-  fp = NULL;
-  i = -1;
-  if (!access(program_name, X_OK)) {
-    *absolute_path = true;
-    return (program_name);
-  }
-  while (path[++i]) {
-    fp = ft_bigjoin(3, path[i], "/", program_name);
-    if (!access(fp, X_OK))
-      break;
-    else {
-      free(fp);
-      fp = NULL;
-    }
-  }
-  free_double_ptr((void **)path);
-  return (fp);
-}
 
 int	length(char *str1, char *str2)
 {
@@ -45,62 +19,33 @@ int	length(char *str1, char *str2)
 	return (ft_strlen(str2));
 }
 
-static int	execute_builtin(t_cmd *cmd, char **envp, t_env **env)
+//! flipped the logic here since it makes more sense to say if(execute_builtin) return, instead of !
+//! maybe also change it to bool since its a binary yes or no
+int	execute_builtin(t_cmd *cmd, char **envp, t_env **env)
 {
 	t_exec	*exec;
 
 	exec = (t_exec *)cmd;
 	if (!ft_strncmp(exec->argv[0], "echo", length(exec->argv[0], "echo")))
-		return (ft_echo(exec->argv), 0);
+		return (ft_echo(exec->argv), 1);
 	if (!ft_strncmp(exec->argv[0], "cd", length(exec->argv[0], "cd")))
-		return (ft_cd(exec->argv, env), 0);
+		return (ft_cd(exec->argv, env), 1);
 	else if (!ft_strncmp(exec->argv[0], "pwd", length(exec->argv[0], "pwd")))
-		return (ft_pwd(), 0);
+		return (ft_pwd(), 1);
 	else if (!ft_strncmp(exec->argv[0], "export", length(exec->argv[0], "export")))
-		return (ft_export(exec->argv, envp, env), 0);
+		return (ft_export(exec->argv, envp, env), 1);
 	else if (!ft_strncmp(exec->argv[0], "unset", length(exec->argv[0], "unset")))
-		return (ft_unset(exec->argv, env), 0);
+		return (ft_unset(exec->argv, env), 1);
 	else if (!ft_strncmp(exec->argv[0], "env", length(exec->argv[0], "env")))
-		return (ft_env(exec->argv, env), 0);
+		return (ft_env(exec->argv, env), 1);
 	else if (!ft_strncmp(exec->argv[0], "exit", length(exec->argv[0], "exit"))){
 		//! shit's weird homie, can't exit mid program
 		free_tree(cmd);
-		return (ft_exit(EXIT_SUCCESS), 0);
+		return (ft_exit(EXIT_SUCCESS), 1);
 	}
-	return (1);
+	return (0);
 }
 
-static void execute_cmd(t_cmd *cmd, char **envp, t_env **env) {
-  t_exec *execcmd;
-  char *fp;
-  bool absolute_path; //!
-
-  absolute_path = false;
-  execcmd = (t_exec *)cmd;
-  if (!execcmd->argv[0])
-    return;
-  if (!execute_builtin(cmd, envp, env))
-    return;
-  fp = get_fp(execcmd->argv[0], &absolute_path);
-  if (!fp)
-	{
-		printf("%s: command not found\n", fp);
-		return ;
-	}
-  if (!fork()) {
-    execve(fp, execcmd->argv, envp);
-    if (!absolute_path)
-      free(fp);
-	write(2, "minishell: ", 11);
-	write(2, fp, ft_strlen(fp));
-	perror(": ");
-	free_tree(cmd);
-    exit(0);
-  }
-  wait(0);
-	if (!absolute_path)
-		free(fp);
-}
 // the here-doc case does this one completely different
 static void execute_redir(t_cmd *cmd, char **envp, t_env **env) {
   t_redircmd *redircmd;
