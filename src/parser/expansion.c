@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 02:28:01 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/02 16:24:56 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/08 14:40:06 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	longer(int lvar_s, char *envp)
 		return (lvar_s);
 }
 
-//not handling ({[]})
+//not handling ({[]}) //! env needs to be sorted out for linked list usage
 static char	*substitute(char **q, char **envp)
 {
 	int		lvar_s;
