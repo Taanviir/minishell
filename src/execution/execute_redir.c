@@ -6,11 +6,13 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 20:34:01 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/08 21:15:48 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/08 21:20:09 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// TODO dup and close failures???
 
 // Handle file open failures.
 static bool	verify_file_opened(const int fd, const char *file_path);
