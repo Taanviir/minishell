@@ -6,14 +6,14 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 20:24:32 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/08 21:49:45 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/09 12:03:35 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // TODO maybe doesn't belong here, maybe libft or a more global file
-int	length(char *str1, char *str2)
+int	get_len(char *str1, char *str2)
 {
 	if (ft_strlen(str1) > ft_strlen(str2))
 		return (ft_strlen(str1));
@@ -21,33 +21,30 @@ int	length(char *str1, char *str2)
 }
 
 // TODO do something about this function it looks bad lol can be moved to execute command
-int	execute_builtin(t_cmd *cmd, char **envp, t_env **env)
+int	execute_builtin(char **argv, char **envp, t_env **env)
 {
-	t_exec	*exec;
-
-	exec = (t_exec *)cmd;
-	if (!ft_strncmp(exec->argv[0], "echo", length(exec->argv[0], "echo")))
-		return (ft_echo(exec->argv), 1);
-	if (!ft_strncmp(exec->argv[0], "cd", length(exec->argv[0], "cd")))
-		return (ft_cd(exec->argv, env), 1);
-	else if (!ft_strncmp(exec->argv[0], "pwd", length(exec->argv[0], "pwd")))
+	if (!ft_strncmp(argv[0], "echo", get_len(argv[0], "echo")))
+		return (ft_echo(argv), 1);
+	if (!ft_strncmp(argv[0], "cd", get_len(argv[0], "cd")))
+		return (ft_cd(argv, env), 1);
+	else if (!ft_strncmp(argv[0], "pwd", get_len(argv[0], "pwd")))
 		return (ft_pwd(), 1);
-	else if (!ft_strncmp(exec->argv[0], "export", length(exec->argv[0], "export")))
-		return (ft_export(exec->argv, envp, env), 1);
-	else if (!ft_strncmp(exec->argv[0], "unset", length(exec->argv[0], "unset")))
-		return (ft_unset(exec->argv, env), 1);
-	else if (!ft_strncmp(exec->argv[0], "env", length(exec->argv[0], "env")))
-		return (ft_env(exec->argv, env), 1);
-	else if (!ft_strncmp(exec->argv[0], "exit", length(exec->argv[0], "exit"))){
+	else if (!ft_strncmp(argv[0], "export", get_len(argv[0], "export")))
+		return (ft_export(argv, envp, env), 1);
+	else if (!ft_strncmp(argv[0], "unset", get_len(argv[0], "unset")))
+		return (ft_unset(argv, env), 1);
+	else if (!ft_strncmp(argv[0], "env", get_len(argv[0], "env")))
+		return (ft_env(argv, env), 1);
+	else if (!ft_strncmp(argv[0], "exit", get_len(argv[0], "exit"))) {
 		// TODO shit's weird homie, can't exit mid program
 		free_tree(cmd);
-		return (ft_exit(EXIT_SUCCESS), 1);
-	}
+    return (ft_exit(EXIT_SUCCESS, env), 1);
+  }
 	return (0);
 }
 
 //! handle printf &
-static void execute_bgcmd(t_cmd *cmd, char **envp, t_env **env)
+static void	execute_bgcmd(t_cmd *cmd, char **envp, t_env **env)
 {
 	t_bgcmd	*bgcmd;
 
@@ -61,7 +58,7 @@ static void execute_bgcmd(t_cmd *cmd, char **envp, t_env **env)
 	wait(0);
 }
 
-static void execute_seq(t_cmd *cmd, char **envp, t_env **env)
+static void	execute_seq(t_cmd *cmd, char **envp, t_env **env)
 {
 	t_seqcmd	*seqcmd;
 
@@ -80,7 +77,7 @@ typedef void (*t_execute)(t_cmd *cmd, char **envp, t_env **env);
 
 t_cmd *runcmd(t_cmd *cmd, char **envp, t_env **env)
 {
-	t_execute executers[5];
+	t_execute	executers[5];
 
 	executers[0] = execute_cmd;
 	executers[1] = execute_redir;

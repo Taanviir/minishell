@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/08 04:07:35 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/09 11:45:16 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,13 @@ void	environment_init(t_env **env, char **envp);
 void	add_node_bottom(t_env **head, char *envp);
 
 // INPUT FUNCTION
-t_cmd	*get_cmd(char **envp, char *line);
+t_cmd	*get_cmd(char *line, char **envp, t_env **env);
 
 // EXECUTION FUNCTION
 t_cmd	*runcmd(t_cmd *cmd, char **envp, t_env **env);
 
 // UTILS
-int		length(char *str1, char *str2);
+int		get_len(char *str1, char *str2);
 
 // free_tree
 void free_tree(t_cmd *cmd);
