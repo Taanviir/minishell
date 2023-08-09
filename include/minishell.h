@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/07 11:55:10 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/09 11:45:16 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,12 @@ void	environment_init(t_env **env, char **envp);
 void	add_node_bottom(t_env **head, char *envp);
 
 // INPUT FUNCTION
-t_cmd	*get_cmd(char **envp, char *line);
+t_cmd	*get_cmd(char *line, char **envp, t_env **env);
 
 // EXECUTION FUNCTION
 void	runcmd(t_cmd *cmd, char **envp, t_env **env);
 
 // UTILS
-int		length(char *str1, char *str2);
+int		get_len(char *str1, char *str2);
 
 #endif

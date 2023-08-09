@@ -3,26 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eva-1 <eva-1@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 17:52:34 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/07 02:40:50 by eva-1            ###   ########.fr       */
+/*   Updated: 2023/08/09 12:03:01 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* remove its the same as tanvir */ //!
-static int get_len(char *str1, char *str2) {
-  int length1;
-  int length2;
-
-  length1 = ft_strlen(str1);
-  length2 = ft_strlen(str2);
-  if (length1 > length2)
-    return (length1);
-  return (length2);
-}
 
 /**
  * Determines if a part of the provided string range is enclosed within quotes.
