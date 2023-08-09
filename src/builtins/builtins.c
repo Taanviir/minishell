@@ -49,6 +49,7 @@ int	ft_echo(char **argv)
 int	ft_exit(int err_num, t_env **env)
 {
 	//free_env_list(env);
+	(void) env;
 	g_signal.exit_status = err_num;
 	printf("exit\n");
 	exit(g_signal.exit_status);
