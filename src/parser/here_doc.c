@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 17:52:34 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/09 12:03:01 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/09 21:02:48 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ void here_doc(const int pipe_write, char *delimiter, char **envp) {
   // Continuously read input lines until the delimiter is matched.
   while (true) {
     line = readline(">");
-    if (!line || (delimiter && !ft_strncmp(delimiter, line, length(delimiter, line))))
+    if (!line || (delimiter && !ft_strncmp(delimiter, line, get_len(delimiter, line))))
       break;
     // If the delimiter isn't quoted, perform variable expansion.
     if (!quote) {

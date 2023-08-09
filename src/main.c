@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/09 12:08:42 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/09 21:12:41 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ t_cmd *get_cmd(char *line, char **envp, t_env **env)
 	add_history(line);
 	root = parsecmd(line, envp);
 	return (root);
-
 }
 #endif
 
@@ -102,7 +101,7 @@ int main(int argc, char **argv __attribute__((unused)), char **envp)
 	{
 		line = NULL;
 		// default
-		free_tree(runcmd(get_cmd(envp, line), envp, &env));
+		free_tree(runcmd(get_cmd(line, envp, &env), envp, &env));
 		receive_signal();
 		free(line);
 	}

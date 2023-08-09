@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 19:44:15 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/08 21:13:36 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/09 21:07:15 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,34 @@ static char	*get_full_path(char *program_name)
 	}
 	free_double_ptr((void **)path);
 	return (full_path);
+}
+
+
+// TODO do something about this function it looks bad lol can be moved to execute command
+int	execute_builtin(t_cmd *cmd, char **envp, t_env **env)
+{
+	t_exec	*exec;
+
+	exec = (t_exec*) cmd;
+	if (!ft_strncmp(exec->argv[0], "echo", get_len(exec->argv[0], "echo")))
+		return (ft_echo(exec->argv), 1);
+	if (!ft_strncmp(exec->argv[0], "cd", get_len(exec->argv[0], "cd")))
+		return (ft_cd(exec->argv, env), 1);
+	else if (!ft_strncmp(exec->argv[0], "pwd", get_len(exec->argv[0], "pwd")))
+		return (ft_pwd(), 1);
+	else if (!ft_strncmp(exec->argv[0], "export", get_len(exec->argv[0], "export")))
+		return (ft_export(exec->argv, envp, env), 1);
+	else if (!ft_strncmp(exec->argv[0], "unset", get_len(exec->argv[0], "unset")))
+		return (ft_unset(exec->argv, env), 1);
+	else if (!ft_strncmp(exec->argv[0], "env", get_len(exec->argv[0], "env")))
+		return (ft_env(exec->argv, env), 1);
+	else if (!ft_strncmp(exec->argv[0], "exit", get_len(exec->argv[0], "exit")))
+	{
+		// TODO shit's weird homie, can't exit mid program
+		free_tree(cmd);
+		return (ft_exit(EXIT_SUCCESS, env), 1);
+	}
+	return (0);
 }
 
 /**
