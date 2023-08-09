@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 20:24:32 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/09 12:03:35 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/09 21:09:58 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,26 @@ int	get_len(char *str1, char *str2)
 }
 
 // TODO do something about this function it looks bad lol can be moved to execute command
-int	execute_builtin(char **argv, char **envp, t_env **env)
+int	execute_builtin(t_cmd *cmd, char **envp, t_env **env)
 {
-	if (!ft_strncmp(argv[0], "echo", get_len(argv[0], "echo")))
-		return (ft_echo(argv), 1);
-	if (!ft_strncmp(argv[0], "cd", get_len(argv[0], "cd")))
-		return (ft_cd(argv, env), 1);
-	else if (!ft_strncmp(argv[0], "pwd", get_len(argv[0], "pwd")))
+	char *program;
+	t_exec *execcmd;
+
+	execcmd = (t_exec *)cmd;
+	program = execcmd->argv[0];
+	if (!ft_strncmp(program, "echo", get_len(program, "echo")))
+		return (ft_echo(execcmd->argv), 1);
+	if (!ft_strncmp(program, "cd", get_len(program, "cd")))
+		return (ft_cd(execcmd->argv, env), 1);
+	else if (!ft_strncmp(program, "pwd", get_len(program, "pwd")))
 		return (ft_pwd(), 1);
-	else if (!ft_strncmp(argv[0], "export", get_len(argv[0], "export")))
-		return (ft_export(argv, envp, env), 1);
-	else if (!ft_strncmp(argv[0], "unset", get_len(argv[0], "unset")))
-		return (ft_unset(argv, env), 1);
-	else if (!ft_strncmp(argv[0], "env", get_len(argv[0], "env")))
-		return (ft_env(argv, env), 1);
-	else if (!ft_strncmp(argv[0], "exit", get_len(argv[0], "exit"))) {
+	else if (!ft_strncmp(program, "export", get_len(program, "export")))
+		return (ft_export(execcmd->argv, envp, env), 1);
+	else if (!ft_strncmp(program, "unset", get_len(program, "unset")))
+		return (ft_unset(execcmd->argv, env), 1);
+	else if (!ft_strncmp(program, "env", get_len(program, "env")))
+		return (ft_env(execcmd->argv, env), 1);
+	else if (!ft_strncmp(program, "exit", get_len(program, "exit"))) {
 		// TODO shit's weird homie, can't exit mid program
 		free_tree(cmd);
     return (ft_exit(EXIT_SUCCESS, env), 1);

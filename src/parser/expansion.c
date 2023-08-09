@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 02:28:01 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/09 16:55:31 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/10 00:35:20 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static char	*substitute(char **q, char **envp)
 			return (ft_itoa((int)g_exit_status));
 		(*q)++;
 	}
-	while (var_s[lvar_s] && !ft_is_whitespace(var_s[lvar_s]) && var_s[lvar_s] != '\"')
+	while (var_s[lvar_s] && !ft_is_whitespace(var_s[lvar_s]) && !ft_strchr("\"\'", var_s[lvar_s]))
 	{
 		lvar_s++;
 		(*q)++;
@@ -68,14 +68,13 @@ char	*expand(char *q, char *eq, char **envp)
 	char	buffer[2];
 	char	*sub;
 
-	buffer[1] = 0;
+	buffer[1] = 0; // this creates a mini null-terminated word to be used with strjoing
 	expanded_string = NULL;
 	while (q < eq)
 	{
 		if (*q == '$' && !ft_is_whitespace(*(q + 1)))
 		{
 			sub = substitute(&q, envp);
-			q++;
 			if (sub)
 				expanded_string = ft_strjoin_m(expanded_string, sub);
 		}
@@ -83,8 +82,8 @@ char	*expand(char *q, char *eq, char **envp)
 		{
 			buffer[0] = *q;
 			expanded_string = ft_strjoin_m(expanded_string, buffer);
+			q++;
 		}
-		q++;
 	}
 	return (expanded_string);
 }
