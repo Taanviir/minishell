@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42abudhabi.ae>        +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/07/19 10:30:06 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/09 11:45:16 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,20 @@
 # include <fcntl.h> // open
 # include <stdbool.h> // bool
 # include <stdint.h>
-#include <assert.h>
+# include <sys/wait.h> // is wait not allowed?
 # include "../libft/include/libft.h" // libft
-# include "tokenizer.h"
-# include "tokenizer/type.h"
 # include "builtins.h"
+# include "tokenizer.h"
+
+typedef struct s_signal
+{
+	int	sigint;
+	int	sigquit;
+	int	exit_status;
+}	t_signal;
 
 // EXIT_STATUS
-// extern int exit_status;
+extern t_signal	g_signal;
 
 // ERROR CODES
 # define ERR_ARGS 1
@@ -45,10 +51,28 @@
 // COLOR CODES
 # define MAGENTA_B "\033[1;35m"
 # define RED_B "\033[1;31m"
+# define BLUE "\033[1;94m"
 # define WHITE "\033[0m"
 
+// SIGNAL FUNCTIONS
 void	receive_signal(void);
-char	get_token(char **incmd, char *tkend, char **q, char **eq);
-t_cmd	*get_cmd(char **envp);
+
+// ENVIRONMENT FUNCTIONS
+void	free_env_node(t_env **env);
+void	free_env_list(t_env **env);
+void	environment_init(t_env **env, char **envp);
+void	add_node_bottom(t_env **head, char *envp);
+
+// INPUT FUNCTION
+t_cmd	*get_cmd(char *line, char **envp, t_env **env);
+
+// EXECUTION FUNCTION
+t_cmd	*runcmd(t_cmd *cmd, char **envp, t_env **env);
+
+// UTILS
+int		get_len(char *str1, char *str2);
+
+// free_tree
+void free_tree(t_cmd *cmd);
 
 #endif

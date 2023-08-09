@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tanas <tanas@student.42abudhabi.ae>        +#+  +:+       +#+         #
+#    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/16 22:46:50 by tanas             #+#    #+#              #
-#    Updated: 2023/07/18 19:19:33 by tanas            ###   ########.fr        #
+#    Updated: 2023/08/06 13:59:23 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,21 +18,16 @@ COLOUR_RESET:= "\033[0m"
 NAME:= builtins.a
 C_FLAGS:= -Wall -Werror -Wextra -ggdb3
 INCLUDES:= -I ../../include -I ../../libft/include
-LIBFT:= ../../libft/libft.a
-LD:= -lreadline $(LIBFT)
 
-SRCS:= echo.c export.c pwd.c unset.c
-OBJS_DIR:= builtin_objs/
+SRCS:= builtins.c ft_cd.c ft_unset.c ft_export.c
+OBJS_DIR:= builtins_objs/
 OBJS:= $(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
 
 all: $(NAME)
 
-test: all test.c
-	$(CC) $(C_FLAGS) $(INCLUDES) test.c $(NAME) -o $@ $(LD)
-
 $(NAME) : $(OBJS)
 	@ar -rcs $@ $^
-	@echo $(GREEN_B)"Builtins Ready. ✅\n"$(COLOUR_RESET)
+	@echo $(GREEN_B)"Builtins is ready. ✅\n"$(COLOUR_RESET)
 
 $(OBJS_DIR)%.o: %.c
 	@mkdir -p $(OBJS_DIR)

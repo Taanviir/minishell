@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:21:35 by tanas             #+#    #+#             */
-/*   Updated: 2023/07/08 14:55:03 by codespace        ###   ########.fr       */
+/*   Updated: 2023/07/30 23:37:41 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ char	*read_file(int fd, char *stash)
 			return (NULL);
 		}
 		buffer[bytes_read] = '\0';
-		stash = ft_strjoin(stash, buffer);
+		stash = ft_strjoin_m(stash, buffer);
 	}
 	free(buffer);
 	return (stash);

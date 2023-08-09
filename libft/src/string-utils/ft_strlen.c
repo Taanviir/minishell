@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 11:56:15 by tanas             #+#    #+#             */
-/*   Updated: 2023/06/27 03:03:32 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/07/30 23:18:31 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ size_t	ft_strlen(const char *s)
 	size_t	size;
 
 	size = 0;
-	while (s[size])
+	while (s && s[size])
 		size++;
 	return (size);
 }

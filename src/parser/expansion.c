@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 02:28:01 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/07/23 16:42:33 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/08 14:40:06 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	longer(int lvar_s, char *envp)
 		return (lvar_s);
 }
 
-//not handling ({[]})
+//not handling ({[]}) //! env needs to be sorted out for linked list usage
 static char	*substitute(char **q, char **envp)
 {
 	int		lvar_s;
@@ -69,9 +69,7 @@ char	*expand(char *q, char *eq, char **envp)
 	char	*sub;
 
 	buffer[1] = 0;
-	expanded_string = NULL; //malloc(1);
-	// if (!expanded_string)
-	// 	return (0);
+	expanded_string = NULL;
 	while (q < eq)
 	{
 		if (*q == '$' && !ft_is_whitespace(*(q + 1)))
@@ -79,12 +77,12 @@ char	*expand(char *q, char *eq, char **envp)
 			sub = substitute(&q, envp);
 			q++;
 			if (sub)
-				expanded_string = ft_strjoin(expanded_string, sub);
+				expanded_string = ft_strjoin_m(expanded_string, sub);
 		}
 		else
 		{
 			buffer[0] = *q;
-			expanded_string = ft_strjoin(expanded_string, buffer);
+			expanded_string = ft_strjoin_m(expanded_string, buffer);
 		}
 		q++;
 	}

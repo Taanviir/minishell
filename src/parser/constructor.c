@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   constructor.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: eva-1 <eva-1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 21:13:29 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/07/23 17:30:39 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/08 01:27:38 by eva-1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ t_cmd	*construct_exec(void)
 	t_exec	*cmd;
 
 	cmd = ft_calloc(sizeof(t_exec), 1);
+	cmd->expanded = ft_calloc(sizeof(bool), ARGC);
 	cmd->argv = ft_calloc(sizeof(char *), ARGC);
 	cmd->eargv = ft_calloc(sizeof(char *), ARGC);
 	cmd->type = EXEC;
@@ -31,8 +32,12 @@ t_cmd	*construct_redircmd(t_cmd *command, char *fp, char *efp, int mode, int fd)
 	cmd = ft_calloc(sizeof(t_redircmd), 1);
 	cmd->type = REDIR;
 	cmd->cmd = command;
-	cmd->fp = fp;
-	cmd->efp = efp;
+	if (fp == 0) //! here_doc case
+		cmd->here_doc = *(int *)efp; // read_end of the pipe
+	else {
+		cmd->fp = fp;
+		cmd->efp = efp;
+	}
 	cmd->mode = mode;
 	cmd->fd = fd;
 	return ((t_cmd *) cmd);

@@ -90,6 +90,9 @@ Can be either a line break or an escape character
 ## Single Quote `'`
 Preserves the meaning of all characters until the next `'` is encountered. A single quote cannot occur within single quotes
 
+## valgrind alias
+alias minival='valgrind --show-leak-kinds=all --leak-check=full --suppressions=vg_rlsuppressions.supp'
+
 
 
 

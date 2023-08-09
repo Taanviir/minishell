@@ -3,13 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tanas <tanas@student.42abudhabi.ae>        +#+  +:+       +#+         #
+#    By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/14 14:38:29 by tanas             #+#    #+#              #
-#    Updated: 2023/07/20 13:33:53 by tanas            ###   ########.fr        #
+#    Updated: 2023/08/07 21:20:05 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+# READLINE_DIR:= $(shell brew --prefix readline)
+# READLINE_LIB:= -lreadline -lhistory -L$(READLINE_DIR)/lib
 ### COLOURS
 GREEN_B = "\033[1;32m"
 RED_BI = "\033[1;3;31m"
@@ -20,17 +22,19 @@ RESET = "\033[0m"
 NAME = minishell
 C_FLAGS = -Wall -Wextra -Werror -g3
 INCLUDES = -I include/ -I libft/include -I test/
-
 LIBFT = libft/libft.a
 PARSER = src/parser/parser.a
 BUILTINS = src/builtins/builtins.a
+EXECUTION = src/execution/execution.a
+# READLINE:= -l/usr/local/Cellar/readline/8.2.1/lib/libhistory.a
+
 
 TESTER = test/test.a
 
-LD = -lreadline $(PARSER) $(BUILTINS) $(LIBFT)
+LD =   $(PARSER) $(EXECUTION) $(BUILTINS) $(LIBFT) -lreadline
 
 SRCS_DIR = src/
-SRCS_LIST = main.c signal.c
+SRCS_LIST = main.c signal.c environment.c free_tree.c
 SRCS = $(addprefix $(SRCS_DIR), $(SRCS_LIST))
 
 OBJS_DIR = obj/
@@ -40,11 +44,12 @@ OBJS = $(addprefix $(OBJS_DIR), $(OBJS_LIST))
 all : $(NAME)
 
 test : C_FLAGS += -D TEST
-test : $(LIBFT) $(OBJS) libraries
-	@$(CC) $(C_FLAGS) $(INCLUDES) $(OBJS) -o test_shell $(LD) $(TESTER)
+test : $(LIBFT) libraries $(OBJS)
+	@make -sC test
+	$(CC) $(C_FLAGS) $(INCLUDES) $(OBJS) -o test_shell $(LD) $(TESTER)
 	@echo $(GREEN_B)"$(NAME) (Test Build) is ready. ✅\n"$(RESET)
 
-$(NAME) : $(LIBFT) $(OBJS) libraries
+$(NAME) : $(LIBFT) libraries $(OBJS)
 	@$(CC) $(C_FLAGS) $(INCLUDES) $(OBJS) -o $(NAME) $(LD)
 	@echo $(GREEN_B)"$(NAME) is ready. ✅\n"$(RESET)
 
@@ -61,13 +66,14 @@ $(LIBFT) :
 libraries :
 	@make -sC src/parser
 	@make -sC src/builtins
-	@make -sC test
+	@make -sC src/execution
 
 clean :
 	@make clean -sC test
 	@make clean -sC libft
 	@make clean -sC src/parser
 	@make clean -sC src/builtins
+	@make clean -sC src/execution
 	@rm -rf $(OBJS_DIR)
 	@echo $(RED_BI)"\nRemoving all object directories and files"$(RESET)
 
@@ -77,6 +83,7 @@ fclean : clean
 	@make fclean -sC libft
 	@make fclean -sC src/parser
 	@make fclean -sC src/builtins
+	@make fclean -sC src/execution
 	@echo $(RED_BI)"Removing $(NAME) and all libraries\n"$(RESET)
 
 re : fclean all
