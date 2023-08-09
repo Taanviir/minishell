@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 02:28:01 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/08 14:40:06 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/09 16:55:31 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static char	*substitute(char **q, char **envp)
 			return (ft_itoa((int)g_exit_status));
 		(*q)++;
 	}
-	while (var_s[lvar_s] && !ft_is_whitespace(var_s[lvar_s]))
+	while (var_s[lvar_s] && !ft_is_whitespace(var_s[lvar_s]) && var_s[lvar_s] != '\"')
 	{
 		lvar_s++;
 		(*q)++;

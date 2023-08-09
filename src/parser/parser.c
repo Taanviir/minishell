@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:19:12 by eva-1             #+#    #+#             */
-/*   Updated: 2023/08/08 19:37:11 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/09 20:25:17 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ t_cmd *parseexec(char **b_start, char *b_end, char **envp) {
     }
     if (token != 'a' && token != 'q')
       write(2, "syntax", 7);
-    if (*q == '$' || *q == '\"' || *q == '\'') {
+    if (*q == '$' || (*q == '\"' && token == 'q')) {
       cmd->argv[cmd->argc] = expand(q, eq, envp);
       cmd->expanded[cmd->argc] = true;
       cmd->eargv[cmd->argc] = cmd->argv[cmd->argc] + ft_strlen(cmd->argv[cmd->argc]);

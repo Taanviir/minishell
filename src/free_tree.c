@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_tree.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eva-1 <eva-1@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 19:55:59 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/08 02:57:48 by eva-1            ###   ########.fr       */
+/*   Updated: 2023/08/09 16:52:20 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void free_cmd(t_cmd *cmd)
 	while (i < exec->argc) {
 		if (exec->expanded[i]) {
 			free(exec->argv[i]);
-			puts("here\n");
 		}
 		i++;
 	}
@@ -40,7 +39,7 @@ void	free_redir(t_cmd *cmd)
 
 	redir = (t_redircmd *)cmd;
 	free_tree(redir->cmd);
-	free(redir);	
+	free(redir);
 }
 
 void	free_pipe(t_cmd *cmd)
@@ -56,7 +55,7 @@ void	free_pipe(t_cmd *cmd)
 void	free_seq(t_cmd *cmd)
 {
 	t_seqcmd	*seqcmd;
-	
+
 	seqcmd = (t_seqcmd *)cmd;
 	free_tree(seqcmd->left);
 	free_tree(seqcmd->right);
