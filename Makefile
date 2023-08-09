@@ -6,7 +6,7 @@
 #    By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/14 14:38:29 by tanas             #+#    #+#              #
-#    Updated: 2023/08/07 12:48:58 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/08/07 21:20:05 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ TESTER = test/test.a
 LD =   $(PARSER) $(EXECUTION) $(BUILTINS) $(LIBFT) -lreadline
 
 SRCS_DIR = src/
-SRCS_LIST = main.c signal.c environment.c
+SRCS_LIST = main.c signal.c environment.c free_tree.c
 SRCS = $(addprefix $(SRCS_DIR), $(SRCS_LIST))
 
 OBJS_DIR = obj/

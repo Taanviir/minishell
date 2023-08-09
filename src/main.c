@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
 /*   Updated: 2023/08/09 12:08:42 by tanas            ###   ########.fr       */
@@ -101,7 +101,9 @@ int main(int argc, char **argv __attribute__((unused)), char **envp)
 	while (g_signal.exit_status == 0)
 	{
 		line = NULL;
-		runcmd(get_cmd(line, envp, &env), envp, &env);
+		// default
+		free_tree(runcmd(get_cmd(envp, line), envp, &env));
+		receive_signal();
 		free(line);
 	}
 	free_env_list(&env);

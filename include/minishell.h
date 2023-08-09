@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
 /*   Updated: 2023/08/09 11:45:16 by tanas            ###   ########.fr       */
@@ -32,8 +32,8 @@
 # include <stdint.h>
 # include <sys/wait.h> // is wait not allowed?
 # include "../libft/include/libft.h" // libft
-# include "tokenizer.h"
 # include "builtins.h"
+# include "tokenizer.h"
 
 typedef struct s_signal
 {
@@ -67,9 +67,12 @@ void	add_node_bottom(t_env **head, char *envp);
 t_cmd	*get_cmd(char *line, char **envp, t_env **env);
 
 // EXECUTION FUNCTION
-void	runcmd(t_cmd *cmd, char **envp, t_env **env);
+t_cmd	*runcmd(t_cmd *cmd, char **envp, t_env **env);
 
 // UTILS
 int		get_len(char *str1, char *str2);
+
+// free_tree
+void free_tree(t_cmd *cmd);
 
 #endif
