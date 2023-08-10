@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:54:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/10 18:36:45 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/10 21:09:14 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ int	ft_cd(char **argv, t_env **env_list)
 	if (argv[2])
 		return (printf("minishell: cd: too many arguments\n"), 1);
 	if (!argv[1] || argv[1][0] == '~')
-		path = getenv("HOME");
+		path = get_env(*env_list, "HOME");
 	else if (!ft_strncmp(argv[1], "-", 1))
 	{
-		path = getenv("OLDPWD");
+		path = get_env(*env_list, "OLDPWD");
 		if (!path)
 			return (printf("minishell: cd: OLDPWD not set\n"), 2);
 		printf("%s\n", path);

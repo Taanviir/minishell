@@ -6,22 +6,19 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 03:46:11 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/10 19:11:34 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/10 21:22:18 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_env(t_env **env_list, const char *name)
+char	*get_env(t_env *env_list, const char *name)
 {
-	t_env	*current;
-
-	current = *env_list;
-	while (current)
+	while (env_list)
 	{
-		if (!ft_strncmp(current->name, name, ft_strlen(name)))
-			return (current->value);
-		current = current->next;
+		if (!ft_strncmp(env_list->name, name, ft_strlen(name)))
+			return (env_list->value);
+		env_list = env_list->next;
 	}
 	return (NULL);
 }
@@ -106,4 +103,9 @@ void	environment_init(t_env **env, char **envp)
 	i = -1;
 	while (envp[++i])
 		add_node_bottom(env, envp[i]);
+	//TODO unset env that need to be unset
+	//TODO increase $SHLVL by 1
+	// line = ft_strdup("unset OLDPWD ");
+	// runcmd(parsecmd(line, &env), &env);
+	// free(line);
 }

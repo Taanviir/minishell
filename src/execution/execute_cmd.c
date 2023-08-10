@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 19:44:15 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/10 18:54:32 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/10 22:10:17 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static void	write_exec_error(char *program_name);
  * in the PATH environment variable.
  *
  * @param program_name Name of the program to locate.
+ * @param env_list Environment list.
  *
  * @return Full path to the program if found; otherwise, NULL.
  */
@@ -32,8 +33,7 @@ static char	*get_full_path(char *program_name, t_env **env_list)
 	int		i;
 
 	i = -1;
-	(void) env_list;
-	path = ft_split(getenv("PATH"), ':'); // TODO: Address potential issues with getenv
+	path = ft_split(get_env(*env_list, "PATH"), ':'); // TODO: Address potential issues with getenv
 	// Iterate over directories in PATH, attempting to construct and verify the full path.
 	while (path[++i])
 	{
@@ -48,8 +48,6 @@ static char	*get_full_path(char *program_name, t_env **env_list)
 	return (full_path);
 }
 
-
-// TODO do something about this function it looks bad lol can be moved to execute command
 static int	execute_builtin(t_cmd *cmd, t_env **env_list)
 {
 	t_exec	*exec;

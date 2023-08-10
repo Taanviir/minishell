@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/10 18:40:59 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/10 21:39:15 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 
 t_signal g_signal;
 
-//TODO getenv to get_env
-static char	*get_dir(void)
+static char	*get_dir(t_env *env_list)
 {
 	char	*dir;
 	char	*last;
@@ -25,7 +24,7 @@ static char	*get_dir(void)
 	dir = getcwd(NULL, 0);
 	if (!dir)
 		return (NULL);
-	if (!ft_strncmp(dir, getenv("HOME"), ft_strlen(dir)))
+	if (!ft_strncmp(dir, get_env(env_list,"HOME"), ft_strlen(dir)))
 	{
 		free(dir);
 		dir = ft_strdup("[~]");
@@ -50,7 +49,7 @@ t_cmd *get_cmd(char *line, t_env **env_list)
 	char *dir;
 	char *prompt;
 
-	dir = get_dir();
+	dir = get_dir(*env_list);
 	prompt = ft_bigjoin(3, MAGENTA_B "ghost@shell:" BLUE, dir, " → " WHITE);
 	line = readline(prompt);
 	free(prompt);
@@ -69,7 +68,7 @@ t_cmd *get_cmd(char *line, t_env **env_list)
 	char	*prompt;
 	t_cmd	*root;
 
-	dir = get_dir();
+	dir = get_dir(*env_list);
 	prompt = ft_bigjoin(3, MAGENTA_B "ghost@shell:" BLUE, dir, " → " WHITE);
 	//! way too many problems caused by this shit
 	// write(2, prompt, ft_strlen(prompt)); //! writing prompt to stderr
@@ -94,11 +93,6 @@ int main(int argc, char **argv __attribute__((unused)), char **envp)
 		return (printf(RED_B "Error: %s\n" WHITE, strerror(E2BIG)), ERR_ARGS);
 	receive_signal();
 	environment_init(&env, envp);
-	//TODO unset env that need to be unset
-	//TODO increase $SHLVL by 1
-	// line = ft_strdup("unset OLDPWD ");
-	// runcmd(parsecmd(line, &env), &env);
-	// free(line);
 	while (g_signal.exit_status == 0)
 	{
 		line = NULL;
@@ -108,6 +102,6 @@ int main(int argc, char **argv __attribute__((unused)), char **envp)
 		free(line);
 	}
 	free_list(env);
-	// rl_clear_history();
+	rl_clear_history();
 	return (EXIT_SUCCESS);
 }
