@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 19:44:15 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/10 14:58:16 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/10 17:06:08 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,6 @@ static void	write_exec_error(char *program_name)
 		write(2, program_name, ft_strlen(program_name));
 		write(2, ": command not found\n", 21);
 	}
-	else //! this case prints  : :, should only be once
+	else
 		perror(program_name);
 }

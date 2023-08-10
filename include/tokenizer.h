@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:25:28 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/08 21:49:56 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/10 17:49:07 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ char	get_token(char **buffer_start, char *buffer_end, char **token_start, char *
 char	*expand(char *q, char *eq, char **envp);
 int		peek(char **b_start, char *b_end, const char *str);
 /* parsers */
+t_cmd *parseredir(t_cmd *cmd, char **b_start, char *b_end, char **envp);
+t_cmd	*parseexec(char **b_start, char *b_end, char **envp);
 t_cmd	*parsecmd(char *b_start, char **envp);
 /* constructors */
 t_cmd	*construct_exec(void);
