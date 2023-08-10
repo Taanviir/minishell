@@ -20,22 +20,23 @@ static t_exec *inc_argsize(t_exec *cmd, size_t argc) {
 	its a valid token */
 static bool check_token(char **q, char **eq, int *token)
 {
-	if (!token)
+	if (!*token)
 		return (false);
-	else if (!ft_strchr("aq", token))
+	else if (!ft_strchr("aq", *token))
 	{
 		write(2, "syntax", 7);
 		return (false);
 	}
-	else if (token == 'q')
+	else if (*token == 'q')
 	{
-		if (*q == '\'')
+		if (**q == '\'')
 			*token = 'n';
+		else
+			*token = 'e';
 		*q += 1;
 		*eq -= 1;
-		*token = 'e';
 	}
-	else if (*q == '$')
+	else if (**q == '$')
 		*token = 'e';
 	return (true);
 }
@@ -53,6 +54,7 @@ t_cmd *parseexec(char **b_start, char *b_end, char **envp)
 	ret = construct_exec();
 	cmd = (t_exec *)ret;
 	ret = parseredir(ret, b_start, b_end, envp);
+
 	while (!peek(b_start, b_end, "|&;"))
 	{
 		token = get_token(b_start, b_end, &q, &eq);
@@ -64,21 +66,21 @@ t_cmd *parseexec(char **b_start, char *b_end, char **envp)
 
 			if (cmd->argv[cmd->argc]) // avoid double free if this returned null
 				cmd->expanded[cmd->argc] = true;
-			else if ((!cmd->argv[cmd->argc] && token == 'q'))
+			else if ((!cmd->argv[cmd->argc] && (*q - 1) == '"'))
 				cmd->argv[cmd->argc] = strdup(" ");
 
 			cmd->eargv[cmd->argc] = cmd->argv[cmd->argc] + ft_strlen(cmd->argv[cmd->argc]);
 		}
 		else
 		{
-		cmd->argv[cmd->argc] = q;
-		cmd->eargv[cmd->argc] = eq;
+			cmd->argv[cmd->argc] = q;
+			cmd->eargv[cmd->argc] = eq;
 		}
 		// *************** clean this shit up ***************************************//
 		if (cmd->argv[cmd->argc]) // this condition to avoid nulling too early if expand returned null
-		cmd->argc++;
+			cmd->argc++;
 		if (cmd->argc > (ARGC - 1)) //! wrong ARGC doesn't update
-		cmd = inc_argsize(cmd, cmd->argc);
+			cmd = inc_argsize(cmd, cmd->argc);
 		ret = parseredir(ret, b_start, b_end, envp);
 	}
 	cmd->argv[cmd->argc] = 0;
