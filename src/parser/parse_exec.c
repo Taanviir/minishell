@@ -16,19 +16,31 @@ static t_exec *inc_argsize(t_exec *cmd, size_t argc) {
 	return (ret);
 }
 
-static void dequote(char **q, char **eq, int *token)
+/* check the type of token returned to determine if its expandable and if
+	its a valid token */
+static bool check_token(char **q, char **eq, int *token)
 {
-  if (*token == 'q')
-  {
-    // if its a single quote no expansion
-    // remove the q designation from the token since it won't be expanded
-    if (**q == '\'')
-      *token = 's';
-    // skip the quotes
-    *q += 1;
-    *eq -= 1;
-  }
+	if (!token)
+		return (false);
+	else if (!ft_strchr("aq", token))
+	{
+		write(2, "syntax", 7);
+		return (false);
+	}
+	else if (token == 'q')
+	{
+		if (*q == '\'')
+			*token = 'n';
+		*q += 1;
+		*eq -= 1;
+		*token = 'e';
+	}
+	else if (*q == '$')
+		*token = 'e';
+	return (true);
 }
+
+
 
 t_cmd *parseexec(char **b_start, char *b_end, char **envp)
 {
@@ -44,13 +56,9 @@ t_cmd *parseexec(char **b_start, char *b_end, char **envp)
 	while (!peek(b_start, b_end, "|&;"))
 	{
 		token = get_token(b_start, b_end, &q, &eq);
-		if (!token)
-			break;
-		// *************** clean this shit up ***************************************//
-		dequote(&q, &eq, &token);
-		if (!ft_strchr("asq", token)) // asq refers to all possible states word, single or double quotes
-			write(2, "syntax", 7);
-		if ((*q == '$' && token != 's') || token == 'q')
+		if (!check_token(&q, &eq, &token))
+			break ;
+		if (token == 'e')
 		{
 			cmd->argv[cmd->argc] = expand(q, eq, envp);
 
