@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 02:28:01 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/10 20:51:35 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/11 02:35:12by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	longer(int lvar_s, char *envp)
 		return (lvar_s);
 }
 
-//not handling ({[]}) //! env needs to be sorted out for linked list usage
+// TODO change var_s name to variable or string, its what ever is after the $
 static char	*substitute(char **q, char **envp)
 {
 	int		lvar_s;
@@ -39,12 +39,12 @@ static char	*substitute(char **q, char **envp)
 
 	lvar_s = 0;
 	var_s = *q + 1;
-	if (*(*q + 1))
+	if (*var_s)
 	{
-		if (*(*q + 1) == '$')
+		if (*var_s == '$')
 			return (ft_itoa((int)getpid()));
-		else if (*(*q + 1) == '?')
-			return (ft_itoa((int)g_exit_status));
+		else if (*var_s == '?')
+			return (ft_itoa((int)g_exit_status), *q += 2);
 		(*q)++;
 	}
 	while (var_s[lvar_s] && !ft_is_whitespace(var_s[lvar_s]) && !ft_strchr("\"\'", var_s[lvar_s]))
