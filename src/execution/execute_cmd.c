@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 19:44:15 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/08 21:13:36 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/10 14:58:16 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,14 @@ void	execute_cmd(t_cmd *cmd, char **envp, t_env **env)
 	// If the command is a builtin, execute it and return.
 	if (execute_builtin(cmd, envp, env))
 		return ;
-	else if (program_name && !fork()) // TODO: Add error handling for the fork call and program existence.
+	if (!fork()) // TODO: Add error handling for the fork call and program existence.
 	{
 		full_path = get_full_path(program_name);
 		// Attempt to execute as absolute path or from PATH. If both fail, write an appropriate error.
 		if ((execve(program_name, execcmd->argv, envp) && !full_path)
-			|| (execve(full_path, execcmd->argv, envp)))
-			write_exec_error(program_name);
+			|| (execve(full_path, execcmd->argv, envp))) {
+				write_exec_error(program_name);
+			}
 		// Free command tree in the child process.
 		free_tree(cmd);
 		exit(0);
@@ -89,6 +90,11 @@ void	execute_cmd(t_cmd *cmd, char **envp, t_env **env)
 static void	write_exec_error(char *program_name)
 {
 	write(2, "minishell: ", 11);
-	write(2, program_name, ft_strlen(program_name));
-	perror(": ");
+	if (errno == EFAULT || errno == ENOENT)
+	{
+		write(2, program_name, ft_strlen(program_name));
+		write(2, ": command not found\n", 21);
+	}
+	else //! this case prints  : :, should only be once
+		perror(program_name);
 }

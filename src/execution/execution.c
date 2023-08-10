@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 20:24:32 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/09 21:09:58 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/10 13:52:03 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ int	execute_builtin(t_cmd *cmd, char **envp, t_env **env)
 
 	execcmd = (t_exec *)cmd;
 	program = execcmd->argv[0];
+	if (!program) //! check in case no program name
+		return (0);
 	if (!ft_strncmp(program, "echo", get_len(program, "echo")))
 		return (ft_echo(execcmd->argv), 1);
 	if (!ft_strncmp(program, "cd", get_len(program, "cd")))
