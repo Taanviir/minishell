@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 19:44:15 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/09 21:07:15 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/10 18:54:32 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,14 @@ static void	write_exec_error(char *program_name);
  *
  * @return Full path to the program if found; otherwise, NULL.
  */
-static char	*get_full_path(char *program_name)
+static char	*get_full_path(char *program_name, t_env **env_list)
 {
 	char	*full_path;
 	char	**path;
 	int		i;
 
 	i = -1;
+	(void) env_list;
 	path = ft_split(getenv("PATH"), ':'); // TODO: Address potential issues with getenv
 	// Iterate over directories in PATH, attempting to construct and verify the full path.
 	while (path[++i])
@@ -49,7 +50,7 @@ static char	*get_full_path(char *program_name)
 
 
 // TODO do something about this function it looks bad lol can be moved to execute command
-int	execute_builtin(t_cmd *cmd, char **envp, t_env **env)
+static int	execute_builtin(t_cmd *cmd, t_env **env_list)
 {
 	t_exec	*exec;
 
@@ -57,20 +58,20 @@ int	execute_builtin(t_cmd *cmd, char **envp, t_env **env)
 	if (!ft_strncmp(exec->argv[0], "echo", get_len(exec->argv[0], "echo")))
 		return (ft_echo(exec->argv), 1);
 	if (!ft_strncmp(exec->argv[0], "cd", get_len(exec->argv[0], "cd")))
-		return (ft_cd(exec->argv, env), 1);
+		return (ft_cd(exec->argv, env_list), 1);
 	else if (!ft_strncmp(exec->argv[0], "pwd", get_len(exec->argv[0], "pwd")))
 		return (ft_pwd(), 1);
 	else if (!ft_strncmp(exec->argv[0], "export", get_len(exec->argv[0], "export")))
-		return (ft_export(exec->argv, envp, env), 1);
+		return (ft_export(exec->argv, env_list), 1);
 	else if (!ft_strncmp(exec->argv[0], "unset", get_len(exec->argv[0], "unset")))
-		return (ft_unset(exec->argv, env), 1);
+		return (ft_unset(exec->argv, env_list), 1);
 	else if (!ft_strncmp(exec->argv[0], "env", get_len(exec->argv[0], "env")))
-		return (ft_env(exec->argv, env), 1);
+		return (ft_env(exec->argv, env_list), 1);
 	else if (!ft_strncmp(exec->argv[0], "exit", get_len(exec->argv[0], "exit")))
 	{
 		// TODO shit's weird homie, can't exit mid program
 		free_tree(cmd);
-		return (ft_exit(EXIT_SUCCESS, env), 1);
+		return (ft_exit(EXIT_SUCCESS, env_list), 1);
 	}
 	return (0);
 }
@@ -84,30 +85,32 @@ int	execute_builtin(t_cmd *cmd, char **envp, t_env **env)
  * in both scenarios, an error message is displayed.
  *
  * @param cmd      A structure holding command details.
- * @param envp     Custom environment structure
  * @param env      Environment variables as key-value pairs.
  */
-void	execute_cmd(t_cmd *cmd, char **envp, t_env **env)
+void	execute_cmd(t_cmd *cmd, t_env **env_list)
 {
 	t_exec	*execcmd;
 	char	*program_name;
 	char	*full_path;
+	char	**env_array;
 
 	// Typecast the cmd structure to access command-specific parameters.
 	execcmd = (t_exec *)cmd;
 	program_name = execcmd->argv[0];
 	// If the command is a builtin, execute it and return.
-	if (execute_builtin(cmd, envp, env))
+	if (execute_builtin(cmd, env_list))
 		return ;
 	else if (program_name && !fork()) // TODO: Add error handling for the fork call and program existence.
 	{
-		full_path = get_full_path(program_name);
+		env_array = list_to_array(*env_list);
+		full_path = get_full_path(program_name, env_list);
 		// Attempt to execute as absolute path or from PATH. If both fail, write an appropriate error.
-		if ((execve(program_name, execcmd->argv, envp) && !full_path)
-			|| (execve(full_path, execcmd->argv, envp)))
+		if ((execve(program_name, execcmd->argv, env_array) && !full_path)
+			|| (execve(full_path, execcmd->argv, env_array)))
 			write_exec_error(program_name);
 		// Free command tree in the child process.
 		free_tree(cmd);
+		free_double_ptr((void **) env_array);
 		exit(0);
 	}
 	wait(0);

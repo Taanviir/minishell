@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/09 11:45:16 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/10 18:52:00 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,16 +58,17 @@ extern t_signal	g_signal;
 void	receive_signal(void);
 
 // ENVIRONMENT FUNCTIONS
-void	free_env_node(t_env **env);
-void	free_env_list(t_env **env);
 void	environment_init(t_env **env, char **envp);
 void	add_node_bottom(t_env **head, char *envp);
+char	**list_to_array(t_env *env);
+void	free_list(t_env *env);
+char	*get_env(t_env **env_list, const char *name);
 
 // INPUT FUNCTION
-t_cmd	*get_cmd(char *line, char **envp, t_env **env);
+t_cmd	*get_cmd(char *line, t_env **env_list);
 
 // EXECUTION FUNCTION
-t_cmd	*runcmd(t_cmd *cmd, char **envp, t_env **env);
+t_cmd	*runcmd(t_cmd *cmd, t_env **env_list);
 
 // UTILS
 int		get_len(char *str1, char *str2);

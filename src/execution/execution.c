@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 20:24:32 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/09 21:06:51 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/10 18:22:47 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,38 +21,38 @@ int	get_len(char *str1, char *str2)
 }
 
 //! handle printf &
-static void	execute_bgcmd(t_cmd *cmd, char **envp, t_env **env)
+static void	execute_bgcmd(t_cmd *cmd, t_env **env_list)
 {
 	t_bgcmd	*bgcmd;
 
 	bgcmd = (t_bgcmd *)cmd;
 	if (!fork())
 	{
-		runcmd(bgcmd->cmd, envp, env);
+		runcmd(bgcmd->cmd, env_list);
 		free_tree(cmd);
 		exit(0);
 	}
 	wait(0);
 }
 
-static void	execute_seq(t_cmd *cmd, char **envp, t_env **env)
+static void	execute_seq(t_cmd *cmd, t_env **env_list)
 {
 	t_seqcmd	*seqcmd;
 
 	seqcmd = (t_seqcmd *)cmd;
 	if (!fork())
 	{
-		runcmd(seqcmd->left, envp, env);
+		runcmd(seqcmd->left, env_list);
 		free_tree(cmd);
 		exit(0);
 	}
 	wait(NULL);
-	runcmd(seqcmd->right, envp, env);
+	runcmd(seqcmd->right, env_list);
 }
 
-typedef void (*t_execute)(t_cmd *cmd, char **envp, t_env **env);
+typedef void (*t_execute)(t_cmd *cmd, t_env **env_list);
 
-t_cmd *runcmd(t_cmd *cmd, char **envp, t_env **env)
+t_cmd *runcmd(t_cmd *cmd, t_env **env_list)
 {
 	t_execute	executers[5];
 
@@ -63,6 +63,6 @@ t_cmd *runcmd(t_cmd *cmd, char **envp, t_env **env)
 	executers[4] = execute_bgcmd;
 	if (!cmd)
 		return (NULL);
-	executers[cmd->type](cmd, envp, env);
+	executers[cmd->type](cmd, env_list);
 	return(cmd);
 }

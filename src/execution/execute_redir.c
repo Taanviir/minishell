@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_redir.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 20:34:01 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/08 22:16:04 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/10 18:22:04 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,9 @@ static bool	verify_file_opened(const int fd, const char *file_path);
  * and then restores the standard in/out.
  *
  * @param cmd      A structure holding command details.
- * @param envp     Environment variables as key-value pairs.
- * @param env      Custom environment structure.
+ * @param env_list	Linked list of environment variables.
  */
-void	execute_redir(t_cmd *cmd, char **envp, t_env **env)
+void	execute_redir(t_cmd *cmd, t_env **env_list)
 {
 	t_redircmd	*redircmd;
 	int			new_fd;
@@ -49,7 +48,7 @@ void	execute_redir(t_cmd *cmd, char **envp, t_env **env)
 	dup2(new_fd, redircmd->fd);
 	close(new_fd);
 	// Execute the actual command with redirection in place.
-	runcmd(redircmd->cmd, envp, env);
+	runcmd(redircmd->cmd, env_list);
 	// Restore the original file descriptor.
 	dup2(save_fd, redircmd->fd);
 	close(save_fd);

@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 17:52:34 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/09 21:02:48 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/10 18:24:48 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,9 +125,9 @@ char *get_delimiter(char *q, const char *eq) {
  *
  * @param pipe_write  File descriptor to which the function writes the input.
  * @param del         Delimiter string used to terminate input.
- * @param envp        Environment variables for potential expansion.
+ * @param env_list        Environment variables for potential expansion.
  */
-void here_doc(const int pipe_write, char *delimiter, char **envp) {
+void here_doc(const int pipe_write, char *delimiter, t_env **env_list) {
   char *line;
   char *temp;
   char  quote;
@@ -151,7 +151,7 @@ void here_doc(const int pipe_write, char *delimiter, char **envp) {
     // If the delimiter isn't quoted, perform variable expansion.
     if (!quote) {
      temp = line;
-     line = expand(line, line + ft_strlen(line), envp);
+     line = expand(line, line + ft_strlen(line), env_list);
      free(temp);
     }
     // Write the processed line to the provided file descriptor.

@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/09 21:12:41 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/10 18:40:59 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,16 @@
 
 t_signal g_signal;
 
+//TODO getenv to get_env
 static char	*get_dir(void)
 {
 	char	*dir;
 	char	*last;
 	char	*temp;
 
-
 	dir = getcwd(NULL, 0);
+	if (!dir)
+		return (NULL);
 	if (!ft_strncmp(dir, getenv("HOME"), ft_strlen(dir)))
 	{
 		free(dir);
@@ -42,7 +44,7 @@ static char	*get_dir(void)
 }
 
 #ifdef TEST
-t_cmd *get_cmd(char **envp, char *line)
+t_cmd *get_cmd(char *line, t_env **env_list)
 {
 	t_cmd *root;
 	char *dir;
@@ -50,18 +52,18 @@ t_cmd *get_cmd(char **envp, char *line)
 
 	dir = get_dir();
 	prompt = ft_bigjoin(3, MAGENTA_B "ghost@shell:" BLUE, dir, " → " WHITE);
-	line = readline(MAGENTA_B "ghost@shell → " WHITE);
+	line = readline(prompt);
 	free(prompt);
 	free(dir);
 	if (!line)
-		return (ft_exit(0), NULL);
+		return (ft_exit(0, env_list), NULL);
 	add_history(line);
-	root = parsecmd(line, envp);
+	root = parsecmd(line, env_list);
 	test(root);
 	return (root);
 }
 #else
-t_cmd *get_cmd(char *line, char **envp, t_env **env)
+t_cmd *get_cmd(char *line, t_env **env_list)
 {
 	char	*dir;
 	char	*prompt;
@@ -76,9 +78,9 @@ t_cmd *get_cmd(char *line, char **envp, t_env **env)
 	free(prompt);
 	free(dir);
 	if (!line)
-		return (ft_exit(0, env), NULL);
+		return (ft_exit(0, env_list), NULL);
 	add_history(line);
-	root = parsecmd(line, envp);
+	root = parsecmd(line, env_list);
 	return (root);
 }
 #endif
@@ -95,17 +97,17 @@ int main(int argc, char **argv __attribute__((unused)), char **envp)
 	//TODO unset env that need to be unset
 	//TODO increase $SHLVL by 1
 	// line = ft_strdup("unset OLDPWD ");
-	// runcmd(parsecmd(line, envp), envp, &env);
+	// runcmd(parsecmd(line, &env), &env);
 	// free(line);
 	while (g_signal.exit_status == 0)
 	{
 		line = NULL;
 		// default
-		free_tree(runcmd(get_cmd(line, envp, &env), envp, &env));
+		free_tree(runcmd(get_cmd(line, &env), &env));
 		receive_signal();
 		free(line);
 	}
-	free_env_list(&env);
+	free_list(env);
 	// rl_clear_history();
 	return (EXIT_SUCCESS);
 }

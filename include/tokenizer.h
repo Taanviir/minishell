@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:25:28 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/08 21:49:56 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/10 18:25:13 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,10 @@ typedef struct s_bgcmd
 
 /* tokenizers */
 char	get_token(char **buffer_start, char *buffer_end, char **token_start, char **token_end);
-char	*expand(char *q, char *eq, char **envp);
+char	*expand(char *q, char *eq, t_env **env_list);
 int		peek(char **b_start, char *b_end, const char *str);
 /* parsers */
-t_cmd	*parsecmd(char *b_start, char **envp);
+t_cmd	*parsecmd(char *b_start, t_env **env_list);
 /* constructors */
 t_cmd	*construct_exec(void);
 t_cmd	*construct_redircmd(t_cmd *command, char *fp, char *efp, int mode, int fd);
@@ -80,13 +80,12 @@ t_cmd	*construct_pipecmd(t_cmd *left, t_cmd *right);
 t_cmd	*construct_seqcmd(t_cmd *left, t_cmd *right);
 t_cmd	*construct_bgcmd(t_cmd *cmd);
 /* here_document */
-void	here_doc(const int fd, char *del, char **envp);
+void	here_doc(const int fd, char *del, t_env **env_list);
 char	*get_delimiter(char *q, const char *eq);
 
 // execution
-int		execute_builtin(t_cmd *cmd, char **envp, t_env **env);
-void	execute_cmd(t_cmd *cmd, char **envp, t_env **env);
-void	execute_redir(t_cmd *cmd, char **envp, t_env **env);
-void	execute_pipe(t_cmd *cmd, char **envp, t_env **env);
+void	execute_cmd(t_cmd *cmd, t_env **env_list);
+void	execute_redir(t_cmd *cmd, t_env **env_list);
+void	execute_pipe(t_cmd *cmd, t_env **env_list);
 
 #endif

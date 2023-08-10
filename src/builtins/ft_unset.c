@@ -12,29 +12,52 @@
 
 #include "minishell.h"
 
-int	ft_unset(char **argv, t_env **env)
+bool	check_char(char c, char *argv)
+{
+	if (!ft_is_alpha(c) && c != '\"' && c != '\'')
+	{
+		printf("export: `%s': not a valid identifier\n", argv);
+		return (true);
+	}
+	return (false);
+}
+
+void free_node_by_name(t_env **env_list, const char *name)
+{
+	t_env	*current;
+	t_env	*prev;
+
+	current = *env_list;
+	prev = NULL;
+	while (current)
+	{
+		if (!ft_strncmp(current->name, name, ft_strlen(name)))
+		{
+			if (!prev)
+				*env_list = current->next;
+			else
+				prev->next = current->next;
+			free(current->name);
+			free(current->value);
+			free(current);
+			return ;
+		}
+		prev = current;
+		current = current->next;
+	}
+}
+
+int	ft_unset(char **argv, t_env **env_list)
 {
 	int		i;
-	t_env	*temp;
 
 	if (!argv[1])
 		return (0);
 	i = 0;
 	while (argv[++i])
 	{
-		i += is_name(argv[i][0], argv[i]);
-		temp = *env;
-		while (temp)
-		{
-			if (!ft_strncmp(argv[i], temp->name, name_len(argv[i])))
-			{
-				free_env_node(&temp);
-				break ;
-			}
-			temp = temp->next;
-			if (temp == *env)
-				break ;
-		}
+		i += check_char(argv[i][0], argv[i]);
+		free_node_by_name(env_list, argv[i]);
 	}
 	return (0);
 }

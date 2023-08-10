@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pipe.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 21:48:42 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/08 22:15:51 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/10 18:20:54 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,10 @@ static bool	verify_pipe(int pipe_return);
  * (sending its output to the pipe), and another to handle the right command
  * (reading its input from the pipe).
  *
- * @param cmd	The pipe command structure.
- * @param envp	Environment variables.
- * @param env	Custom environment handler.
+ * @param cmd		The pipe command structure.
+ * @param env_list	Linked list of environment variables.
  */
-void	execute_pipe(t_cmd *cmd, char **envp, t_env **env)
+void	execute_pipe(t_cmd *cmd, t_env **env_list)
 {
 	t_pipecmd	*pipecmd;
 	int			pipe_fds[2];
@@ -56,7 +55,7 @@ void	execute_pipe(t_cmd *cmd, char **envp, t_env **env)
 	{
 		dup2(pipe_fds[1], STDOUT_FILENO);
 		close_pipe_ends(pipe_fds);
-		runcmd(pipecmd->left, envp, env);
+		runcmd(pipecmd->left, env_list);
 		free_tree(cmd);
 		exit(0);
 	}
@@ -65,7 +64,7 @@ void	execute_pipe(t_cmd *cmd, char **envp, t_env **env)
 	{
 		dup2(pipe_fds[0], STDIN_FILENO);
 		close_pipe_ends(pipe_fds);
-		runcmd(pipecmd->right, envp, env);
+		runcmd(pipecmd->right, env_list);
 		free_tree(cmd);
 		exit(0);
 	}

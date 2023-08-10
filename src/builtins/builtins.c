@@ -17,6 +17,7 @@ int	ft_pwd(void)
 	char	*path;
 
 	path = getcwd(NULL, 0);
+	// TODO NULL handle
 	printf("%s\n", path);
 	free(path);
 	return (0);
@@ -48,8 +49,7 @@ int	ft_echo(char **argv)
 
 int	ft_exit(int err_num, t_env **env)
 {
-	//free_env_list(env);
-	(void) env;
+	free_list(*env);
 	g_signal.exit_status = err_num;
 	printf("exit\n");
 	exit(g_signal.exit_status);
@@ -66,8 +66,7 @@ int	ft_env(char **argv, t_env **env)
 	{
 		printf("%s=%s\n", temp->name, temp->value);
 		temp = temp->next;
-		if (temp == *env)
-			break ;
 	}
+	//handle empty vars
 	return (0);
 }
