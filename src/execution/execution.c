@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 20:24:32 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/10 16:41:24 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/12 02:11:03 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,16 @@ int	execute_builtin(t_cmd *cmd, char **envp, t_env **env)
 	return (0);
 }
 
-//! handle printf &
+/* TODO some missing behaviour how to call back to fg and update number */
+static void	write_bg(void)
+{
+	char *pid;
+
+	pid = ft_itoa((int)getpid());
+	write(1, "[1] ", 4); // TODO update the number of bg processes
+	write(1, pid, ft_strlen(pid));
+	write(1, "\n", 1);
+}
 static void	execute_bgcmd(t_cmd *cmd, char **envp, t_env **env)
 {
 	t_bgcmd	*bgcmd;
@@ -58,12 +67,14 @@ static void	execute_bgcmd(t_cmd *cmd, char **envp, t_env **env)
 	bgcmd = (t_bgcmd *)cmd;
 	if (!fork())
 	{
+		write_bg();
 		runcmd(bgcmd->cmd, envp, env);
 		free_tree(cmd);
 		exit(0);
 	}
-	wait(0);
+	// wait(0);
 }
+/* TODO some missing behaviour how to call back to fg and update number */
 
 static void	execute_seq(t_cmd *cmd, char **envp, t_env **env)
 {

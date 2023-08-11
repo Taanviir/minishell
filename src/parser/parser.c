@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:19:12 by eva-1             #+#    #+#             */
-/*   Updated: 2023/08/10 17:40:38 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/12 02:15:15 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,6 @@ t_cmd *parseline(char **b_start, char *b_end, char **envp) {
   cmd = parsepipe(b_start, b_end, envp);
   while (peek(b_start, b_end, "&")) {
     get_token(b_start, b_end, 0, 0);
-    if (*b_start == b_end) {
-      write(2, "syntax error near unexpected token `&'\n", 39);
-    }
     cmd = construct_bgcmd(cmd);
   }
   while (peek(b_start, b_end, ";")) {

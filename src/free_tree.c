@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 19:55:59 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/09 16:52:20 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/12 01:53:52 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,9 @@ void free_cmd(t_cmd *cmd)
 
 	exec = (t_exec *)cmd;
 	i = 0;
-	//! if one of the argv's is expanded it should be freed here need a flag for expanded
 	while (i < exec->argc) {
-		if (exec->expanded[i]) {
+		if (exec->expanded[i])
 			free(exec->argv[i]);
-		}
 		i++;
 	}
 	free(exec->expanded);
