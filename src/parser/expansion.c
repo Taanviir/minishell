@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <string.h>
+
 // TODO this WIP
 int	g_exit_status = 35; //!remove
 
@@ -39,14 +39,11 @@ static char	*substitute(char **q, char **envp)
 
 	lvar_s = 0;
 	var_s = *q + 1;
-	if (*var_s)
-	{
-		if (*var_s == '$')
-			return (ft_itoa((int)getpid()));
-		else if (*var_s == '?')
-			return (ft_itoa((int)g_exit_status), *q += 2);
-		(*q)++;
-	}
+	if (*var_s == '$')
+			return (*q += 2, ft_itoa((int)getpid()));
+	if (*var_s == '?')
+			return (*q += 2, ft_itoa(g_exit_status));
+	*q += 1;
 	while (var_s[lvar_s] && !ft_is_whitespace(var_s[lvar_s]) && !ft_strchr("\"\'", var_s[lvar_s]))
 	{
 		lvar_s++;
