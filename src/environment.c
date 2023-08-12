@@ -6,31 +6,30 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 03:46:11 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/06 14:00:23 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/10 21:22:18 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_env_node(t_env **env)
+char	*get_env(t_env *env_list, const char *name)
 {
-	t_env	*temp;
-
-	temp = *env;
-	temp->prev->next = temp->next;
-	temp->next->prev = temp->prev;
-	free(temp->name);
-	free(temp->value);
-	free(temp);
+	while (env_list)
+	{
+		if (!ft_strncmp(env_list->name, name, ft_strlen(name)))
+			return (env_list->value);
+		env_list = env_list->next;
+	}
+	return (NULL);
 }
 
-void	free_env_list(t_env **env)
+void	free_list(t_env *env)
 {
 	t_env	*temp;
 	t_env	*next;
 
-	temp = *env;
-	while (temp->next != *env)
+	temp = env;
+	while (temp)
 	{
 		next = temp->next;
 		free(temp->name);
@@ -38,44 +37,75 @@ void	free_env_list(t_env **env)
 		free(temp);
 		temp = next;
 	}
-	free(temp->name);
-	free(temp->value);
-	free(temp);
 }
 
-void	add_node_bottom(t_env **head, char *envp)
+char	**list_to_array(t_env *env)
+{
+	t_env	*temp;
+	int		i;
+	char	**env_array;
+
+	i = 0;
+	temp = env;
+	while (temp)
+	{
+		i++;
+		temp = temp->next;
+	}
+	env_array = malloc(sizeof(char *) * (i + 1));
+	if (!env_array)
+		return (NULL);
+	i = -1;
+	temp = env;
+	while (temp)
+	{
+		env_array[++i] = ft_strjoin(temp->name, "=");
+		env_array[i] = ft_strjoin_m(env_array[i], temp->value);
+		temp = temp->next;
+	}
+	env_array[++i] = NULL;
+	return (env_array);
+}
+
+void	add_node_bottom(t_env **head, char *env_var)
 {
 	t_env	*new_node;
-	char	**env;
+	t_env	*current;
+	char	**env_array;
 
-	env = ft_split(envp, '=');
+	env_array = ft_split(env_var, '=');
 	new_node = malloc(sizeof(t_env));
 	if (!new_node)
-		return ;
-	new_node->name = ft_strdup(env[0]);
-	new_node->value = ft_strdup(env[1]);
-	if (!(*head))
 	{
-		*head = new_node;
-		new_node->next = new_node;
-		new_node->prev = new_node;
+		free_double_ptr((void **) env_array);
+		return ;
 	}
+	new_node->name = ft_strdup(env_array[0]);
+	new_node->value = ft_strdup(env_array[1]);
+	new_node->next = NULL;
+	if (!(*head))
+		*head = new_node;
 	else
 	{
-		new_node->next = *head;
-		new_node->prev = (*head)->prev;
-		(*head)->prev->next = new_node;
-		(*head)->prev = new_node;
+		current = *head;
+		while (current->next)
+			current = current->next;
+		current->next = new_node;
 	}
-	free_double_ptr((void **) env);
+	free_double_ptr((void **) env_array);
 }
 
 void	environment_init(t_env **env, char **envp)
 {
-	int		i;
+	int	i;
 
 	(*env) = NULL;
 	i = -1;
 	while (envp[++i])
 		add_node_bottom(env, envp[i]);
+	//TODO unset env that need to be unset
+	//TODO increase $SHLVL by 1
+	// line = ft_strdup("unset OLDPWD ");
+	// runcmd(parsecmd(line, &env), &env);
+	// free(line);
 }

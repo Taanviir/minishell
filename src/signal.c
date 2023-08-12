@@ -3,40 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 18:55:49 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/11 02:04:35 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/12 14:39:59 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-Handle ctrl-C, ctrl-D and ctrl-\ which should behave like in bash.
+* In interactive mode:
+* ctrl-C displays a new prompt on a new line. -> SIGINT
+* ctrl-\ does nothing. -> SIGQUIT
 
-In interactive mode:
-◦ ctrl-C displays a new prompt on a new line. -> SIGINT
-◦ ctrl-D exits the shell. -> EOF basically
-◦ ctrl-\ does nothing. -> SIGQUIT
+* when in command:
+* ctrl-C interrupts the process and in heredoc it stops then returns a num. -> SIGINT
+* ctrl-\ quits the process, prints Quit; {} and in heredoc it does nothing. -> SIGQUIT
+* ctrl-D just stops the process and returns 0. -> EOF
 */
 
-static void signal_handler(int signum) {
-  if (signum == SIGINT) {
-    write(2, "\n", 1);
-    rl_on_new_line();
-    rl_replace_line("", 0);
-    rl_redisplay();
-  } else if (signum == SIGQUIT)
-    return;
+static void	signal_handler(int signum)
+{
+	if (signum == SIGINT)
+	{
+		write(2, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
 }
 
-void receive_signal(void) {
-  struct sigaction action;
-
-  action.sa_handler = signal_handler;
-  sigemptyset(&action.sa_mask);
-  action.sa_flags = 0;
-  sigaction(SIGINT, &action, NULL);
-  sigaction(SIGQUIT, &action, NULL);
+void	receive_signal(void)
+{
+	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, SIG_IGN);
 }

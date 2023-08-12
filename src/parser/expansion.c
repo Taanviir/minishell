@@ -17,13 +17,13 @@ int	g_exit_status = 35; //!remove
 
 /* helper function for substitue
 compares the length of the variable
-and envp variable and returns the longer */
-static int	longer(int lvar_s, char *envp)
+and env_var and returns the longer one */
+static int	longer(int lvar_s, char *env_var)
 {
 	int	i;
 
 	i = 0;
-	while (envp[i] != '=')
+	while (env_var[i] != '=')
 		i++;
 	if (i > lvar_s)
 		return (i);
@@ -32,7 +32,7 @@ static int	longer(int lvar_s, char *envp)
 }
 
 // TODO change var_s name to variable or string, its what ever is after the $
-static char	*substitute(char **q, char **envp)
+static char	*substitute(char **q, char **env_array)
 {
 	int		lvar_s;
 	char	*var_s;
@@ -49,29 +49,31 @@ static char	*substitute(char **q, char **envp)
 		lvar_s++;
 		(*q)++;
 	}
-	while (*envp)
+	while (*env_array)
 	{
-		if (!ft_strncmp(*envp, var_s, longer(lvar_s, *envp)))
-			return (*envp + lvar_s + 1);
-		envp++;
+		if (!ft_strncmp(*env_array, var_s, longer(lvar_s, *env_array)))
+			return (*env_array + lvar_s + 1);
+		env_array++;
 	}
 	return (0);
 }
 
 /* expands a token if it contains a $ */
-char	*expand(char *q, char *eq, char **envp)
+char	*expand(char *q, char *eq, t_env **env_list)
 {
 	char	*expanded_string;
 	char	buffer[2];
 	char	*sub;
+	char	**env_array;
 
 	buffer[1] = 0; // this creates a mini null-terminated word to be used with strjoing
 	expanded_string = NULL;
+	env_array = list_to_array(*env_list);
 	while (q < eq)
 	{
 		if (*q == '$' && !ft_is_whitespace(*(q + 1)))
 		{
-			sub = substitute(&q, envp);
+			sub = substitute(&q, env_array);
 			if (sub)
 				expanded_string = ft_strjoin_m(expanded_string, sub);
 		}
@@ -82,13 +84,6 @@ char	*expand(char *q, char *eq, char **envp)
 			q++;
 		}
 	}
+	free_double_ptr((void **) env_array);
 	return (expanded_string);
 }
-
-/* int main(__attribute__((unused))int argc,__attribute__((unused))
-char **argv, char **envp)
-{
-	char *test = argv[1];
-	// char *test = "$x m l";
-	printf("%s\n", expand(test, envp));
-} */

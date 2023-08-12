@@ -3,15 +3,13 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+         #
+#    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/14 14:38:29 by tanas             #+#    #+#              #
-#    Updated: 2023/08/07 21:20:05 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/08/10 21:40:16 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# READLINE_DIR:= $(shell brew --prefix readline)
-# READLINE_LIB:= -lreadline -lhistory -L$(READLINE_DIR)/lib
 ### COLOURS
 GREEN_B = "\033[1;32m"
 RED_BI = "\033[1;3;31m"
@@ -21,17 +19,15 @@ RESET = "\033[0m"
 
 NAME = minishell
 C_FLAGS = -Wall -Wextra -Werror -g3
-INCLUDES = -I include/ -I libft/include -I test/
+INCLUDES = -I include/ -I libft/include -I test/ -I /usr/local/opt/readline/include
 LIBFT = libft/libft.a
 PARSER = src/parser/parser.a
 BUILTINS = src/builtins/builtins.a
 EXECUTION = src/execution/execution.a
-# READLINE:= -l/usr/local/Cellar/readline/8.2.1/lib/libhistory.a
-
 
 TESTER = test/test.a
 
-LD =   $(PARSER) $(EXECUTION) $(BUILTINS) $(LIBFT) -lreadline
+LD =   $(PARSER) $(EXECUTION) $(BUILTINS) $(LIBFT) -lreadline -L /usr/local/opt/readline/lib
 
 SRCS_DIR = src/
 SRCS_LIST = main.c signal.c environment.c free_tree.c
