@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/12 21:14:13 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/12 21:22:57 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ t_cmd *get_cmd(char *line, t_env **env_list)
 	line = readline(prompt);
 	free(prompt);
 	free(dir);
+	// line = ft_strtrim(line, " \t");
 	if (!line)
 		return (ft_exit(NULL, 0, env_list), NULL);
 	add_history(line);
