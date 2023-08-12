@@ -12,6 +12,11 @@
 
 #include "minishell.h"
 
+// TODO handle exit status
+// * doesnt do anyhting with too many args (>1)
+// * always returns 0
+// * deleted or moved or renamed dir throws err
+// * permissions issue
 int	ft_pwd(void)
 {
 	char	*path;
@@ -47,14 +52,24 @@ int	ft_echo(char **argv)
 	return (0);
 }
 
-int	ft_exit(int err_num, t_env **env)
+// TODO handle exit status
+// * too many args (>1) prints bash: exit: too many arguments; doesnt exit but $? is 1
+// * non numeric args prints bash: exit: 1a: numeric argument required; exits with 255
+// * no args exits with 0
+// * exit code above 255 does {code} % 256 and exits with that value
+int	ft_exit(char **argv, int err_num, t_env **env)
 {
+	// if (argv[1])
+	(void) argv;
 	free_list(*env);
-	g_signal.exit_status = err_num;
+	g_exit_status = err_num;
 	printf("exit\n");
-	exit(g_signal.exit_status);
+	// return (g_exit_status);
+	exit(g_exit_status);
 }
 
+// TODO handle exit status
+// * should not handle arguments or options
 int	ft_env(char **argv, t_env **env)
 {
 	t_env	*temp;
@@ -67,6 +82,8 @@ int	ft_env(char **argv, t_env **env)
 		printf("%s=%s\n", temp->name, temp->value);
 		temp = temp->next;
 	}
-	//handle empty vars
+	// TODO handle empty vars
+	// * env will display vars with empty string like WSLENV=
+	// * env will not display vars with NULL however
 	return (0);
 }

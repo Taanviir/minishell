@@ -12,6 +12,7 @@
 
 #include "minishell.h"
 
+// TODO env var value can be NULL or empty ie ""
 static void	print_env_list(t_env **env_list)
 {
 	char	**temp;
@@ -56,7 +57,6 @@ int	name_len(char *arg)
 	return (i);
 }
 
-//! needs testing
 int	ft_export(char **argv, t_env **env_list)
 {
 	int		i;

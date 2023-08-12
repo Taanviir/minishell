@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 18:55:49 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/10 21:58:14 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/12 14:39:59 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@
 * In interactive mode:
 * ctrl-C displays a new prompt on a new line. -> SIGINT
 * ctrl-\ does nothing. -> SIGQUIT
+
+* when in command:
+* ctrl-C interrupts the process and in heredoc it stops then returns a num. -> SIGINT
+* ctrl-\ quits the process, prints Quit; {} and in heredoc it does nothing. -> SIGQUIT
+* ctrl-D just stops the process and returns 0. -> EOF
 */
 
 static void	signal_handler(int signum)
@@ -27,17 +32,10 @@ static void	signal_handler(int signum)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
-	else if (signum == SIGQUIT)
-		return ;
 }
 
 void	receive_signal(void)
 {
-	struct sigaction action;
-
-	action.sa_handler = signal_handler;
-	sigemptyset(&action.sa_mask);
-	action.sa_flags = 0;
-	sigaction(SIGINT, &action, NULL);
-	sigaction(SIGQUIT, &action, NULL);
+	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, SIG_IGN);
 }

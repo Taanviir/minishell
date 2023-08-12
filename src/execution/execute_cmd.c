@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 19:44:15 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/10 22:10:17 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/12 19:30:50 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static int	execute_builtin(t_cmd *cmd, t_env **env_list)
 	{
 		// TODO shit's weird homie, can't exit mid program
 		free_tree(cmd);
-		return (ft_exit(EXIT_SUCCESS, env_list), 1);
+		return (ft_exit(exec->argv, EXIT_SUCCESS, env_list));
 	}
 	return (0);
 }

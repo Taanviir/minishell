@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/10 21:07:19 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/12 14:40:31 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,8 @@
 # include "builtins.h"
 # include "tokenizer.h"
 
-typedef struct s_signal
-{
-	int	sigint;
-	int	sigquit;
-	int	exit_status;
-}	t_signal;
-
 // EXIT_STATUS
-extern t_signal	g_signal;
+extern int	g_exit_status;
 
 // ERROR CODES
 # define ERR_ARGS 1

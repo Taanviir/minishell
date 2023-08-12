@@ -6,14 +6,14 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/10 21:39:15 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/12 19:33:57 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../test/test.h"
 #include "minishell.h"
 
-t_signal g_signal;
+int	g_exit_status;
 
 static char	*get_dir(t_env *env_list)
 {
@@ -55,7 +55,7 @@ t_cmd *get_cmd(char *line, t_env **env_list)
 	free(prompt);
 	free(dir);
 	if (!line)
-		return (ft_exit(0, env_list), NULL);
+		return (ft_exit(NULL, 0, env_list), NULL);
 	add_history(line);
 	root = parsecmd(line, env_list);
 	test(root);
@@ -77,7 +77,7 @@ t_cmd *get_cmd(char *line, t_env **env_list)
 	free(prompt);
 	free(dir);
 	if (!line)
-		return (ft_exit(0, env_list), NULL);
+		return (ft_exit(NULL, 0, env_list), NULL);
 	add_history(line);
 	root = parsecmd(line, env_list);
 	return (root);
@@ -91,12 +91,12 @@ int main(int argc, char **argv __attribute__((unused)), char **envp)
 
 	if (argc != 1)
 		return (printf(RED_B "Error: %s\n" WHITE, strerror(E2BIG)), ERR_ARGS);
+	g_exit_status = 0;
 	receive_signal();
 	environment_init(&env, envp);
-	while (g_signal.exit_status == 0)
+	while (g_exit_status == 0)
 	{
 		line = NULL;
-		// default
 		free_tree(runcmd(get_cmd(line, &env), &env));
 		receive_signal();
 		free(line);
