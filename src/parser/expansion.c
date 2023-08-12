@@ -12,9 +12,6 @@
 
 #include "minishell.h"
 
-// TODO this WIP
-int	g_exit_status = 35; //!remove
-
 /* helper function for substitue
 compares the length of the variable
 and env_var and returns the longer one */

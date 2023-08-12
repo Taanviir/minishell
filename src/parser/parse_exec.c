@@ -43,7 +43,7 @@ static bool check_token(char **q, char **eq, int *token)
 
 
 
-t_cmd *parseexec(char **b_start, char *b_end, char **envp)
+t_cmd *parseexec(char **b_start, char *b_end, t_env **env_list)
 {
 	char	*q;
 	char	*eq;
@@ -53,7 +53,7 @@ t_cmd *parseexec(char **b_start, char *b_end, char **envp)
 
 	ret = construct_exec();
 	cmd = (t_exec *)ret;
-	ret = parseredir(ret, b_start, b_end, envp);
+	ret = parseredir(ret, b_start, b_end, env_list);
 
 	while (!peek(b_start, b_end, "|&;"))
 	{
@@ -62,7 +62,7 @@ t_cmd *parseexec(char **b_start, char *b_end, char **envp)
 			break ;
 		if (token == 'e')
 		{
-			cmd->argv[cmd->argc] = expand(q, eq, envp);
+			cmd->argv[cmd->argc] = expand(q, eq, env_list);
 
 			if (cmd->argv[cmd->argc]) // avoid double free if this returned null
 				cmd->expanded[cmd->argc] = true;
@@ -81,7 +81,7 @@ t_cmd *parseexec(char **b_start, char *b_end, char **envp)
 			cmd->argc++;
 		if (cmd->argc > (ARGC - 1)) //! wrong ARGC doesn't update
 			cmd = inc_argsize(cmd, cmd->argc);
-		ret = parseredir(ret, b_start, b_end, envp);
+		ret = parseredir(ret, b_start, b_end, env_list);
 	}
 	cmd->argv[cmd->argc] = 0;
 	cmd->eargv[cmd->argc] = 0;
