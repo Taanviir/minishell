@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 04:00:27 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/12 19:29:40 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/12 21:10:09 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int		name_len(char *arg);
 bool	check_char(char c, char *argv);
 
 // BUILTINS
-int		ft_pwd(void);
+int		ft_pwd(t_env *env_list);
 int		ft_echo(char **argv);
 int		ft_env(char **argv, t_env **env_list);
 int		ft_cd(char **argv, t_env **env_list);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/12 19:33:57 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/12 21:14:13 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 int	g_exit_status;
 
+// TODO handle null
 static char	*get_dir(t_env *env_list)
 {
 	char	*dir;
@@ -71,8 +72,8 @@ t_cmd *get_cmd(char *line, t_env **env_list)
 	dir = get_dir(*env_list);
 	prompt = ft_bigjoin(3, MAGENTA_B "ghost@shell:" BLUE, dir, " → " WHITE);
 	//! way too many problems caused by this shit
-	// write(2, prompt, ft_strlen(prompt)); //! writing prompt to stderr
-	// rl_already_prompted = 1;
+	write(2, prompt, ft_strlen(prompt)); //! writing prompt to stderr
+	rl_already_prompted = 1;
 	line = readline(prompt);
 	free(prompt);
 	free(dir);
@@ -94,7 +95,7 @@ int main(int argc, char **argv __attribute__((unused)), char **envp)
 	g_exit_status = 0;
 	receive_signal();
 	environment_init(&env, envp);
-	while (g_exit_status == 0)
+	while (true)
 	{
 		line = NULL;
 		free_tree(runcmd(get_cmd(line, &env), &env));

@@ -17,14 +17,12 @@
 // * always returns 0
 // * deleted or moved or renamed dir throws err
 // * permissions issue
-int	ft_pwd(void)
+int	ft_pwd(t_env *env_list)
 {
 	char	*path;
 
-	path = getcwd(NULL, 0);
-	// TODO NULL handle
+	path = get_env(env_list, "PWD");
 	printf("%s\n", path);
-	free(path);
 	return (0);
 }
 

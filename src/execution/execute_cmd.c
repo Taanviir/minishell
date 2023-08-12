@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 19:44:15 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/12 19:30:50 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/12 20:39:29sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,14 @@ static int	execute_builtin(t_cmd *cmd, t_env **env_list)
 	t_exec	*exec;
 
 	exec = (t_exec*) cmd;
+	if (!exec->argv[0])
+		return (0);
 	if (!ft_strncmp(exec->argv[0], "echo", get_len(exec->argv[0], "echo")))
 		return (ft_echo(exec->argv), 1);
 	if (!ft_strncmp(exec->argv[0], "cd", get_len(exec->argv[0], "cd")))
 		return (ft_cd(exec->argv, env_list), 1);
 	else if (!ft_strncmp(exec->argv[0], "pwd", get_len(exec->argv[0], "pwd")))
-		return (ft_pwd(), 1);
+		return (ft_pwd(*env_list), 1);
 	else if (!ft_strncmp(exec->argv[0], "export", get_len(exec->argv[0], "export")))
 		return (ft_export(exec->argv, env_list), 1);
 	else if (!ft_strncmp(exec->argv[0], "unset", get_len(exec->argv[0], "unset")))
@@ -109,9 +111,9 @@ void	execute_cmd(t_cmd *cmd, t_env **env_list)
 		// Free command tree in the child process.
 		free_tree(cmd);
 		free_double_ptr((void **) env_array);
-		exit(0);
+		exit(127);
 	}
-	wait(0);
+	wait(&g_exit_status);
 }
 
 // helper function that takes program name and writes error it encountered

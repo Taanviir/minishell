@@ -39,7 +39,7 @@ static char	*substitute(char **q, char **env_array)
 	if (*var_s == '$')
 			return (*q += 2, ft_itoa((int)getpid()));
 	if (*var_s == '?')
-			return (*q += 2, ft_itoa(g_exit_status));
+			return (*q += 2, ft_itoa(WEXITSTATUS(g_exit_status)));
 	*q += 1;
 	while (var_s[lvar_s] && !ft_is_whitespace(var_s[lvar_s]) && !ft_strchr("\"\'", var_s[lvar_s]))
 	{
