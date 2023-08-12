@@ -83,9 +83,6 @@ t_cmd *parseline(char **b_start, char *b_end, t_env **env_list) {
   cmd = parsepipe(b_start, b_end, env_list);
   while (peek(b_start, b_end, "&")) {
     get_token(b_start, b_end, 0, 0);
-    if (*b_start == b_end) {
-      write(2, "syntax error near unexpected token `&'\n", 39);
-    }
     cmd = construct_bgcmd(cmd);
   }
   while (peek(b_start, b_end, ";")) {
@@ -96,61 +93,6 @@ t_cmd *parseline(char **b_start, char *b_end, t_env **env_list) {
     cmd = construct_seqcmd(cmd, parseline(b_start, b_end, env_list));
   }
   return (cmd);
-}
-
-static t_exec *inc_argsize(t_exec *cmd, size_t argc) {
-  t_exec *ret;
-
-  ret = ft_calloc(sizeof(t_exec), 1);
-  ret->expanded = ft_calloc(sizeof(bool), (argc + ARGC));
-  ret->argv = ft_calloc(sizeof(char *), (argc + ARGC));
-  ret->eargv = ft_calloc(sizeof(char *), (argc + ARGC));
-  ft_memcpy(ret, cmd, sizeof(cmd));
-  ft_memcpy(ret->argv, cmd->argv, sizeof(char *) * argc);
-  ft_memcpy(ret->eargv, cmd->eargv, sizeof(char *) * argc);
-  free(cmd->argv);
-  free(cmd->eargv);
-  free(cmd);
-  return (ret);
-}
-
-//! fix exit
-t_cmd *parseexec(char **b_start, char *b_end, t_env **env_list) {
-  char *q;
-  char *eq;
-  int token;
-  t_exec *cmd;
-  t_cmd *ret;
-
-  ret = construct_exec();
-  cmd = (t_exec *)ret;
-  ret = parseredir(ret, b_start, b_end, env_list);
-  while (!peek(b_start, b_end, "|&;")) {
-    token = get_token(b_start, b_end, &q, &eq);
-    if (!token)
-      break;
-    if (token == 'q') {
-      q += 1;
-      eq -= 1;
-    }
-    if (token != 'a' && token != 'q')
-      write(2, "syntax", 7);
-    if (*q == '$' || *q == '\"' || *q == '\'') {
-      cmd->argv[cmd->argc] = expand(q, eq, env_list);
-      cmd->expanded[cmd->argc] = true;
-      cmd->eargv[cmd->argc] = cmd->argv[cmd->argc] + ft_strlen(cmd->argv[cmd->argc]);
-    } else {
-      cmd->argv[cmd->argc] = q;
-      cmd->eargv[cmd->argc] = eq;
-    }
-    cmd->argc++;
-    if (cmd->argc > (ARGC - 1)) //! wrong ARGC doesn't update
-      cmd = inc_argsize(cmd, cmd->argc);
-    ret = parseredir(ret, b_start, b_end, env_list);
-  }
-  cmd->argv[cmd->argc] = 0;
-  cmd->eargv[cmd->argc] = 0;
-  return (ret);
 }
 
 t_cmd *nullterminate(t_cmd *cmd) {

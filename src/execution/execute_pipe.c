@@ -90,3 +90,4 @@ static bool	verify_pipe(int pipe_return)
 	}
 	return (true);
 }
+

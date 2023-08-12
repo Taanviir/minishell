@@ -60,8 +60,7 @@ static bool	verify_file_opened(const int fd, const char *file_path)
 	if (fd < 0)
 	{
 		write(2, "minishell: ", 12);
-		write(2, file_path, ft_strlen(file_path));
-		perror(": ");
+		perror(file_path);
 		return (false);
 	}
 	return (true);

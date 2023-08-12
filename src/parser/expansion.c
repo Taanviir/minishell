@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 02:28:01 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/10 18:41:07 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/11 02:35:12by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <string.h>
 
+// TODO this WIP
 int	g_exit_status = 35; //!remove
 
 /* helper function for substitue
@@ -31,7 +31,7 @@ static int	longer(int lvar_s, char *env_var)
 		return (lvar_s);
 }
 
-//not handling ({[]}) //! env needs to be sorted out for linked list usage
+// TODO change var_s name to variable or string, its what ever is after the $
 static char	*substitute(char **q, char **env_array)
 {
 	int		lvar_s;
@@ -39,15 +39,12 @@ static char	*substitute(char **q, char **env_array)
 
 	lvar_s = 0;
 	var_s = *q + 1;
-	if (*(*q + 1))
-	{
-		if (*(*q + 1) == '$')
-			return (ft_itoa((int)getpid()));
-		else if (*(*q + 1) == '?')
-			return (ft_itoa((int)g_exit_status));
-		(*q)++;
-	}
-	while (var_s[lvar_s] && !ft_is_whitespace(var_s[lvar_s]))
+	if (*var_s == '$')
+			return (*q += 2, ft_itoa((int)getpid()));
+	if (*var_s == '?')
+			return (*q += 2, ft_itoa(g_exit_status));
+	*q += 1;
+	while (var_s[lvar_s] && !ft_is_whitespace(var_s[lvar_s]) && !ft_strchr("\"\'", var_s[lvar_s]))
 	{
 		lvar_s++;
 		(*q)++;
@@ -69,7 +66,7 @@ char	*expand(char *q, char *eq, t_env **env_list)
 	char	*sub;
 	char	**env_array;
 
-	buffer[1] = 0;
+	buffer[1] = 0; // this creates a mini null-terminated word to be used with strjoing
 	expanded_string = NULL;
 	env_array = list_to_array(*env_list);
 	while (q < eq)
@@ -77,7 +74,6 @@ char	*expand(char *q, char *eq, t_env **env_list)
 		if (*q == '$' && !ft_is_whitespace(*(q + 1)))
 		{
 			sub = substitute(&q, env_array);
-			q++;
 			if (sub)
 				expanded_string = ft_strjoin_m(expanded_string, sub);
 		}
@@ -85,8 +81,8 @@ char	*expand(char *q, char *eq, t_env **env_list)
 		{
 			buffer[0] = *q;
 			expanded_string = ft_strjoin_m(expanded_string, buffer);
+			q++;
 		}
-		q++;
 	}
 	free_double_ptr((void **) env_array);
 	return (expanded_string);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 20:24:32 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/10 18:22:47 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/12 02:11:03 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,16 @@ int	get_len(char *str1, char *str2)
 	return (ft_strlen(str2));
 }
 
+static void	write_bg(void)
+{
+	char *pid;
+
+	pid = ft_itoa((int)getpid());
+	write(1, "[1] ", 4); // TODO update the number of bg processes
+	write(1, pid, ft_strlen(pid));
+	write(1, "\n", 1);
+}
+
 //! handle printf &
 static void	execute_bgcmd(t_cmd *cmd, t_env **env_list)
 {
@@ -28,12 +38,14 @@ static void	execute_bgcmd(t_cmd *cmd, t_env **env_list)
 	bgcmd = (t_bgcmd *)cmd;
 	if (!fork())
 	{
+		write_bg();
 		runcmd(bgcmd->cmd, env_list);
 		free_tree(cmd);
 		exit(0);
 	}
-	wait(0);
+	// wait(0);
 }
+/* TODO some missing behaviour how to call back to fg and update number */
 
 static void	execute_seq(t_cmd *cmd, t_env **env_list)
 {

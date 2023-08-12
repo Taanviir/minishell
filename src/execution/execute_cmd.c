@@ -98,7 +98,7 @@ void	execute_cmd(t_cmd *cmd, t_env **env_list)
 	// If the command is a builtin, execute it and return.
 	if (execute_builtin(cmd, env_list))
 		return ;
-	else if (program_name && !fork()) // TODO: Add error handling for the fork call and program existence.
+	if (!fork()) // TODO: Add error handling for the fork call and program existence.
 	{
 		env_array = list_to_array(*env_list);
 		full_path = get_full_path(program_name, env_list);
@@ -118,6 +118,11 @@ void	execute_cmd(t_cmd *cmd, t_env **env_list)
 static void	write_exec_error(char *program_name)
 {
 	write(2, "minishell: ", 11);
-	write(2, program_name, ft_strlen(program_name));
-	perror(": ");
+	if (errno == EFAULT || errno == ENOENT)
+	{
+		write(2, program_name, ft_strlen(program_name));
+		write(2, ": command not found\n", 21);
+	}
+	else
+		perror(program_name);
 }

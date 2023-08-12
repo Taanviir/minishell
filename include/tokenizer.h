@@ -72,6 +72,8 @@ char	get_token(char **buffer_start, char *buffer_end, char **token_start, char *
 char	*expand(char *q, char *eq, t_env **env_list);
 int		peek(char **b_start, char *b_end, const char *str);
 /* parsers */
+t_cmd *parseredir(t_cmd *cmd, char **b_start, char *b_end, t_env **env_list);
+t_cmd	*parseexec(char **b_start, char *b_end, t_env **env_list);
 t_cmd	*parsecmd(char *b_start, t_env **env_list);
 /* constructors */
 t_cmd	*construct_exec(void);
