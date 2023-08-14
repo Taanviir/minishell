@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/12 21:22:57 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/14 02:50:11 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,28 +15,21 @@
 
 int	g_exit_status;
 
-// TODO handle null
 static char	*get_dir(t_env *env_list)
 {
 	char	*dir;
 	char	*last;
 	char	*temp;
 
-	dir = getcwd(NULL, 0);
-	if (!dir)
-		return (NULL);
-	if (!ft_strncmp(dir, get_env(env_list,"HOME"), ft_strlen(dir)))
-	{
-		free(dir);
+	dir = get_env(env_list, "PWD");
+	if (!ft_strncmp(dir, get_env(env_list, "HOME"), ft_strlen(dir)))
 		dir = ft_strdup("[~]");
-	}
 	else
 	{
 		last = ft_strrchr(dir, '/');
-		if (last)
+		if (last + 1)
 		{
 			temp = ft_bigjoin(3, "[", last + 1, "]");
-			free(dir);
 			dir = temp;
 		}
 	}
@@ -44,11 +37,11 @@ static char	*get_dir(t_env *env_list)
 }
 
 #ifdef TEST
-t_cmd *get_cmd(char *line, t_env **env_list)
+t_cmd	*get_cmd(char *line, t_env **env_list)
 {
-	t_cmd *root;
-	char *dir;
-	char *prompt;
+	t_cmd	*root;
+	char	*dir;
+	char	*prompt;
 
 	dir = get_dir(*env_list);
 	prompt = ft_bigjoin(3, MAGENTA_B "ghost@shell:" BLUE, dir, " → " WHITE);
@@ -63,7 +56,8 @@ t_cmd *get_cmd(char *line, t_env **env_list)
 	return (root);
 }
 #else
-t_cmd *get_cmd(char *line, t_env **env_list)
+
+t_cmd	*get_cmd(char *line, t_env **env_list)
 {
 	char	*dir;
 	char	*prompt;
@@ -71,13 +65,12 @@ t_cmd *get_cmd(char *line, t_env **env_list)
 
 	dir = get_dir(*env_list);
 	prompt = ft_bigjoin(3, MAGENTA_B "ghost@shell:" BLUE, dir, " → " WHITE);
-	//! way too many problems caused by this shit
-	write(2, prompt, ft_strlen(prompt)); //! writing prompt to stderr
+	write(2, prompt, ft_strlen(prompt));
 	rl_already_prompted = 1;
 	line = readline(prompt);
 	free(prompt);
 	free(dir);
-	// line = ft_strtrim(line, " \t");
+	//! using strtrim wasnt really the best idea
 	if (!line)
 		return (ft_exit(NULL, 0, env_list), NULL);
 	add_history(line);
@@ -86,7 +79,7 @@ t_cmd *get_cmd(char *line, t_env **env_list)
 }
 #endif
 
-int main(int argc, char **argv __attribute__((unused)), char **envp)
+int	main(int argc, char **argv __attribute__((unused)), char **envp)
 {
 	char	*line;
 	t_env	*env;
@@ -100,7 +93,7 @@ int main(int argc, char **argv __attribute__((unused)), char **envp)
 	{
 		line = NULL;
 		free_tree(runcmd(get_cmd(line, &env), &env));
-		receive_signal();
+		//TODO add line to _ VAR
 		free(line);
 	}
 	free_list(env);

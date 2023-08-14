@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 03:46:11 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/10 21:22:18 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/14 02:47:42 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,21 +67,20 @@ char	**list_to_array(t_env *env)
 	return (env_array);
 }
 
-void	add_node_bottom(t_env **head, char *env_var)
+static void	add_node_bottom(t_env **head, char *env_var)
 {
 	t_env	*new_node;
 	t_env	*current;
 	char	**env_array;
 
-	env_array = ft_split(env_var, '=');
 	new_node = malloc(sizeof(t_env));
 	if (!new_node)
-	{
-		free_double_ptr((void **) env_array);
 		return ;
-	}
+	env_array = ft_split(env_var, '=');
 	new_node->name = ft_strdup(env_array[0]);
-	new_node->value = ft_strdup(env_array[1]);
+	new_node->value = NULL;
+	if (env_array[1])
+		new_node->value = ft_strdup(env_array[1]);
 	new_node->next = NULL;
 	if (!(*head))
 		*head = new_node;
@@ -103,9 +102,6 @@ void	environment_init(t_env **env, char **envp)
 	i = -1;
 	while (envp[++i])
 		add_node_bottom(env, envp[i]);
-	//TODO unset env that need to be unset
 	//TODO increase $SHLVL by 1
-	// line = ft_strdup("unset OLDPWD ");
-	// runcmd(parsecmd(line, &env), &env);
-	// free(line);
+	//increase_shell_level(env);
 }

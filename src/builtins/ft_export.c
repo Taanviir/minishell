@@ -80,7 +80,7 @@ int	ft_export(char **argv, t_env **env_list)
 			temp = temp->next;
 		}
 		if (!temp)
-			add_node_bottom(env_list, argv[i]);
+			add_node_bottom(env_list, argv[i]); //TODO make custom function for export
 	}
 	return (0);
 }

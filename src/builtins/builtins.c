@@ -77,7 +77,8 @@ int	ft_env(char **argv, t_env **env)
 	temp = *env;
 	while (temp)
 	{
-		printf("%s=%s\n", temp->name, temp->value);
+		if (temp->value)
+			printf("%s=%s\n", temp->name, temp->value);
 		temp = temp->next;
 	}
 	// TODO handle empty vars

@@ -6,53 +6,65 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:54:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/10 21:09:14 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/13 22:54:20 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	set_and_export(char **argv, t_env **env_list, char *old_path)
+void	update_env(t_env **env_list, char *old_path)
 {
-	char	*path;
+	char	**argv;
+	char	*line;
+	char	*cwd;
 
-	path = getcwd(NULL, 0);
-	// TODO handle NULL path
-	argv[0] = "export";
-	argv[1] = ft_strjoin("OLDPWD=", old_path);
-	argv[2] = ft_strjoin("PWD=", path);
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
+		return ;
+	line = ft_bigjoin(5, "export ", "OLDPWD=", old_path, " PWD=", cwd);
+	argv = ft_split(line, ' ');
 	ft_export(argv, env_list);
-	free(argv[1]);
-	free(argv[2]);
-	free(old_path);
-	free(path);
+	free_double_ptr((void **) argv);
+	free(line);
+	free(cwd);
 }
 
-int	ft_cd(char **argv, t_env **env_list)
+int	change_path(t_env **env_list, char *path, char *old_path)
+{
+	if (!chdir(path))
+	{
+		if (!ft_strncmp(path, "OLDPWD", 6))
+			printf("%s\n", path);
+		update_env(env_list, old_path);
+		return (0);
+	}
+	printf("-minishell: cd: %s: %s\n", path, strerror(ENOENT));
+	return (1);
+}
+
+int	ft_cd(int argc, char **argv, t_env **env_list)
 {
 	char	*path;
 	char	*old_path;
 
-	if (argv[2])
-		return (printf("minishell: cd: too many arguments\n"), 1);
-	if (!argv[1] || argv[1][0] == '~')
+	if (argc > 2)
+		return (printf("-minishell: cd: too many arguments\n"), 1);
+	if (argc == 1 || !ft_strncmp(argv[1], "~", 1))
+	{
 		path = get_env(*env_list, "HOME");
+		if (!path)
+			return (printf("minishell: cd: HOME not set\n"), 1);
+	}
 	else if (!ft_strncmp(argv[1], "-", 1))
 	{
 		path = get_env(*env_list, "OLDPWD");
 		if (!path)
-			return (printf("minishell: cd: OLDPWD not set\n"), 2);
-		printf("%s\n", path);
+			return (printf("-minishell: cd: OLDPWD not set\n"), 1);
 	}
 	else
 		path = argv[1];
-	old_path = getcwd(NULL, 0);
-	if (chdir(path) == 0)
-		set_and_export(argv, env_list, old_path);
-	else
-	{
-		free(old_path);
-		return (printf("cd: no such file or directory: %s\n", path), 3);
-	}
+	old_path = get_env(*env_list, "PWD");
+	if (change_path(env_list, path, old_path))
+		return (1);
 	return (0);
 }

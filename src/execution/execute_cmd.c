@@ -58,7 +58,7 @@ static int	execute_builtin(t_cmd *cmd, t_env **env_list)
 	if (!ft_strncmp(exec->argv[0], "echo", get_len(exec->argv[0], "echo")))
 		return (ft_echo(exec->argv), 1);
 	if (!ft_strncmp(exec->argv[0], "cd", get_len(exec->argv[0], "cd")))
-		return (ft_cd(exec->argv, env_list), 1);
+		return (ft_cd(exec->argc, exec->argv, env_list), 1);
 	else if (!ft_strncmp(exec->argv[0], "pwd", get_len(exec->argv[0], "pwd")))
 		return (ft_pwd(*env_list), 1);
 	else if (!ft_strncmp(exec->argv[0], "export", get_len(exec->argv[0], "export")))
@@ -102,6 +102,7 @@ void	execute_cmd(t_cmd *cmd, t_env **env_list)
 		return ;
 	if (!fork()) // TODO: Add error handling for the fork call and program existence.
 	{
+		// signal(SIGINT, SIG_DFL); //TODO signal for child process, WIP
 		env_array = list_to_array(*env_list);
 		full_path = get_full_path(program_name, env_list);
 		// Attempt to execute as absolute path or from PATH. If both fail, write an appropriate error.

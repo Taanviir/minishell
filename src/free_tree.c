@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_tree.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 19:55:59 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/12 01:53:52 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/13 00:42:04 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,6 @@ void free_tree(t_cmd *cmd)
 	tree_free[3] = free_seq;
 	tree_free[4] = free_bgcmd;
 	if (!cmd)
-		return;
+		return ;
 	tree_free[cmd->type](cmd);
 }
