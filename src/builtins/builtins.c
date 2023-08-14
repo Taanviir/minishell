@@ -55,11 +55,11 @@ int	ft_echo(char **argv)
 // * non numeric args prints bash: exit: 1a: numeric argument required; exits with 255
 // * no args exits with 0
 // * exit code above 255 does {code} % 256 and exits with that value
-int	ft_exit(char **argv, int err_num, t_env **env)
+int	ft_exit(char **argv, int err_num, t_env **env_list)
 {
 	// if (argv[1])
 	(void) argv;
-	free_list(*env);
+	free_list(*env_list);
 	g_exit_status = err_num;
 	printf("exit\n");
 	// return (g_exit_status);
@@ -67,22 +67,18 @@ int	ft_exit(char **argv, int err_num, t_env **env)
 }
 
 // TODO handle exit status
-// * should not handle arguments or options
-int	ft_env(char **argv, t_env **env)
+int	ft_env(char **argv, t_env **env_list)
 {
 	t_env	*temp;
 
 	if (argv[1])
 		return (printf("env: %s: No such file or directory\n", argv[1]), 1);
-	temp = *env;
+	temp = *env_list;
 	while (temp)
 	{
 		if (temp->value)
 			printf("%s=%s\n", temp->name, temp->value);
 		temp = temp->next;
 	}
-	// TODO handle empty vars
-	// * env will display vars with empty string like WSLENV=
-	// * env will not display vars with NULL however
 	return (0);
 }

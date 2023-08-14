@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/14 02:50:11 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/14 17:12:06 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,11 @@ t_cmd	*get_cmd(char *line, t_env **env_list)
 
 	dir = get_dir(*env_list);
 	prompt = ft_bigjoin(3, MAGENTA_B "ghost@shell:" BLUE, dir, " → " WHITE);
-	write(2, prompt, ft_strlen(prompt));
-	rl_already_prompted = 1;
+	// write(2, prompt, ft_strlen(prompt));
+	// rl_already_prompted = 1;
 	line = readline(prompt);
 	free(prompt);
 	free(dir);
-	//! using strtrim wasnt really the best idea
 	if (!line)
 		return (ft_exit(NULL, 0, env_list), NULL);
 	add_history(line);
@@ -82,21 +81,21 @@ t_cmd	*get_cmd(char *line, t_env **env_list)
 int	main(int argc, char **argv __attribute__((unused)), char **envp)
 {
 	char	*line;
-	t_env	*env;
+	t_env	*env_list;
 
 	if (argc != 1)
 		return (printf(RED_B "Error: %s\n" WHITE, strerror(E2BIG)), ERR_ARGS);
 	g_exit_status = 0;
 	receive_signal();
-	environment_init(&env, envp);
+	environment_init(&env_list, envp);
 	while (true)
 	{
 		line = NULL;
-		free_tree(runcmd(get_cmd(line, &env), &env));
+		free_tree(runcmd(get_cmd(line, &env_list), &env_list));
 		//TODO add line to _ VAR
 		free(line);
 	}
-	free_list(env);
-	rl_clear_history();
+	free_list(env_list);
+	// rl_clear_history();
 	return (EXIT_SUCCESS);
 }

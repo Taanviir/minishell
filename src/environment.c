@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 03:46:11 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/14 02:47:42 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/14 16:30:52 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ char	*get_env(t_env *env_list, const char *name)
 	return (NULL);
 }
 
-void	free_list(t_env *env)
+void	free_list(t_env *env_list)
 {
 	t_env	*temp;
 	t_env	*next;
 
-	temp = env;
+	temp = env_list;
 	while (temp)
 	{
 		next = temp->next;
@@ -39,14 +39,14 @@ void	free_list(t_env *env)
 	}
 }
 
-char	**list_to_array(t_env *env)
+char	**list_to_array(t_env *env_list)
 {
 	t_env	*temp;
 	int		i;
 	char	**env_array;
 
 	i = 0;
-	temp = env;
+	temp = env_list;
 	while (temp)
 	{
 		i++;
@@ -56,18 +56,31 @@ char	**list_to_array(t_env *env)
 	if (!env_array)
 		return (NULL);
 	i = -1;
-	temp = env;
+	temp = env_list;
 	while (temp)
 	{
 		env_array[++i] = ft_strjoin(temp->name, "=");
-		env_array[i] = ft_strjoin_m(env_array[i], temp->value);
+		if (temp->value)
+			env_array[i] = ft_strjoin_m(env_array[i], temp->value);
 		temp = temp->next;
 	}
 	env_array[++i] = NULL;
 	return (env_array);
 }
 
-static void	add_node_bottom(t_env **head, char *env_var)
+static char	*node_value(char *env_var, char *value)
+{
+	char	*check;
+
+	if (!ft_strchr(env_var, '='))
+		return (NULL);
+	check = ft_strchr(env_var, '=') + 1;
+	if (!check[0])
+		return (ft_strdup(""));
+	return (ft_strdup(value));
+}
+
+void	add_node_bottom(t_env **env_list, char *env_var)
 {
 	t_env	*new_node;
 	t_env	*current;
@@ -78,15 +91,13 @@ static void	add_node_bottom(t_env **head, char *env_var)
 		return ;
 	env_array = ft_split(env_var, '=');
 	new_node->name = ft_strdup(env_array[0]);
-	new_node->value = NULL;
-	if (env_array[1])
-		new_node->value = ft_strdup(env_array[1]);
+	new_node->value = node_value(env_var, env_array[1]);
 	new_node->next = NULL;
-	if (!(*head))
-		*head = new_node;
+	if (!(*env_list))
+		*env_list = new_node;
 	else
 	{
-		current = *head;
+		current = *env_list;
 		while (current->next)
 			current = current->next;
 		current->next = new_node;
@@ -94,14 +105,14 @@ static void	add_node_bottom(t_env **head, char *env_var)
 	free_double_ptr((void **) env_array);
 }
 
-void	environment_init(t_env **env, char **envp)
+void	environment_init(t_env **env_list, char **envp)
 {
 	int	i;
 
-	(*env) = NULL;
+	(*env_list) = NULL;
 	i = -1;
 	while (envp[++i])
-		add_node_bottom(env, envp[i]);
+		add_node_bottom(env_list, envp[i]);
 	//TODO increase $SHLVL by 1
 	//increase_shell_level(env);
 }

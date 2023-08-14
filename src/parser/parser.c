@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:19:12 by eva-1             #+#    #+#             */
-/*   Updated: 2023/08/10 17:59:09 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/14 17:25:14 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,12 +130,24 @@ t_cmd *nullterminate(t_cmd *cmd) {
   return (cmd);
 }
 
+//TODO logic is screwed up, needs to be worked on
+bool  is_empty(char *line)
+{
+  while(line)
+  {
+    if (!ft_is_whitespace(*line))
+      return (false);
+    line++;
+  }
+  return (true);
+}
+
 //! fix to adjust for exit, for now it only prints "SYNTAX MF" */
 t_cmd *parsecmd(char *b_start, t_env **env_list) {
   char *b_end;
   t_cmd *root;
 
-  if (!b_start[0])
+  if (!b_start[0] || is_empty(b_start)) //!logic
     return (free(b_start), NULL);
   b_end = ft_strlen(b_start) + b_start;
   root = parseline(&b_start, b_end, env_list);

@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/12 14:40:31 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/14 16:42:14 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,6 @@ t_cmd	*runcmd(t_cmd *cmd, t_env **env_list);
 int		get_len(char *str1, char *str2);
 
 // free_tree
-void free_tree(t_cmd *cmd);
+void	free_tree(t_cmd *cmd);
 
 #endif

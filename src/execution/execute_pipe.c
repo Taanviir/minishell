@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 21:48:42 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/10 18:20:54 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/14 17:02:07 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	execute_pipe(t_cmd *cmd, t_env **env_list)
 		close_pipe_ends(pipe_fds);
 		runcmd(pipecmd->left, env_list);
 		free_tree(cmd);
+		free_list(*env_list);
 		exit(0);
 	}
 	// Fork for the right side of the pipe.
@@ -66,6 +67,7 @@ void	execute_pipe(t_cmd *cmd, t_env **env_list)
 		close_pipe_ends(pipe_fds);
 		runcmd(pipecmd->right, env_list);
 		free_tree(cmd);
+		free_list(*env_list);
 		exit(0);
 	}
 	close_pipe_ends(pipe_fds);

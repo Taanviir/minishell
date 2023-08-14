@@ -40,8 +40,10 @@ static void	print_env_list(t_env **env_list)
 	while (temp[++i])
 	{
 		var = ft_split(temp[i], '=');
-		if (ft_strncmp(temp[i], "_=", 2))
+		if (ft_strncmp(temp[i], "_=", 2) && var[1])
 			printf("declare -x %s=\"%s\"\n", var[0], var[1]);
+		if (!var[1])
+			printf("declare -x %s\n", var[0]);
 		free_double_ptr((void **) var);
 	}
 	free_double_ptr((void **) temp);
