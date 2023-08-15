@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:19:12 by eva-1             #+#    #+#             */
-/*   Updated: 2023/08/14 17:25:14 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/15 12:34:31 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,11 @@ t_cmd *parseredir(t_cmd *cmd, char **b_start, char *b_end, t_env **env_list) {
       else //TODO pipe error
         perror(":");
     } else if (get_token(b_start, b_end, &q, &eq) != 'a')
-      write(2, "no file", 8);
+    {
+      write(2, "minishell: \"syntax error near unexpected toke `", 48);
+      write(2, q, eq - q);
+      write(2, "\'\n", 2);
+    }
     else if (redirection == '<')
       cmd = construct_redircmd(cmd, q, eq, O_RDONLY, STDIN_FILENO);
     else if (redirection == '>')
