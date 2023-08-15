@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/14 17:12:06 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/15 12:18:47 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static char	*get_dir(t_env *env_list)
 	else
 	{
 		last = ft_strrchr(dir, '/');
-		if (last + 1)
+		if (last)
 		{
 			temp = ft_bigjoin(3, "[", last + 1, "]");
 			dir = temp;
