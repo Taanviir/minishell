@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 03:46:11 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/14 16:30:52 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/15 14:25:08 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,20 @@ char	**list_to_array(t_env *env_list)
 	return (env_array);
 }
 
-static char	*node_value(char *env_var, char *value)
+static char	*node_value(char *var, char *value)
 {
 	char	*check;
 
-	if (!ft_strchr(env_var, '='))
+	if (!ft_strncmp(var, "SHLVL", name_len(var)))
+	{
+		if (value)
+			return (ft_itoa(ft_atoi(value) + 1));
+		else
+			return (ft_strdup("1"));
+	}
+	if (!ft_strchr(var, '=') || !ft_strncmp(var, "OLDPWD", name_len(var)))
 		return (NULL);
-	check = ft_strchr(env_var, '=') + 1;
+	check = ft_strchr(var, '=') + 1;
 	if (!check[0])
 		return (ft_strdup(""));
 	return (ft_strdup(value));
@@ -113,6 +120,4 @@ void	environment_init(t_env **env_list, char **envp)
 	i = -1;
 	while (envp[++i])
 		add_node_bottom(env_list, envp[i]);
-	//TODO increase $SHLVL by 1
-	//increase_shell_level(env);
 }

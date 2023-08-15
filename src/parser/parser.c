@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:19:12 by eva-1             #+#    #+#             */
-/*   Updated: 2023/08/15 12:55:52 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/15 14:05:42 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ t_cmd *nullterminate(t_cmd *cmd) {
 //TODO logic is screwed up, needs to be worked on
 bool  is_empty(char *line)
 {
-  while(line)
+  while (*line)
   {
     if (!ft_is_whitespace(*line))
       return (false);
@@ -162,7 +162,7 @@ t_cmd *parsecmd(char *b_start, t_env **env_list) {
   char *b_end;
   t_cmd *root;
 
-  if (!b_start[0] || is_empty(b_start)) //!logic
+  if (!b_start[0] || is_empty(b_start))
     return (free(b_start), NULL);
   b_end = ft_strlen(b_start) + b_start;
   root = parseline(&b_start, b_end, env_list);
