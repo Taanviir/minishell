@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:19:12 by eva-1             #+#    #+#             */
-/*   Updated: 2023/08/15 12:34:31 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/15 12:55:52 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,22 @@ t_cmd *parseredir(t_cmd *cmd, char **b_start, char *b_end, t_env **env_list) {
       }
       else //TODO pipe error
         perror(":");
-    } else if (get_token(b_start, b_end, &q, &eq) != 'a')
+    }
+    // checking for syntax error in case next token is not a file name, however bash error message takes
+    // the last token as the error token, so this is not perfect, this takes the token immediately after
+    // redirection
+    else if (get_token(b_start, b_end, &q, &eq) != 'a')
     {
-      write(2, "minishell: \"syntax error near unexpected toke `", 48);
-      write(2, q, eq - q);
-      write(2, "\'\n", 2);
+      if (eq - q)
+      {
+        write(2, "minishell: syntax error near unexpected token `", 48);
+        write(2, q, eq - q);
+        write(2, "\'\n", 2);
+      }
+      else
+        write(2, "minishell: syntax error near unexpected token `newline'\n", 56);
+      g_exit_status = 258;
+      return(0);
     }
     else if (redirection == '<')
       cmd = construct_redircmd(cmd, q, eq, O_RDONLY, STDIN_FILENO);
