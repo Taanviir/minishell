@@ -22,7 +22,7 @@ bool	check_char(char c, char *argv)
 	return (false);
 }
 
-void free_node_by_name(t_env **env_list, const char *name)
+void	free_node_by_name(t_env **env_list, const char *name)
 {
 	t_env	*current;
 	t_env	*prev;

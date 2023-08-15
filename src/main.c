@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/15 14:06:54 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/15 14:34:28 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,9 @@ t_cmd	*get_cmd(char *line, t_env **env_list)
 
 	dir = get_dir(*env_list);
 	prompt = ft_bigjoin(3, MAGENTA_B "ghost@shell:" BLUE, dir, " → " WHITE);
-	write(2, prompt, ft_strlen(prompt));
-	rl_already_prompted = 1;
-	line = readline(NULL);//prompt);
+	// write(2, prompt, ft_strlen(prompt));
+	// rl_already_prompted = 1;
+	line = readline(prompt);
 	free(prompt);
 	free(dir);
 	if (!line)

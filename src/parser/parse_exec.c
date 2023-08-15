@@ -1,7 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_exec.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/15 15:13:46 by tanas             #+#    #+#             */
+/*   Updated: 2023/08/15 15:20:04 by tanas            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static t_exec *inc_argsize(t_exec *cmd, size_t argc) {
-	t_exec *ret;
+static t_exec	*inc_argsize(t_exec *cmd, size_t argc)
+{
+	t_exec	*ret;
 
 	ret = ft_calloc(sizeof(t_exec), 1);
 	ret->expanded = ft_calloc(sizeof(bool), (argc + ARGC));
@@ -18,7 +31,7 @@ static t_exec *inc_argsize(t_exec *cmd, size_t argc) {
 
 /* check the type of token returned to determine if its expandable and if
 	its a valid token */
-static bool check_token(char **q, char **eq, int *token)
+static bool	check_token(char **q, char **eq, int *token)
 {
 	if (!*token)
 		return (false);
@@ -41,9 +54,7 @@ static bool check_token(char **q, char **eq, int *token)
 	return (true);
 }
 
-
-
-t_cmd *parseexec(char **b_start, char *b_end, t_env **env_list)
+t_cmd	*parseexec(char **b_start, char *b_end, t_env **env_list)
 {
 	char	*q;
 	char	*eq;
@@ -54,7 +65,6 @@ t_cmd *parseexec(char **b_start, char *b_end, t_env **env_list)
 	ret = construct_exec();
 	cmd = (t_exec *)ret;
 	ret = parseredir(ret, b_start, b_end, env_list);
-
 	while (!peek(b_start, b_end, "|&;"))
 	{
 		token = get_token(b_start, b_end, &q, &eq);
@@ -63,12 +73,10 @@ t_cmd *parseexec(char **b_start, char *b_end, t_env **env_list)
 		if (token == 'e')
 		{
 			cmd->argv[cmd->argc] = expand(q, eq, env_list);
-
 			if (cmd->argv[cmd->argc]) // avoid double free if this returned null
 				cmd->expanded[cmd->argc] = true;
 			else if ((!cmd->argv[cmd->argc] && (*q - 1) == '"'))
 				cmd->argv[cmd->argc] = strdup(" ");
-
 			cmd->eargv[cmd->argc] = cmd->argv[cmd->argc] + ft_strlen(cmd->argv[cmd->argc]);
 		}
 		else

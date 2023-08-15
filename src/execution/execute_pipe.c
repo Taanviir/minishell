@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 21:48:42 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/14 17:02:07 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/15 15:24:53 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,4 +92,3 @@ static bool	verify_pipe(int pipe_return)
 	}
 	return (true);
 }
-

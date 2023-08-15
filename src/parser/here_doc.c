@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 17:52:34 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/10 18:24:48 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/15 15:27:35 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,23 +27,26 @@
  * Note: This function modifies the input string by truncating it at the end of
  * the quoted section, if found.
  */
- static char __is_quoted(char *q, const char *eq) {
-  char quote;
+static char	__is_quoted(char *q, const char *eq)
+{
+	char	quote;
 
-  quote = 0;
-  while (q < eq) {
-    // If current character matches the previously found quote type, end the string here.
-    if (!(*q - quote)) {
-      *q = 0;
-      return (quote);
-    }
-    // If no quote character has been found yet, check for one.
-    if (!quote && (*q == '"' || *q == '\''))
-      quote = *q;
-    q++;
-  }
-  // return 0 if it is not quoted
-  return (0);
+	quote = 0;
+	while (q < eq)
+	{
+		// If current character matches the previously found quote type, end the string here.
+		if (!(*q - quote))
+		{
+			*q = 0;
+			return (quote);
+		}
+		// If no quote character has been found yet, check for one.
+		if (!quote && (*q == '"' || *q == '\''))
+			quote = *q;
+		q++;
+	}
+	// return 0 if it is not quoted
+	return (0);
 }
 
 /**
@@ -58,31 +61,34 @@
  * @return       A new string with the quotes removed. Returns NULL in case
  *               of memory allocation failure.
  */
-static char *remove_quote(char *delimiter, const char quote) {
-  size_t  size;
-  size_t  i;
-  char  *unquoted_delimiter;
-  char  *temp;
+static char	*remove_quote(char *delimiter, const char quote)
+{
+	size_t	size;
+	size_t	i;
+	char	*unquoted_delimiter;
+	char	*temp;
 
-  i = 0;
-  temp = delimiter;
-  size = ft_strlen(delimiter);
-  // Allocate memory for the unquoted delimiter.
-  unquoted_delimiter = malloc(sizeof(char) * (size));
-  if (!unquoted_delimiter) {
-    write(STDERR_FILENO, "malloc failed in remove_quote\n", 30);
-    return (NULL);
-  }
-  // Copy characters from original string, skipping the quotes.
-  while (i < size) {
-    if (*delimiter == quote)
-      delimiter++;
-    unquoted_delimiter[i++] = *delimiter++;
-  }
-  unquoted_delimiter[i] = 0;
-  // freeing the original delimiterimiter
-  free(temp);
-  return (unquoted_delimiter);
+	i = 0;
+	temp = delimiter;
+	size = ft_strlen(delimiter);
+	// Allocate memory for the unquoted delimiter.
+	unquoted_delimiter = malloc(sizeof(char) * (size));
+	if (!unquoted_delimiter)
+	{
+		write(STDERR_FILENO, "malloc failed in remove_quote\n", 30);
+		return (NULL);
+	}
+	// Copy characters from original string, skipping the quotes.
+	while (i < size)
+	{
+		if (*delimiter == quote)
+			delimiter++;
+		unquoted_delimiter[i++] = *delimiter++;
+	}
+	unquoted_delimiter[i] = 0;
+	// freeing the original delimiterimiter
+	free(temp);
+	return (unquoted_delimiter);
 }
 
 /**
@@ -98,24 +104,26 @@ static char *remove_quote(char *delimiter, const char quote) {
  * @return    A new string containing the extracted segment. Returns NULL if
  *            memory allocation fails.
  */
-char *get_delimiter(char *q, const char *eq) {
-  char    *delimiter;
-  size_t  i;
-  size_t  len;
+char	*get_delimiter(char *q, const char *eq)
+{
+	char	*delimiter;
+	size_t	i;
+	size_t	len;
 
-  i = 0;
-  len = eq - q;
-  // Allocate memory for the delimiterimeter
-  delimiter = malloc(sizeof(char) * (len + 1));
-  if (!delimiter) {
-    write(STDERR_FILENO, "malloc failed in get_delimiter\n", 25);
-    return (NULL);
-  }
-  // Copy characters from range to delimiter
-  while (i < len)
-    delimiter[i++] = *q++;
-  delimiter[i] = 0;
-  return (delimiter);
+	i = 0;
+	len = eq - q;
+	// Allocate memory for the delimiterimeter
+	delimiter = malloc(sizeof(char) * (len + 1));
+	if (!delimiter)
+	{
+		write(STDERR_FILENO, "malloc failed in get_delimiter\n", 25);
+		return (NULL);
+	}
+	// Copy characters from range to delimiter
+	while (i < len)
+		delimiter[i++] = *q++;
+	delimiter[i] = 0;
+	return (delimiter);
 }
 
 /**
@@ -127,40 +135,43 @@ char *get_delimiter(char *q, const char *eq) {
  * @param del         Delimiter string used to terminate input.
  * @param env_list        Environment variables for potential expansion.
  */
-void here_doc(const int pipe_write, char *delimiter, t_env **env_list) {
-  char *line;
-  char *temp;
-  char  quote;
+void	here_doc(const int pipe_write, char *delimiter, t_env **env_list)
+{
+	char	*line;
+	char	*temp;
+	char	quote;
 
-  // Determine if the delimiter is quoted and identify the quote character.
-  // If not quoted, __is_quoted returns 0.
-  quote = __is_quoted(delimiter, (delimiter + ft_strlen(delimiter)));
-  // Remove quotes from the delimiter if any.
-  if (quote)
-    delimiter = remove_quote(delimiter, quote);
-  // If no delimiter is provided, it's considered a syntax error in Bash.
-  if (!*delimiter){
-    write(STDERR_FILENO, "minishell: syntax error near unexpected token `newline'\n", 56);
-    return ;
-  }
-  // Continuously read input lines until the delimiter is matched.
-  while (true) {
-    line = readline(">");
-    if (!line || (delimiter && !ft_strncmp(delimiter, line, get_len(delimiter, line))))
-      break;
-    // If the delimiter isn't quoted, perform variable expansion.
-    if (!quote) {
-     temp = line;
-     line = expand(line, line + ft_strlen(line), env_list);
-     free(temp);
-    }
-    // Write the processed line to the provided file descriptor.
-    write(pipe_write, line, ft_strlen(line));
-    write(pipe_write, "\n", 1);
-    free(line);
-  }
-  // Free the line containing the delimiter and the delimiter itself.
-  free(line);
-  free(delimiter);
+	// Determine if the delimiter is quoted and identify the quote character.
+	// If not quoted, __is_quoted returns 0.
+	quote = __is_quoted(delimiter, (delimiter + ft_strlen(delimiter)));
+	// Remove quotes from the delimiter if any.
+	if (quote)
+		delimiter = remove_quote(delimiter, quote);
+	// If no delimiter is provided, it's considered a syntax error in Bash.
+	if (!*delimiter)
+	{
+		write(STDERR_FILENO, "minishell: syntax error near unexpected token `newline'\n", 56);
+		return ;
+	}
+	// Continuously read input lines until the delimiter is matched.
+	while (true)
+	{
+		line = readline(">");
+		if (!line || (delimiter && !ft_strncmp(delimiter, line, get_len(delimiter, line))))
+			break ;
+		// If the delimiter isn't quoted, perform variable expansion.
+		if (!quote)
+		{
+			temp = line;
+			line = expand(line, line + ft_strlen(line), env_list);
+			free(temp);
+		}
+		// Write the processed line to the provided file descriptor.
+		write(pipe_write, line, ft_strlen(line));
+		write(pipe_write, "\n", 1);
+		free(line);
+	}
+	// Free the line containing the delimiter and the delimiter itself.
+	free(line);
+	free(delimiter);
 }
-

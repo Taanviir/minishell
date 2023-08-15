@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/27 02:28:01 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/11 02:35:12by sabdelra         ###   ########.fr       */
+/*   Created: 2023/08/15 15:20:49 by tanas             #+#    #+#             */
+/*   Updated: 2023/08/15 15:21:02 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ static char	*substitute(char **q, char **env_array)
 	lvar_s = 0;
 	var_s = *q + 1;
 	if (*var_s == '$')
-			return (*q += 2, ft_itoa((int)getpid()));
+		return (*q += 2, ft_itoa((int)getpid()));
 	if (*var_s == '?')
-			return (*q += 2, ft_itoa(WEXITSTATUS(g_exit_status)));
+		return (*q += 2, ft_itoa(WEXITSTATUS(g_exit_status)));
 	*q += 1;
 	while (var_s[lvar_s] && !ft_is_whitespace(var_s[lvar_s]) && !ft_strchr("\"\'", var_s[lvar_s]))
 	{

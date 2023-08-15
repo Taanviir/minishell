@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   constructor.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eva-1 <eva-1@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 21:13:29 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/08 01:27:38 by eva-1            ###   ########.fr       */
+/*   Updated: 2023/08/15 15:20:28 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ t_cmd	*construct_redircmd(t_cmd *command, char *fp, char *efp, int mode, int fd)
 	cmd->cmd = command;
 	if (fp == 0) //! here_doc case
 		cmd->here_doc = *(int *)efp; // read_end of the pipe
-	else {
+	else
+	{
 		cmd->fp = fp;
 		cmd->efp = efp;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 20:24:32 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/12 20:12:48 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/15 15:24:34 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	get_len(char *str1, char *str2)
 
 static void	write_bg(void)
 {
-	char *pid;
+	char	*pid;
 
 	pid = ft_itoa((int)getpid());
 	write(1, "[1] ", 4); // TODO update the number of bg processes
@@ -62,9 +62,9 @@ static void	execute_seq(t_cmd *cmd, t_env **env_list)
 	runcmd(seqcmd->right, env_list);
 }
 
-typedef void (*t_execute)(t_cmd *cmd, t_env **env_list);
+typedef void	(*t_execute)(t_cmd *cmd, t_env **env_list);
 
-t_cmd *runcmd(t_cmd *cmd, t_env **env_list)
+t_cmd	*runcmd(t_cmd *cmd, t_env **env_list)
 {
 	t_execute	executers[5];
 
@@ -76,5 +76,5 @@ t_cmd *runcmd(t_cmd *cmd, t_env **env_list)
 	if (!cmd)
 		return (NULL);
 	executers[cmd->type](cmd, env_list);
-	return(cmd);
+	return (cmd);
 }

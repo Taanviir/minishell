@@ -12,30 +12,36 @@
 
 #include "minishell.h"
 
-// TODO env var value can be NULL or empty ie ""
+static void	sort_array(char **arr)
+{
+	int		i;
+	int		j;
+	char	*temp;
+
+	i = -1;
+	while (arr[++i])
+	{
+		j = i;
+		while (arr[++j])
+		{
+			if (ft_strncmp(arr[i], arr[j], ft_strlen(arr[i])) > 0)
+			{
+				temp = arr[i];
+				arr[i] = arr[j];
+				arr[j] = temp;
+			}
+		}
+	}
+}
+
 static void	print_env_list(t_env **env_list)
 {
 	char	**temp;
 	int		i;
-	int		j;
-	char	*tmp;
 	char	**var;
 
 	temp = list_to_array(*env_list);
-	i = -1;
-	while (temp[++i])
-	{
-		j = i;
-		while (temp[++j])
-		{
-			if (ft_strncmp(temp[i], temp[j], ft_strlen(temp[i])) > 0)
-			{
-				tmp = temp[i];
-				temp[i] = temp[j];
-				temp[j] = tmp;
-			}
-		}
-	}
+	sort_array(temp);
 	i = -1;
 	while (temp[++i])
 	{
@@ -82,7 +88,7 @@ int	ft_export(char **argv, t_env **env_list)
 			temp = temp->next;
 		}
 		if (!temp)
-			add_node_bottom(env_list, argv[i]); //TODO make custom function for export
+			add_node_bottom(env_list, argv[i]);
 	}
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/08 19:44:15 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/12 20:39:29sabdelra         ###   ########.fr       */
+/*   Created: 2023/08/15 15:25:45 by tanas             #+#    #+#             */
+/*   Updated: 2023/08/15 15:25:46 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int	execute_builtin(t_cmd *cmd, t_env **env_list)
 {
 	t_exec	*exec;
 
-	exec = (t_exec*) cmd;
+	exec = (t_exec *) cmd;
 	if (!exec->argv[0])
 		return (0);
 	if (!ft_strncmp(exec->argv[0], "echo", get_len(exec->argv[0], "echo")))
@@ -104,9 +104,9 @@ void	execute_cmd(t_cmd *cmd, t_env **env_list)
 	{
 		// signal(SIGINT, SIG_DFL); //TODO signal for child process, WIP
 		env_array = list_to_array(*env_list);
-		full_path = get_full_path(program_name, env_list);
+		full_path = get_full_path(program_name, env_list); // TODO need to work on NULL return
 		// Attempt to execute as absolute path or from PATH. If both fail, write an appropriate error.
-		if ((execve(program_name, execcmd->argv, env_array) && !full_path)
+		if ((execve(program_name, execcmd->argv, env_array) && !full_path) //!fails with "" input
 			|| (execve(full_path, execcmd->argv, env_array)))
 			write_exec_error(program_name);
 		// Free command tree in the child process.

@@ -6,25 +6,22 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 19:55:59 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/13 00:42:04 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/15 15:23:57 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-void free_cmd(t_cmd *cmd)
+void	free_cmd(t_cmd *cmd)
 {
-	t_exec *exec;
+	t_exec	*exec;
 	size_t	i;
 
 	exec = (t_exec *)cmd;
-	i = 0;
-	while (i < exec->argc) {
+	i = -1;
+	while (++i < exec->argc)
 		if (exec->expanded[i])
 			free(exec->argv[i]);
-		i++;
-	}
 	free(exec->expanded);
 	free(exec->argv);
 	free(exec->eargv);
@@ -33,7 +30,7 @@ void free_cmd(t_cmd *cmd)
 
 void	free_redir(t_cmd *cmd)
 {
-	t_redircmd *redir;
+	t_redircmd	*redir;
 
 	redir = (t_redircmd *)cmd;
 	free_tree(redir->cmd);
@@ -42,7 +39,7 @@ void	free_redir(t_cmd *cmd)
 
 void	free_pipe(t_cmd *cmd)
 {
-	t_pipecmd *pipecmd;
+	t_pipecmd	*pipecmd;
 
 	pipecmd = (t_pipecmd *)cmd;
 	free_tree(pipecmd->left);
@@ -69,11 +66,11 @@ void	free_bgcmd(t_cmd *cmd)
 	free(bgcmd);
 }
 
-typedef void (*t_free)(t_cmd *cmd);
+typedef void	(*t_free)(t_cmd *cmd);
 
-void free_tree(t_cmd *cmd)
+void	free_tree(t_cmd *cmd)
 {
-	t_free tree_free[5];
+	t_free	tree_free[5];
 
 	tree_free[0] = free_cmd;
 	tree_free[1] = free_redir;

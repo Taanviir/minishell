@@ -6,25 +6,28 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/02 07:38:08 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/06 14:05:45 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/15 15:22:18 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static bool is_opr(char c) {
-  return (c == '<' || c == '|' || c == '>' || c == '&' || c == ';');
+static bool	is_opr(char c)
+{
+	return (c == '<' || c == '|' || c == '>' || c == '&' || c == ';');
 }
 
 /* returns the type of a token,
 helper function for get_token */
-	static char find_type(char **scan) {
-	int in_quote;
+static char	find_type(char **scan)
+{
+	int	in_quote;
 
 	in_quote = 0;
 	if (!**scan)
 		return (0);
-	else if (is_opr(**scan)) {
+	else if (is_opr(**scan))
+	{
 		if (!ft_strncmp(*scan, ">>", 2) && ((*scan)++))
 			return ('+');
 		else if (!ft_strncmp(*scan, "<<", 2) && ((*scan)++))
@@ -34,10 +37,11 @@ helper function for get_token */
 	if (**scan == '\"' || **scan == '\'')
 		in_quote = **scan;
 	while (scan[0][1] &&
-			(in_quote || (!ft_is_whitespace(scan[0][1]) && !is_opr(scan[0][1])))) {
+			(in_quote || (!ft_is_whitespace(scan[0][1]) && !is_opr(scan[0][1]))))
+	{
 		*scan += 1;
-			if (!(**scan - in_quote))
-				return ('q');
+		if (!(**scan - in_quote))
+			return ('q');
 	}
 	if (in_quote) //! maybe return u to handle unclosed quote
 		return (0);
@@ -54,7 +58,7 @@ helper function for get_token */
 * 	of the token respectively
 ? note: buffer is the return of readline
 */
-char get_token(char **buffer_start, char *buffer_end, char **token_start,
+char	get_token(char **buffer_start, char *buffer_end, char **token_start,
                char **token_end)
 {
 	char	token_type;

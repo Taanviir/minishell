@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:25:28 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/10 18:25:13 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/15 15:02:31 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct s_redircmd
 	t_cmd	*cmd;
 	char	*fp;
 	char	*efp;
-	int 	here_doc; //! here_doc case
+	int		here_doc; //! here_doc case
 	int		mode;
 	int		fd;
 }	t_redircmd;
@@ -66,13 +66,12 @@ typedef struct s_bgcmd
 	t_cmd	*cmd;
 }	t_bgcmd;
 
-
 /* tokenizers */
 char	get_token(char **buffer_start, char *buffer_end, char **token_start, char **token_end);
 char	*expand(char *q, char *eq, t_env **env_list);
 int		peek(char **b_start, char *b_end, const char *str);
 /* parsers */
-t_cmd *parseredir(t_cmd *cmd, char **b_start, char *b_end, t_env **env_list);
+t_cmd	*parseredir(t_cmd *cmd, char **b_start, char *b_end, t_env **env_list);
 t_cmd	*parseexec(char **b_start, char *b_end, t_env **env_list);
 t_cmd	*parsecmd(char *b_start, t_env **env_list);
 /* constructors */
