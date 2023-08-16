@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:20:49 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/15 15:21:02 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/16 20:06:34 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char	*expand(char *q, char *eq, t_env **env_list)
 	env_array = list_to_array(*env_list);
 	while (q < eq)
 	{
-		if (*q == '$' && !ft_is_whitespace(*(q + 1)))
+		if (*q == '$' && *(q + 1) && *(q + 1) != '\"' && !ft_is_whitespace(*(q + 1))) //!
 		{
 			sub = substitute(&q, env_array);
 			if (sub)

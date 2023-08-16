@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:13:46 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/15 15:20:04 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/16 20:07:04 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static bool	check_token(char **q, char **eq, int *token)
 		*q += 1;
 		*eq -= 1;
 	}
-	else if (**q == '$')
+	else
 		*token = 'e';
 	return (true);
 }

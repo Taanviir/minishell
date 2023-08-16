@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 17:52:34 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/15 15:27:35 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/16 20:05:16 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static char	__is_quoted(char *q, const char *eq)
  * @return       A new string with the quotes removed. Returns NULL in case
  *               of memory allocation failure.
  */
-static char	*remove_quote(char *delimiter, const char quote)
+char	*remove_quote(char *delimiter, const char quote)
 {
 	size_t	size;
 	size_t	i;
