@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_tree.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 19:55:59 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/15 15:23:57 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/17 00:32:24 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,9 @@ void	free_cmd(t_cmd *cmd)
 
 	exec = (t_exec *)cmd;
 	i = -1;
-	while (++i < exec->argc)
-		if (exec->expanded[i])
-			free(exec->argv[i]);
-	free(exec->expanded);
-	free(exec->argv);
-	free(exec->eargv);
+	// TODO add free
+	// free(exec->argv);
+	// free(exec->eargv);
 	free(exec);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:19:12 by eva-1             #+#    #+#             */
-/*   Updated: 2023/08/16 19:25:56 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/17 00:34:46 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ t_cmd	*parseline(char **b_start, char *b_end, t_env **env_list)
 
 t_cmd	*nullterminate(t_cmd *cmd)
 {
-	t_exec		*execmd;
+	// t_exec		*execmd;
 	t_redircmd	*redircmd;
 	t_pipecmd	*pipecmd;
 	t_seqcmd	*seqcmd;
@@ -127,16 +127,17 @@ t_cmd	*nullterminate(t_cmd *cmd)
 	if (!cmd)
 		return (0);
 	i = -1;
-	if (cmd->type == EXEC)
-	{
-		execmd = (t_exec *)cmd;
-		while (execmd->argv[++i])
-			*execmd->eargv[i] = 0;
-	}
-	else if (cmd->type == REDIR)
+	// if (cmd->type == EXEC)
+	// {
+	// 	execmd = (t_exec *)cmd;
+	// 	while (execmd->argv[++i])
+	// 		*execmd->eargv[i] = 0; //! segfault
+	// }
+	// else if (cmd->type == REDIR) //! replace this line with below
+	if (cmd->type == REDIR)
 	{
 		redircmd = (t_redircmd *)cmd;
-		nullterminate(redircmd->cmd);
+		// nullterminate(redircmd->cmd);
 		if (redircmd->fp) //! here_doc case
 			*redircmd->efp = 0;
 	}

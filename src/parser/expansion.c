@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:20:49 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/16 20:06:34 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/17 00:10:56 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,19 @@ char	*expand(char *q, char *eq, t_env **env_list)
 	char	buffer[2];
 	char	*sub;
 	char	**env_array;
+	int		s_quote;
 
 	buffer[1] = 0; // this creates a mini null-terminated word to be used with strjoing
 	expanded_string = NULL;
 	env_array = list_to_array(*env_list);
+	s_quote = 0;
 	while (q < eq)
 	{
-		if (*q == '$' && *(q + 1) && *(q + 1) != '\"' && !ft_is_whitespace(*(q + 1))) //!
+		if (!s_quote && *q == '\'')
+			s_quote = 1;
+		else if (s_quote && *q == '\'')
+			s_quote = 0;
+		if (!(s_quote) && *q == '$' && !ft_is_whitespace(*(q + 1))) //!
 		{
 			sub = substitute(&q, env_array);
 			if (sub)

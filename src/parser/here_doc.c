@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 17:52:34 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/16 20:05:16 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/16 23:51:02 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,6 @@
  *
  * @return    The type of quote character ('"' or '\'') if a closed quoted section is
  *            found. Otherwise, returns 0.
- *
- * Note: This function modifies the input string by truncating it at the end of
- * the quoted section, if found.
  */
 static char	__is_quoted(char *q, const char *eq)
 {
@@ -34,61 +31,59 @@ static char	__is_quoted(char *q, const char *eq)
 	quote = 0;
 	while (q < eq)
 	{
-		// If current character matches the previously found quote type, end the string here.
+		// if found a matching quote 0 the quote
 		if (!(*q - quote))
-		{
-			*q = 0;
-			return (quote);
-		}
+			return (*q);
 		// If no quote character has been found yet, check for one.
 		if (!quote && (*q == '"' || *q == '\''))
 			quote = *q;
 		q++;
 	}
-	// return 0 if it is not quoted
+	// return 0 if it is not quoted or is quoted but not cosed
 	return (0);
 }
 
 /**
- * Removes the specified quote character from the provided delimiter string.
+ * Removes specified quote characters from a given string.
  *
- * This function creates and returns a new string with the specified quotes
- * removed, freeing the memory of the original string.
+ * This function processes the input string to eliminate specified quote characters
+ * and returns a newly allocated string without the quotes. It's the caller's responsibility
+ * to free the memory of the original string.
  *
- * @param delimiter     The original string from which quotes are to be removed.
- * @param quote         The quote character to be removed from the string.
+ * Note: Currently, the function supports a maximum string length of 4096 due to hardcoded buffer size.
  *
- * @return       A new string with the quotes removed. Returns NULL in case
- *               of memory allocation failure.
+ * @param q      Pointer to the beginning of the string from which quotes are to be removed.
+ * @param eq     Pointer to the end of the string (just after the last character).
+ *
+ * @return       A newly allocated string with quotes removed or NULL if memory allocation fails.
  */
-char	*remove_quote(char *delimiter, const char quote)
+char *remove_quotes(char *q, char *eq)
 {
-	size_t	size;
+	char unquoted[4096]; //! hardcoding for days
 	size_t	i;
-	char	*unquoted_delimiter;
-	char	*temp;
+	int		in_quote;
 
 	i = 0;
-	temp = delimiter;
-	size = ft_strlen(delimiter);
-	// Allocate memory for the unquoted delimiter.
-	unquoted_delimiter = malloc(sizeof(char) * (size));
-	if (!unquoted_delimiter)
+	memset(unquoted, 0, 4096);
+	in_quote = 0;
+	while (q < eq)
 	{
-		write(STDERR_FILENO, "malloc failed in remove_quote\n", 30);
-		return (NULL);
+		if (*q == '\'' || *q == '\"')
+			in_quote = *q++;
+		else
+			unquoted[i++] = *q++;
+		while (q < eq && in_quote)
+		{
+			if (!(in_quote - *q))
+			{
+				q++;
+				break;
+			}
+			else
+				unquoted[i++] = *q++;
+		}
 	}
-	// Copy characters from original string, skipping the quotes.
-	while (i < size)
-	{
-		if (*delimiter == quote)
-			delimiter++;
-		unquoted_delimiter[i++] = *delimiter++;
-	}
-	unquoted_delimiter[i] = 0;
-	// freeing the original delimiterimiter
-	free(temp);
-	return (unquoted_delimiter);
+	return(ft_strdup(unquoted));
 }
 
 /**
@@ -141,12 +136,11 @@ void	here_doc(const int pipe_write, char *delimiter, t_env **env_list)
 	char	*temp;
 	char	quote;
 
-	// Determine if the delimiter is quoted and identify the quote character.
-	// If not quoted, __is_quoted returns 0.
 	quote = __is_quoted(delimiter, (delimiter + ft_strlen(delimiter)));
 	// Remove quotes from the delimiter if any.
 	if (quote)
-		delimiter = remove_quote(delimiter, quote);
+		delimiter = remove_quotes(delimiter, delimiter + ft_strlen(delimiter));
+	puts(delimiter);
 	// If no delimiter is provided, it's considered a syntax error in Bash.
 	if (!*delimiter)
 	{

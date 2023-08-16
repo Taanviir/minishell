@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_token.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/02 07:38:08 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/15 15:22:18 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/17 00:00:23 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@ static bool	is_opr(char c)
 	return (c == '<' || c == '|' || c == '>' || c == '&' || c == ';');
 }
 
+static bool is_quote(char c) {
+	return (c == '\'' || c == '"');
+}
 /* returns the type of a token,
 helper function for get_token */
 static char	find_type(char **scan)
@@ -34,16 +37,16 @@ static char	find_type(char **scan)
 			return ('-');
 		return (**scan);
 	}
-	if (**scan == '\"' || **scan == '\'')
-		in_quote = **scan;
 	while (scan[0][1] &&
 			(in_quote || (!ft_is_whitespace(scan[0][1]) && !is_opr(scan[0][1]))))
 	{
+		if (!in_quote && is_quote(**scan))
+			in_quote = **scan;
+		else if (!(**scan == in_quote))
+			in_quote = 0;
 		*scan += 1;
-		if (!(**scan - in_quote))
-			return ('q');
 	}
-	if (in_quote) //! maybe return u to handle unclosed quote
+	if (in_quote) //! unclosed quote case
 		return (0);
 	return ('a');
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/16 20:05:23 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/16 21:38:27 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ t_cmd	*runcmd(t_cmd *cmd, t_env **env_list);
 // UTIL FUNCTIONS
 int		get_len(char *str1, char *str2);
 int		wfork(void);
-char	*remove_quote(char *delimiter, const char quote);
+char	*remove_quotes(char *q, char *eq);
 
 // FREE FUNCTIONS
 void	free_tree(t_cmd *cmd);

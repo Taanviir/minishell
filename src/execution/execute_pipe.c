@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pipe.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 21:48:42 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/16 17:57:23 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/17 01:39:26 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static void	close_pipe_ends(int *p);
  */
 static bool	verify_pipe(int pipe_return);
 
+// TODO child get correct exit status
 /**
  * Executes a pipe node, connecting the standard outputs and inputs
  * of two commands.
@@ -68,11 +69,11 @@ void	execute_pipe(t_cmd *cmd, t_env **env_list)
 		runcmd(pipecmd->right, env_list);
 		free_tree(cmd);
 		free_list(*env_list);
-		exit(0);
+		exit(16 << 8);
 	}
 	close_pipe_ends(pipe_fds);
-	wait(0);
-	wait(0);
+	wait(&g_exit_status);
+	wait(&g_exit_status);
 }
 
 // Closes both read and write ends of the pipe.
