@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:25:45 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/16 17:52:53 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/16 18:27:37 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static char	*get_full_path(char *program_name, t_env **env_list)
 	int		i;
 
 	i = -1;
-	path = ft_split(get_env(*env_list, "PATH"), ':'); // TODO: Address potential issues with getenv
+	path = ft_split(get_env(*env_list, "PATH"), ':');
 	// Iterate over directories in PATH, attempting to construct and verify the full path.
 	while (path[++i])
 	{
@@ -100,7 +100,7 @@ void	execute_cmd(t_cmd *cmd, t_env **env_list)
 	// If the command is a builtin, execute it and return.
 	if (execute_builtin(cmd, env_list))
 		return ;
-	if (!wfork()) // TODO: Add error handling for the fork call and program existence.
+	if (!wfork())
 	{
 		env_array = list_to_array(*env_list);
 		full_path = get_full_path(program_name, env_list);
@@ -114,9 +114,6 @@ void	execute_cmd(t_cmd *cmd, t_env **env_list)
 		exit(127);
 	}
 	wait(&g_exit_status);
-	// receive_signal();
-	// if (!WIFEXITED(g_exit_status))
-	// 	g_exit_status = 130 << 8; //WEXITSTATUS(status);
 }
 
 // helper function that takes program name and writes error it encountered

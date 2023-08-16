@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/16 17:47:47 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/16 17:57:29 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ extern int	g_exit_status;
 
 // SIGNAL FUNCTIONS
 void	receive_signal(void);
-void	sigint_handle(int sig __unused);
+void	sigint_handler_child(int sig __unused);
 
 // ENVIRONMENT FUNCTIONS
 void	environment_init(t_env **env, char **envp);

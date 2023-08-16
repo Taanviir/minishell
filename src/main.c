@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/15 14:34:28 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/16 18:25:28 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,10 @@ int	main(int argc, char **argv __attribute__((unused)), char **envp)
 	if (argc != 1)
 		return (printf(RED_B "Error: %s\n" WHITE, strerror(E2BIG)), ERR_ARGS);
 	g_exit_status = 0;
-	receive_signal();
 	environment_init(&env_list, envp);
 	while (true)
 	{
+		receive_signal();
 		line = NULL;
 		free_tree(runcmd(get_cmd(line, &env_list), &env_list));
 		//TODO add line to _ VAR

@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:19:12 by eva-1             #+#    #+#             */
-/*   Updated: 2023/08/16 15:33:32 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/16 19:25:56 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,12 +160,11 @@ t_cmd	*nullterminate(t_cmd *cmd)
 	return (cmd);
 }
 
-//TODO logic is screwed up, needs to be worked on
 bool	is_empty(char *line)
 {
 	while (*line)
 	{
-		if (!ft_is_whitespace(*line) && *line != '\"' && *line != '\'')
+		if (!ft_is_whitespace(*line))
 			return (false);
 		line++;
 	}

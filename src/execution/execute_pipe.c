@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 21:48:42 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/16 17:46:45 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/16 17:57:23 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ void	execute_pipe(t_cmd *cmd, t_env **env_list)
 	// Create a pipe and check for success
 	if (!verify_pipe(pipe(pipe_fds)))
 		return ;
-	// signal(SIGINT, sigint_handle);
 	// Fork for the left side of the pipe.
 	if (!wfork())
 	{
