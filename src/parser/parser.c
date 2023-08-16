@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:19:12 by eva-1             #+#    #+#             */
-/*   Updated: 2023/08/15 15:19:20 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/16 15:33:32 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ bool	is_empty(char *line)
 {
 	while (*line)
 	{
-		if (!ft_is_whitespace(*line))
+		if (!ft_is_whitespace(*line) && *line != '\"' && *line != '\'')
 			return (false);
 		line++;
 	}
