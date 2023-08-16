@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:25:45 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/15 15:25:46 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/16 17:52:53 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,13 +100,12 @@ void	execute_cmd(t_cmd *cmd, t_env **env_list)
 	// If the command is a builtin, execute it and return.
 	if (execute_builtin(cmd, env_list))
 		return ;
-	if (!fork()) // TODO: Add error handling for the fork call and program existence.
+	if (!wfork()) // TODO: Add error handling for the fork call and program existence.
 	{
-		// signal(SIGINT, SIG_DFL); //TODO signal for child process, WIP
 		env_array = list_to_array(*env_list);
-		full_path = get_full_path(program_name, env_list); // TODO need to work on NULL return
+		full_path = get_full_path(program_name, env_list);
 		// Attempt to execute as absolute path or from PATH. If both fail, write an appropriate error.
-		if ((execve(program_name, execcmd->argv, env_array) && !full_path) //!fails with "" input
+		if ((execve(program_name, execcmd->argv, env_array) && !full_path)
 			|| (execve(full_path, execcmd->argv, env_array)))
 			write_exec_error(program_name);
 		// Free command tree in the child process.
@@ -115,6 +114,9 @@ void	execute_cmd(t_cmd *cmd, t_env **env_list)
 		exit(127);
 	}
 	wait(&g_exit_status);
+	// receive_signal();
+	// if (!WIFEXITED(g_exit_status))
+	// 	g_exit_status = 130 << 8; //WEXITSTATUS(status);
 }
 
 // helper function that takes program name and writes error it encountered

@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/14 16:42:14 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/16 17:47:47 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ extern int	g_exit_status;
 
 // SIGNAL FUNCTIONS
 void	receive_signal(void);
+void	sigint_handle(int sig __unused);
 
 // ENVIRONMENT FUNCTIONS
 void	environment_init(t_env **env, char **envp);
@@ -63,10 +64,11 @@ t_cmd	*get_cmd(char *line, t_env **env_list);
 // EXECUTION FUNCTION
 t_cmd	*runcmd(t_cmd *cmd, t_env **env_list);
 
-// UTILS
+// UTIL FUNCTIONS
 int		get_len(char *str1, char *str2);
+int		wfork(void);
 
-// free_tree
+// FREE FUNCTIONS
 void	free_tree(t_cmd *cmd);
 
 #endif

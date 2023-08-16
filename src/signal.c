@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 18:55:49 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/15 14:06:08 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/16 17:48:13 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,16 @@ static void	signal_handler(int signum)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
+}
+
+void	sigint_handle(int sig __unused)
+{
+	int status;
+
+	printf("\n");
+	waitpid(-1, &status, 0);
+	if (!WIFEXITED(status))
+		g_exit_status = 130 << 8;
 }
 
 void	receive_signal(void)
