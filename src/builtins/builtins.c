@@ -13,8 +13,6 @@
 #include "minishell.h"
 
 // TODO handle exit status
-// * doesnt do anyhting with too many args (>1)
-// * always returns 0
 // * deleted or moved or renamed dir throws err
 // * permissions issue
 int	ft_pwd(t_env *env_list)
@@ -50,19 +48,35 @@ int	ft_echo(char **argv)
 	return (0);
 }
 
-// TODO handle exit status
-// * too many args (>1) prints bash: exit: too many arguments; doesnt exit but $? is 1
-// * non numeric args prints bash: exit: 1a: numeric argument required; exits with 255
-// * no args exits with 0
-// * exit code above 255 does {code} % 256 and exits with that value
-int	ft_exit(char **argv, int err_num, t_env **env_list)
+int	ft_exit(t_cmd *cmd, t_env **env_list)
 {
-	// if (argv[1])
-	(void) argv;
+	t_exec	*exec;
+	int	i;
+	int	j;
+
+	if (cmd)
+	{
+		exec = (t_exec *) cmd;
+		i = 0;
+		while (exec->argv && exec->argv[++i])
+		{
+			j = -1;
+			while (exec->argv[i][++j] && !ft_is_digit(exec->argv[i][j]))
+			{
+				printf("minishell: exit: %s: numeric argument required\n", exec->argv[i]);
+				g_exit_status = 255;
+			}
+		}
+		if (exec->argc > 2)
+			return (printf("minishell: exit: too many arguments\n"), 1);
+		if (exec->argc == 2 && ft_strncmp(exec->argv[1], "255", 3) > 0)
+			g_exit_status = (ft_atoi(exec->argv[1]) % 256);
+		else if (exec->argc == 2)
+			g_exit_status = ft_atoi(exec->argv[1]);
+	}
+	free_tree(cmd);
 	free_list(*env_list);
-	g_exit_status = err_num;
 	printf("exit\n");
-	// return (g_exit_status);
 	exit(g_exit_status);
 }
 

@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:25:28 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/15 15:02:31 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/17 17:52:09 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,13 @@ typedef struct s_bgcmd
 	int		type;
 	t_cmd	*cmd;
 }	t_bgcmd;
+
+typedef struct s_env
+{
+	char			*name;
+	char			*value;
+	struct s_env	*next;
+}	t_env;
 
 /* tokenizers */
 char	get_token(char **buffer_start, char *buffer_end, char **token_start, char **token_end);

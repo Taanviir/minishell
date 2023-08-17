@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/16 20:05:23 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/17 18:47:05 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@
 # include <stdint.h>
 # include <sys/wait.h> // is wait not allowed?
 # include "../libft/include/libft.h" // libft
-# include "builtins.h"
 # include "tokenizer.h"
+# include "builtins.h"
 
 // EXIT_STATUS
 extern int	g_exit_status;
@@ -49,7 +49,7 @@ extern int	g_exit_status;
 
 // SIGNAL FUNCTIONS
 void	receive_signal(void);
-void	sigint_handler_child(int sig __unused);
+void	sigint_handler_child(int sig);
 
 // ENVIRONMENT FUNCTIONS
 void	environment_init(t_env **env, char **envp);
