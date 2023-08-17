@@ -62,8 +62,8 @@ static char	find_type(char **scan)
 		// if the current character is a quote, toggle the in_quote flag
 		if (!in_quote && is_quote(**scan))
 			in_quote = **scan;
-		// if closing quote is found, reset in_quote flag
-		else if (!(**scan == in_quote))
+		// if the next character is the same quote, toggle the in_quote flag, checking for current character checking for current character will fail since it may be the end of the buffer 
+		else if (in_quote && (scan[0][1] == in_quote))
 			in_quote = 0;
 		*scan += 1;
 	}

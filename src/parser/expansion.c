@@ -55,12 +55,14 @@ static char	*substitute(char **q, char **env_array)
 	// Handle special variables
 	if (*var_s == '$')
 		return (*q += 2, ft_itoa((int)getpid()));
-	if (*var_s == '?')
+	else if (*var_s == '?')
 		return (*q += 2, ft_itoa(WEXITSTATUS(g_exit_status)));
+	else if (ft_is_whitespace(*var_s) || *var_s == '\0' || *var_s == '"')
+		return (*q += 1, strdup("$"));
 	// Advance the pointer to skip the $ character, if it's not a special variable
 	*q += 1;
-	// Find the length of the variable name
-	while (var_s[lvar_s] && !ft_is_whitespace(var_s[lvar_s]) && !ft_strchr("\"\'", var_s[lvar_s]))
+	// Find the length of the variable name, the variable name could end in either a space or a double quote or a dollar sign or any operator
+	while (var_s[lvar_s] && !ft_strchr("\" $|;&", var_s[lvar_s]))
 	{
 		lvar_s++;
 		(*q)++;
