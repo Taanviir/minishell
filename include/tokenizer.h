@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:25:28 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/17 00:09:00 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/17 16:51:58 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef struct s_redircmd
 	t_cmd	*cmd;
 	char	*fp;
 	char	*efp;
-	int		here_doc; //! here_doc case
+	int		here_doc;
 	int		mode;
 	int		fd;
 }	t_redircmd;
@@ -64,6 +64,13 @@ typedef struct s_bgcmd
 	int		type;
 	t_cmd	*cmd;
 }	t_bgcmd;
+
+typedef struct s_env
+{
+	char			*name;
+	char			*value;
+	struct s_env	*next;
+}	t_env;
 
 /* tokenizers */
 char	get_token(char **buffer_start, char *buffer_end, char **token_start, char **token_end);

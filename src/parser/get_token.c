@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/02 07:38:08 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/17 00:00:23 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/17 17:59:39 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,19 @@ static bool	is_opr(char c)
 }
 
 // check if the character is a quote
-static bool is_quote(char c) {
+bool is_quote(char c)
+{
 	return (c == '\'' || c == '"');
 }
 
 /**
  * @brief Determines the type of a token in the input string.
- * 
+ *
  * The function scans the input string to classify it as an operator, quoted string,
  * or general text. The 'scan' pointer is advanced to the end of the detected token.
  *
  * @param scan Pointer to the current position in the input string.
- * 
+ *
  * @return A character representing the type of token found:
  *         - '<' for less than operator.
  *         - '+' for double greater than (i.e., append) operator.
@@ -43,6 +44,8 @@ static char	find_type(char **scan)
 	int	in_quote;
 
 	in_quote = 0;
+	if (is_quote(**scan))
+		in_quote = **scan;
 	// if scan is at the end of the buffer, return 0
 	if (!**scan)
 		return (0);
@@ -62,13 +65,12 @@ static char	find_type(char **scan)
 		// if the current character is a quote, toggle the in_quote flag
 		if (!in_quote && is_quote(**scan))
 			in_quote = **scan;
-		// if the next character is the same quote, toggle the in_quote flag, checking for current character checking for current character will fail since it may be the end of the buffer 
-		else if (in_quote && (scan[0][1] == in_quote))
-			in_quote = 0;
 		*scan += 1;
+		if (in_quote && (**scan == in_quote))
+			in_quote = 0;
 	}
 	// if the token is unclosed, return 0
-	if (in_quote) 
+	if (in_quote)
 		return (0);
 	return ('a');
 }
@@ -78,15 +80,15 @@ static char	find_type(char **scan)
  *
  * This function scans the input buffer, skipping any leading whitespace, to find
  * and classify the next token. The token is categorized using the find_type() helper
- * function. The token_start and token_end pointers are set to the bounds of the found 
- * token. After classification, the buffer_start pointer is advanced to the start of 
+ * function. The token_start and token_end pointers are set to the bounds of the found
+ * token. After classification, the buffer_start pointer is advanced to the start of
  * the next token or the end of the buffer.
  *
  * @param buffer_start Pointer to the current position in the buffer.
  * @param buffer_end Pointer to the end of the buffer.
  * @param token_start Pointer to store the beginning of the detected token.
  * @param token_end Pointer to store the end of the detected token.
- * 
+ *
  * @return Character code representing the type of token extracted.
  */
 char	get_token(char **buffer_start, char *buffer_end, char **token_start,

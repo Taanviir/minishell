@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:25:45 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/16 18:27:37 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/17 18:18:20 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static int	execute_builtin(t_cmd *cmd, t_env **env_list)
 	if (!exec->argv[0])
 		return (0);
 	if (!ft_strncmp(exec->argv[0], "echo", get_len(exec->argv[0], "echo")))
-		return (ft_echo(exec->argv), 1);
+		return (ft_echo(exec), 1);
 	if (!ft_strncmp(exec->argv[0], "cd", get_len(exec->argv[0], "cd")))
 		return (ft_cd(exec->argc, exec->argv, env_list), 1);
 	else if (!ft_strncmp(exec->argv[0], "pwd", get_len(exec->argv[0], "pwd")))

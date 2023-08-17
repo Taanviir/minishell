@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:20:49 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/17 00:10:56 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/17 17:05:27 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 /**
  * Compares the lengths of the provided variable and environment variable.
  * The function returns the length of the longer of the two.
- * 
+ *
  * @param lvar_s: The length of the provided variable.
  * @param env_var: The environment variable string in the format "KEY=VALUE".
- * 
+ *
  * @return: The length of the longer of the two strings (either lvar_s or the length before '=' in env_var).
  */
 static int	longer(int lvar_s, char *env_var)
@@ -38,11 +38,11 @@ static int	longer(int lvar_s, char *env_var)
  * Substitutes a given variable (found after a '$' character) with its respective value.
  * The function handles special variables like "$$" for the process ID and "$?" for the exit status.
  * For other variables, it searches the environment array to find the matching key and returns its value.
- * 
+ *
  * @param q			Pointer to the position in the input string where '$' was found.
  * @param env_array	An array of environment variables in the format "KEY=VALUE".
- * 
- * @return	The value of the substituted variable, or NULL if not found. 
+ *
+ * @return	The value of the substituted variable, or NULL if not found.
  *          The pointer q is also advanced to after the variable name in the input string.
  */
 static char	*substitute(char **q, char **env_array)
@@ -80,7 +80,7 @@ static char	*substitute(char **q, char **env_array)
 
 /**
  * Expand environment variables contained within a given token.
- * 
+ *
  * The function scans the token for `$` characters, indicating potential environment
  * variables. If found, the variables are substituted with their values from
  * the environment list.
@@ -101,9 +101,9 @@ char	*expand(char *q, char *eq, t_env **env_list, bool here_doc)
 	char	**env_array; // Array of environment variables
 	int		s_quote;	// Flag to indicate if the current character is within single quotes
 
-	// Null terminate the buffer, because strjoin_m expects null terminated strings 
-	buffer[1] = 0; 
-	es = NULL;		
+	// Null terminate the buffer, because strjoin_m expects null terminated strings
+	buffer[1] = 0;
+	es = NULL;
 	// convert the environment list to an array
 	env_array = list_to_array(*env_list);
 	s_quote = 0;
@@ -116,11 +116,10 @@ char	*expand(char *q, char *eq, t_env **env_list, bool here_doc)
 		else if (s_quote && *q == '\'')
 			s_quote = 0;
 		// If not in single quotes, or here_doc is true, expanded if needed
-		if ((!s_quote || here_doc) && *q == '$' && !ft_is_whitespace(*(q + 1))) //!
+		if ((!s_quote || here_doc) && *q == '$' && !ft_is_whitespace(*(q + 1)))
 		{
 			sub = substitute(&q, env_array);
-			if (sub)
-				es = ft_strjoin_m(es, sub);
+			es = ft_strjoin_m(es, sub);
 		}
 		// if not expanding, simply add the character to the expanded string
 		else

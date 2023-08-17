@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/16 18:25:28 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/17 18:05:25 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,6 @@ int	main(int argc, char **argv __attribute__((unused)), char **envp)
 		free(line);
 	}
 	free_list(env_list);
-	rl_clear_history();
+	// rl_clear_history();
 	return (EXIT_SUCCESS);
 }

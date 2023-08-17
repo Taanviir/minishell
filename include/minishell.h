@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/16 21:38:27 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/17 17:35:45 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ t_cmd	*get_cmd(char *line, t_env **env_list);
 t_cmd	*runcmd(t_cmd *cmd, t_env **env_list);
 
 // UTIL FUNCTIONS
+bool	is_quote(char c);
 int		get_len(char *str1, char *str2);
 int		wfork(void);
 char	*remove_quotes(char *q, char *eq);
