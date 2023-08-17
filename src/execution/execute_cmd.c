@@ -6,14 +6,14 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:25:45 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/17 18:18:20 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/17 22:18:15 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // helper error function
-static void	write_exec_error(char *program_name);
+static void	write_exec_error(char *program_name, int *l_exit);
 
 /**
  * Retrieve the full path of a given program.
@@ -93,10 +93,12 @@ void	execute_cmd(t_cmd *cmd, t_env **env_list)
 	char	*program_name;
 	char	*full_path;
 	char	**env_array;
+	int		l_exit;
 
 	// Typecast the cmd structure to access command-specific parameters.
 	execcmd = (t_exec *)cmd;
 	program_name = execcmd->argv[0];
+	l_exit = 0;
 	// If the command is a builtin, execute it and return.
 	if (execute_builtin(cmd, env_list))
 		return ;
@@ -107,23 +109,32 @@ void	execute_cmd(t_cmd *cmd, t_env **env_list)
 		// Attempt to execute as absolute path or from PATH. If both fail, write an appropriate error.
 		if ((execve(program_name, execcmd->argv, env_array) && !full_path)
 			|| (execve(full_path, execcmd->argv, env_array)))
-			write_exec_error(program_name);
+			write_exec_error(program_name, &l_exit);
 		// Free command tree in the child process.
 		free_tree(cmd);
 		free_double_ptr((void **) env_array);
-		exit(127);
+		exit(l_exit);
 	}
 	wait(&g_exit_status);
 }
 
-// helper function that takes program name and writes error it encountered
-static void	write_exec_error(char *program_name)
+// helper function that takes program name and writes error it encountered and sets the appropriate exit status
+static void	write_exec_error(char *program_name, int *l_exit)
 {
 	write(2, "minishell: ", 11);
-	if (errno == EFAULT || errno == ENOENT)
+	if (errno == EACCES || errno == ENOENT)
 	{
 		write(2, program_name, ft_strlen(program_name));
-		write(2, ": command not found\n", 21);
+		if (errno == EACCES)
+		{
+			write(2, ": Permission denied\n", 20);
+			*l_exit = 126;
+		}
+		else if (errno == ENOENT)
+		{
+			write(2, ": command not found\n", 20);
+			*l_exit = 127;
+		}
 	}
 	else
 		perror(program_name);
