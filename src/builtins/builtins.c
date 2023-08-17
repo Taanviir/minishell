@@ -24,22 +24,22 @@ int	ft_pwd(t_env *env_list)
 	return (0);
 }
 
-int	ft_echo(char **argv)
+int	ft_echo(t_exec *cmd)
 {
-	bool	show_newline;
-	int		i;
+	bool		show_newline;
+	size_t		i;
 
 	show_newline = true;
 	i = 1;
-	while (argv[i] && !ft_strncmp("-n", argv[i], 2))
+	while (cmd->argv[i] && !ft_strncmp("-n", cmd->argv[i], get_len("-n", cmd->argv[i])))
 	{
 		show_newline = false;
 		i++;
 	}
-	while (argv[i])
+	while (i < cmd->argc)
 	{
-		ft_putstr_fd(argv[i], 1);
-		if (argv[i + 1])
+		ft_putstr_fd(cmd->argv[i], 1);
+		if (cmd->argv[i + 1])
 			ft_putchar_fd(' ', 1);
 		i++;
 	}

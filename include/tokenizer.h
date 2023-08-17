@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:25:28 by tanas             #+#    #+#             */
 /*   Updated: 2023/08/17 17:52:09 by tanas            ###   ########.fr       */
@@ -30,7 +30,6 @@ typedef struct s_exec
 {
 	int		type;
 	size_t	argc;
-	bool	*expanded; //! if argv has been expanded or no
 	char	**argv;
 	char	**eargv;
 }	t_exec;
@@ -41,7 +40,7 @@ typedef struct s_redircmd
 	t_cmd	*cmd;
 	char	*fp;
 	char	*efp;
-	int		here_doc; //! here_doc case
+	int		here_doc;
 	int		mode;
 	int		fd;
 }	t_redircmd;
@@ -75,7 +74,7 @@ typedef struct s_env
 
 /* tokenizers */
 char	get_token(char **buffer_start, char *buffer_end, char **token_start, char **token_end);
-char	*expand(char *q, char *eq, t_env **env_list);
+char	*expand(char *q, char *eq, t_env **env_list, bool here_doc);
 int		peek(char **b_start, char *b_end, const char *str);
 /* parsers */
 t_cmd	*parseredir(t_cmd *cmd, char **b_start, char *b_end, t_env **env_list);

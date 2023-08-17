@@ -3,12 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 04:00:27 by sabdelra          #+#    #+#             */
 /*   Updated: 2023/08/17 18:10:36 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+# include "tokenizer.h"
 
 #ifndef BUILTINS_H
 # define BUILTINS_H
@@ -19,7 +21,7 @@ bool	check_char(char c, char *argv);
 
 // BUILTINS
 int		ft_pwd(t_env *env_list);
-int		ft_echo(char **argv);
+int		ft_echo(t_exec *cmd);
 int		ft_env(char **argv, t_env **env_list);
 int		ft_cd(int argc, char **argv, t_env **env_list);
 int		ft_exit(t_cmd *cmd, t_env **env_list);
