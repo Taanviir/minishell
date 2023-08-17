@@ -49,8 +49,7 @@ extern int	g_exit_status;
 
 // SIGNAL FUNCTIONS
 void	receive_signal(void);
-void	sigint_handler_child(int sig __unused);
-
+void	sigint_handler_child(int  __attribute__((unused))sig);
 // ENVIRONMENT FUNCTIONS
 void	environment_init(t_env **env, char **envp);
 void	add_node_bottom(t_env **head, char *envp);

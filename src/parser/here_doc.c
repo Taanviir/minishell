@@ -39,7 +39,7 @@ static char	__is_quoted(char *q, const char *eq)
 			quote = *q;
 		q++;
 	}
-	// return 0 if it is not quoted or is quoted but not cosed
+	// return 0 if it is not quoted or is quoted but not closed
 	return (0);
 }
 
@@ -140,7 +140,6 @@ void	here_doc(const int pipe_write, char *delimiter, t_env **env_list)
 	// Remove quotes from the delimiter if any.
 	if (quote)
 		delimiter = remove_quotes(delimiter, delimiter + ft_strlen(delimiter));
-	puts(delimiter);
 	// If no delimiter is provided, it's considered a syntax error in Bash.
 	if (!*delimiter)
 	{
@@ -157,7 +156,7 @@ void	here_doc(const int pipe_write, char *delimiter, t_env **env_list)
 		if (!quote)
 		{
 			temp = line;
-			line = expand(line, line + ft_strlen(line), env_list);
+			line = expand(line, line + ft_strlen(line), env_list, true);
 			free(temp);
 		}
 		// Write the processed line to the provided file descriptor.

@@ -19,9 +19,10 @@ void	free_cmd(t_cmd *cmd)
 
 	exec = (t_exec *)cmd;
 	i = -1;
-	// TODO add free
-	// free(exec->argv);
-	// free(exec->eargv);
+	while (exec->argv[++i])
+		free(exec->argv[i]);
+	free(exec->argv);
+	free(exec->eargv);
 	free(exec);
 }
 

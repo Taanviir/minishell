@@ -34,8 +34,8 @@ static void	signal_handler(int signum)
 	}
 }
 
-void	sigint_handler_child(int sig __unused)
-{
+void	sigint_handler_child(int sig __attribute__((unused))) 
+ {
 	int status;
 
 	printf("\n");

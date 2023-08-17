@@ -117,27 +117,17 @@ t_cmd	*parseline(char **b_start, char *b_end, t_env **env_list)
 
 t_cmd	*nullterminate(t_cmd *cmd)
 {
-	// t_exec		*execmd;
 	t_redircmd	*redircmd;
 	t_pipecmd	*pipecmd;
 	t_seqcmd	*seqcmd;
 	t_bgcmd		*bgcmd;
-	int			i;
 
 	if (!cmd)
 		return (0);
-	i = -1;
-	// if (cmd->type == EXEC)
-	// {
-	// 	execmd = (t_exec *)cmd;
-	// 	while (execmd->argv[++i])
-	// 		*execmd->eargv[i] = 0; //! segfault
-	// }
-	// else if (cmd->type == REDIR) //! replace this line with below
 	if (cmd->type == REDIR)
 	{
 		redircmd = (t_redircmd *)cmd;
-		// nullterminate(redircmd->cmd);
+		nullterminate(redircmd->cmd);
 		if (redircmd->fp) //! here_doc case
 			*redircmd->efp = 0;
 	}

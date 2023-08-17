@@ -67,7 +67,7 @@ typedef struct s_bgcmd
 
 /* tokenizers */
 char	get_token(char **buffer_start, char *buffer_end, char **token_start, char **token_end);
-char	*expand(char *q, char *eq, t_env **env_list);
+char	*expand(char *q, char *eq, t_env **env_list, bool here_doc);
 int		peek(char **b_start, char *b_end, const char *str);
 /* parsers */
 t_cmd	*parseredir(t_cmd *cmd, char **b_start, char *b_end, t_env **env_list);
