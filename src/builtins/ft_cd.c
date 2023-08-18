@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:54:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/13 22:54:20 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/17 18:51:25 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,16 @@ void	update_env(t_env **env_list, char *old_path)
 
 int	change_path(t_env **env_list, char *path, char *old_path)
 {
+	DIR	*directory;
+
+	directory = opendir(path);
+	if (directory)
+	{
+		closedir(directory);
+		printf("minishell: cd: %s: %s\n", path, strerror(EACCES));
+		return (1);
+	}
+	closedir(directory);
 	if (!chdir(path))
 	{
 		if (!ft_strncmp(path, "OLDPWD", 6))
@@ -38,7 +48,7 @@ int	change_path(t_env **env_list, char *path, char *old_path)
 		update_env(env_list, old_path);
 		return (0);
 	}
-	printf("-minishell: cd: %s: %s\n", path, strerror(ENOENT));
+	printf("minishell: cd: %s: %s\n", path, strerror(ENOENT));
 	return (1);
 }
 
@@ -48,7 +58,7 @@ int	ft_cd(int argc, char **argv, t_env **env_list)
 	char	*old_path;
 
 	if (argc > 2)
-		return (printf("-minishell: cd: too many arguments\n"), 1);
+		return (printf("minishell: cd: too many arguments\n"), 1);
 	if (argc == 1 || !ft_strncmp(argv[1], "~", 1))
 	{
 		path = get_env(*env_list, "HOME");
@@ -59,7 +69,7 @@ int	ft_cd(int argc, char **argv, t_env **env_list)
 	{
 		path = get_env(*env_list, "OLDPWD");
 		if (!path)
-			return (printf("-minishell: cd: OLDPWD not set\n"), 1);
+			return (printf("minishell: cd: OLDPWD not set\n"), 1);
 	}
 	else
 		path = argv[1];

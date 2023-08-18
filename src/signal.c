@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 18:55:49 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/17 16:37:14 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/17 18:42:06 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,9 @@ static void	signal_handler(int signum)
 	}
 }
 
-void	sigint_handler_child(int sig __attribute__((unused)))
- {
+void	sigint_handler_child(int sig)
+{
+	(void) sig;
 	int status;
 
 	printf("\n");

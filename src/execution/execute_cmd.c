@@ -68,11 +68,7 @@ static int	execute_builtin(t_cmd *cmd, t_env **env_list)
 	else if (!ft_strncmp(exec->argv[0], "env", get_len(exec->argv[0], "env")))
 		return (ft_env(exec->argv, env_list), 1);
 	else if (!ft_strncmp(exec->argv[0], "exit", get_len(exec->argv[0], "exit")))
-	{
-		// TODO shit's weird homie, can't exit mid program
-		free_tree(cmd);
-		return (ft_exit(exec->argv, EXIT_SUCCESS, env_list));
-	}
+		return (ft_exit(cmd, env_list));
 	return (0);
 }
 

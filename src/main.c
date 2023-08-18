@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/17 18:05:25 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/17 18:54:16 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ t_cmd	*get_cmd(char *line, t_env **env_list)
 	free(prompt);
 	free(dir);
 	if (!line)
-		return (ft_exit(NULL, 0, env_list), NULL);
+		return (ft_exit(NULL, env_list), NULL);
 	add_history(line);
 	root = parsecmd(line, env_list);
 	return (root);
