@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:13:46 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/17 17:36:39 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/17 19:09:50 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ t_cmd	*parseexec(char **b_start, char *b_end, t_env **env_list)
 		if ((!es && (*q - 1) == '"'))
 			cmd->argv[cmd->argc] = strdup(" ");
 		// remove quotes from the expanded token
-		else //! test
+		else
 			cmd->argv[cmd->argc] = remove_quotes(es, es + ft_strlen(es));
-		free(es); //! test
+		free(es);
 		// set the end of the token
 		cmd->eargv[cmd->argc] = cmd->argv[cmd->argc] + ft_strlen(cmd->argv[cmd->argc]);
 		cmd->argc++;

@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:20:49 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/17 17:05:27 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/17 21:41:52 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ char	*expand(char *q, char *eq, t_env **env_list, bool here_doc)
 		// Check for the end of a single quote
 		else if (s_quote && *q == '\'')
 			s_quote = 0;
-		// If not in single quotes, or here_doc is true, expanded if needed
+		// If not in single quotes, or here_doc is true, expand if needed
 		if ((!s_quote || here_doc) && *q == '$' && !ft_is_whitespace(*(q + 1)))
 		{
 			sub = substitute(&q, env_array);

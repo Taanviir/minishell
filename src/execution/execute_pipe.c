@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 21:48:42 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/17 01:39:26 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/17 21:43:03 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	execute_pipe(t_cmd *cmd, t_env **env_list)
 		runcmd(pipecmd->left, env_list);
 		free_tree(cmd);
 		free_list(*env_list);
-		exit(0);
+		exit(WEXITSTATUS(g_exit_status));
 	}
 	// Fork for the right side of the pipe.
 	else if (!wfork())
@@ -69,7 +69,7 @@ void	execute_pipe(t_cmd *cmd, t_env **env_list)
 		runcmd(pipecmd->right, env_list);
 		free_tree(cmd);
 		free_list(*env_list);
-		exit(16 << 8);
+		exit(WEXITSTATUS(g_exit_status));
 	}
 	close_pipe_ends(pipe_fds);
 	wait(&g_exit_status);
