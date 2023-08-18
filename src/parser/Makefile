@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+         #
+#    By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/18 14:50:05 by sabdelra          #+#    #+#              #
-#    Updated: 2023/08/10 17:48:24 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/08/18 19:22:05 by sabdelra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ NAME:= parser.a
 C_FLAGS:= -Wall -Werror -Wextra -ggdb3
 INCLUDES:= -I ../../include -I ../../libft/include
 
-SRCS:= get_token.c parser.c expansion.c constructor.c here_doc.c parse_exec.c
+SRCS:= get_token.c parser.c expansion.c constructor.c here_doc.c parse_exec.c parse_redir.c
 OBJS_DIR:= parser_objs/
 OBJS:= $(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
 

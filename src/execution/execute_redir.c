@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_redir.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 20:34:01 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/10 18:22:04 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/18 19:40:48 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,16 @@
 // TODO dup and close failures???
 
 // Handle file open failures.
-static bool	verify_file_opened(const int fd, const char *file_path);
-
+static bool	verify_file_opened(const int fd, const char *file_path)
+{
+	if (fd < 0)
+	{
+		write(2, "minishell: ", 12);
+		perror(file_path);
+		return (false);
+	}
+	return (true);
+}
 /**
  * Executes a command with stream redirection.
  *
@@ -46,6 +54,7 @@ void	execute_redir(t_cmd *cmd, t_env **env_list)
 		return ;
 	// Replace the original file descriptor with the new one.
 	dup2(new_fd, redircmd->fd);
+	// Close the new file descriptor, could be a pipe read or a file.
 	close(new_fd);
 	// Execute the actual command with redirection in place.
 	runcmd(redircmd->cmd, env_list);
@@ -54,14 +63,4 @@ void	execute_redir(t_cmd *cmd, t_env **env_list)
 	close(save_fd);
 }
 
-// Handle file open failures.
-static bool	verify_file_opened(const int fd, const char *file_path)
-{
-	if (fd < 0)
-	{
-		write(2, "minishell: ", 12);
-		perror(file_path);
-		return (false);
-	}
-	return (true);
-}
+

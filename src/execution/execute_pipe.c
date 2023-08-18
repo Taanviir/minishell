@@ -3,31 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pipe.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 21:48:42 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/17 21:43:03 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/18 19:21:12 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// TODO handle fork failures?
 /**
  * @brief Closes both read and write ends of the pipe.
  *
  * @param p The array holding the file descriptors of the pipe ends.
  */
-static void	close_pipe_ends(int *p);
-/**
- * @brief Checks if a pipe was created successfully.
- *
- * In case of an error during pipe creation, prints the error.
- *
- * @param pipe_return The return value from the pipe() system call.
- * @return true if the pipe was created successfully, false otherwise.
- */
-static bool	verify_pipe(int pipe_return);
+static void	close_pipe_ends(int *pipe_fds)
+{
+	close(pipe_fds[0]);
+	close(pipe_fds[1]);
+}
+
 
 // TODO child get correct exit status
 /**
@@ -76,20 +71,6 @@ void	execute_pipe(t_cmd *cmd, t_env **env_list)
 	wait(&g_exit_status);
 }
 
-// Closes both read and write ends of the pipe.
-static void	close_pipe_ends(int *pipe_fds)
-{
-	close(pipe_fds[0]);
-	close(pipe_fds[1]);
-}
 
-// check pipe operation for errors
-static bool	verify_pipe(int pipe_return)
-{
-	if (pipe_return < 0)
-	{
-		perror("");
-		return (false);
-	}
-	return (true);
-}
+
+
