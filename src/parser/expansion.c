@@ -119,7 +119,8 @@ char	*expand(char *q, char *eq, t_env **env_list, bool here_doc)
 		if ((!s_quote || here_doc) && *q == '$' && !ft_is_whitespace(*(q + 1)))
 		{
 			sub = substitute(&q, env_array);
-			es = ft_strjoin_m(es, sub);
+			if (sub)
+				es = ft_strjoin_m(es, sub);
 		}
 		// if not expanding, simply add the character to the expanded string
 		else
