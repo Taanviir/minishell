@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:25:45 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/17 22:18:15 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/19 19:45:08 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,11 @@ static int	execute_builtin(t_cmd *cmd, t_env **env_list)
 	exec = (t_exec *) cmd;
 	if (!exec->argv[0])
 		return (0);
+	// TODO need to handle returns from builtins and have it in g_exit_status
 	if (!ft_strncmp(exec->argv[0], "echo", get_len(exec->argv[0], "echo")))
-		return (ft_echo(exec), 1);
+		return (ft_echo(exec, *env_list), 1);
 	if (!ft_strncmp(exec->argv[0], "cd", get_len(exec->argv[0], "cd")))
-		return (ft_cd(exec->argc, exec->argv, env_list), 1);
+		return (ft_cd(exec->argv, env_list), 1);
 	else if (!ft_strncmp(exec->argv[0], "pwd", get_len(exec->argv[0], "pwd")))
 		return (ft_pwd(*env_list), 1);
 	else if (!ft_strncmp(exec->argv[0], "export", get_len(exec->argv[0], "export")))

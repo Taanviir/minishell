@@ -12,9 +12,6 @@
 
 #include "minishell.h"
 
-// TODO handle exit status
-// * deleted or moved or renamed dir throws err
-// * permissions issue
 int	ft_pwd(t_env *env_list)
 {
 	char	*path;
@@ -24,10 +21,23 @@ int	ft_pwd(t_env *env_list)
 	return (0);
 }
 
-int	ft_echo(t_exec *cmd)
+static int	handle_tilde(char *arg, t_env *env_list)
 {
-	bool		show_newline;
-	size_t		i;
+	if (!ft_strncmp("~", arg, ft_strlen(arg)))
+	{
+		if (!ft_strncmp("~+", arg, get_len("~+", arg)))
+			ft_putstr_fd(get_env(env_list, "PWD"), 1);
+		else
+			ft_putstr_fd(get_env(env_list, "HOME"), 1);
+		return (1);
+	}
+	return (0);
+}
+
+int	ft_echo(t_exec *cmd, t_env *env_list)
+{
+	bool	show_newline;
+	size_t	i;
 
 	show_newline = true;
 	i = 1;
@@ -38,7 +48,8 @@ int	ft_echo(t_exec *cmd)
 	}
 	while (i < cmd->argc)
 	{
-		ft_putstr_fd(cmd->argv[i], 1);
+		if (!handle_tilde(cmd->argv[i], env_list))
+			ft_putstr_fd(cmd->argv[i], 1);
 		if (cmd->argv[i + 1])
 			ft_putchar_fd(' ', 1);
 		i++;
@@ -48,31 +59,38 @@ int	ft_echo(t_exec *cmd)
 	return (0);
 }
 
+static int	exit_check(t_exec *exec)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (exec->argv && exec->argv[++i])
+	{
+		j = -1;
+		while (exec->argv[i][++j] && (!ft_is_digit(exec->argv[i][j]) || j > 19))
+		{
+			printf("minishell: exit: %s: numeric argument required\n", exec->argv[i]);
+			return (255);
+		}
+	}
+	if (exec->argc == 2 && ft_strncmp(exec->argv[1], "255", 3) > 0)
+		return (ft_atoi(exec->argv[1]) % 256); //! ft_atoi can break
+	else if (exec->argc == 2)
+		return (ft_atoi(exec->argv[1]));
+	return (0);
+}
+
 int	ft_exit(t_cmd *cmd, t_env **env_list)
 {
 	t_exec	*exec;
-	int	i;
-	int	j;
 
 	if (cmd)
 	{
 		exec = (t_exec *) cmd;
-		i = 0;
-		while (exec->argv && exec->argv[++i])
-		{
-			j = -1;
-			while (exec->argv[i][++j] && !ft_is_digit(exec->argv[i][j]))
-			{
-				printf("minishell: exit: %s: numeric argument required\n", exec->argv[i]);
-				g_exit_status = 255;
-			}
-		}
 		if (exec->argc > 2)
 			return (printf("minishell: exit: too many arguments\n"), 1);
-		if (exec->argc == 2 && ft_strncmp(exec->argv[1], "255", 3) > 0)
-			g_exit_status = (ft_atoi(exec->argv[1]) % 256);
-		else if (exec->argc == 2)
-			g_exit_status = ft_atoi(exec->argv[1]);
+		g_exit_status = exit_check((t_exec *) cmd);
 	}
 	free_tree(cmd);
 	free_list(*env_list);

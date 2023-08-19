@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/17 18:54:16 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/19 19:45:59 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static char	*get_dir(t_env *env_list)
 	char	*temp;
 
 	dir = get_env(env_list, "PWD");
-	if (!ft_strncmp(dir, get_env(env_list, "HOME"), ft_strlen(dir)))
+	if (get_env(env_list, "HOME") && !ft_strncmp(dir, get_env(env_list, "HOME"), ft_strlen(dir)))
 		dir = ft_strdup("[~]");
 	else
 	{
@@ -65,8 +65,6 @@ t_cmd	*get_cmd(char *line, t_env **env_list)
 
 	dir = get_dir(*env_list);
 	prompt = ft_bigjoin(3, MAGENTA_B "ghost@shell:" BLUE, dir, " → " WHITE);
-	// write(2, prompt, ft_strlen(prompt));
-	// rl_already_prompted = 1;
 	line = readline(prompt);
 	free(prompt);
 	free(dir);

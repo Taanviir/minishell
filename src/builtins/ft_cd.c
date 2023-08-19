@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:54:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/17 18:51:25 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/19 19:43:55 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,8 @@ int	change_path(t_env **env_list, char *path, char *old_path)
 	DIR	*directory;
 
 	directory = opendir(path);
-	if (directory)
-	{
-		closedir(directory);
-		printf("minishell: cd: %s: %s\n", path, strerror(EACCES));
-		return (1);
-	}
+	if (!directory)
+		return (perror("minishell: cd"), 1);
 	closedir(directory);
 	if (!chdir(path))
 	{
@@ -52,14 +48,29 @@ int	change_path(t_env **env_list, char *path, char *old_path)
 	return (1);
 }
 
-int	ft_cd(int argc, char **argv, t_env **env_list)
+static int	expand_tilde(char **path, t_env **env_list)
+{
+	char	*home;
+	char	*expanded_path;
+
+	home = get_env(*env_list, "HOME");
+	if (!home)
+		return (printf("minishell: cd: HOME not set\n"), 1);
+	if ((*path)[0] == '~')
+	{
+		expanded_path = NULL;
+		expanded_path = ft_bigjoin(3, expanded_path, home, *path + 1);
+		*path = expanded_path;
+	}
+	return (0);
+}
+
+int	ft_cd(char **argv, t_env **env_list)
 {
 	char	*path;
 	char	*old_path;
 
-	if (argc > 2)
-		return (printf("minishell: cd: too many arguments\n"), 1);
-	if (argc == 1 || !ft_strncmp(argv[1], "~", 1))
+	if (!ft_strncmp(argv[1], "~", get_len(argv[1], "~")))
 	{
 		path = get_env(*env_list, "HOME");
 		if (!path)
@@ -73,6 +84,8 @@ int	ft_cd(int argc, char **argv, t_env **env_list)
 	}
 	else
 		path = argv[1];
+	if (expand_tilde(&path, env_list))
+		return (1);
 	old_path = get_env(*env_list, "PWD");
 	if (change_path(env_list, path, old_path))
 		return (1);

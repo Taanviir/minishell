@@ -3,25 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 18:55:49 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/17 18:42:06 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/19 19:48:34 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/*
-* In interactive mode:
-* ctrl-C displays a new prompt on a new line. -> SIGINT
-* ctrl-\ does nothing. -> SIGQUIT
-
-* when in command:
-* ctrl-C interrupts the process and in heredoc it stops then returns a num. -> SIGINT
-* ctrl-\ quits the process, prints Quit; {} and in heredoc it does nothing. -> SIGQUIT
-* ctrl-D just stops the process and returns 0. -> EOF
-*/
 
 static void	signal_handler(int signum)
 {
@@ -34,15 +23,28 @@ static void	signal_handler(int signum)
 	}
 }
 
-void	sigint_handler_child(int sig)
+// TODO if SIGINT in child then print \n and interrupt child
+// TODO if SIGQUIT, print Quit: 3\n and exit code is 131
+void	sigint_handler_child(int signum)
 {
-	(void) sig;
+	(void) signum;
 	int status;
 
 	printf("\n");
 	waitpid(-1, &status, 0);
 	if (!WIFEXITED(status))
 		g_exit_status = 130 << 8;
+}
+
+// TODO SIGINT just stops heredoc (prints \n)
+// TODO SIGQUIT does nothing
+// CTRL D does nothing 
+void	signal_handler_heredoc(int signum)
+{
+	if (signum == SIGINT)
+		return ;
+	else if (signum == SIGQUIT)
+		return ;
 }
 
 void	receive_signal(void)
