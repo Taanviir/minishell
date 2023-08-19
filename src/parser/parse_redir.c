@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_redir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 19:01:49 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/18 19:38:25 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/19 17:11:38 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,15 @@ static t_cmd	*token_error(char *q, char *eq)
 	return (NULL);
 }
 
+static int *set_open(int mode, int fd)
+{
+	int		*open_conditions;
+
+	open_conditions = malloc(sizeof(int) * 2);
+	open_conditions[MODE] = mode;
+	open_conditions[FD] = fd;
+	return (open_conditions);
+}
 t_cmd	*parseredir(t_cmd *cmd, char **b_start, char *b_end, t_env **env_list)
 {
 	int		redirection;
@@ -41,7 +50,7 @@ t_cmd	*parseredir(t_cmd *cmd, char **b_start, char *b_end, t_env **env_list)
 		redirection = get_token(b_start, b_end, 0, 0);
 		if (redirection == '-' && verify_pipe(pipe(hc_pipe)))
 		{
-			cmd = construct_redircmd(cmd, 0, (char *)&hc_pipe[0], O_RDONLY, STDIN_FILENO);
+			cmd = construct_redircmd(cmd, 0, (char *)&hc_pipe[0], set_open(O_RDONLY, STDIN_FILENO));
 			get_token(b_start, b_end, &q, &eq);
 			here_doc(hc_pipe[1], get_delimiter(q, eq), env_list);
 			close(hc_pipe[1]); // don't close read end, still needed during execution
@@ -49,11 +58,12 @@ t_cmd	*parseredir(t_cmd *cmd, char **b_start, char *b_end, t_env **env_list)
 		else if (get_token(b_start, b_end, &q, &eq) != 'a')
 			return (token_error(q, eq));
 		else if (redirection == '<')
-			cmd = construct_redircmd(cmd, q, eq, O_RDONLY, STDIN_FILENO);
+			cmd = construct_redircmd(cmd, q, eq, set_open(O_RDONLY, STDIN_FILENO));
 		else if (redirection == '>')
-			cmd = construct_redircmd(cmd, q, eq, O_WRONLY | O_CREAT | O_TRUNC, STDOUT_FILENO);
+			cmd = construct_redircmd(cmd, q, eq, set_open(O_WRONLY | O_CREAT | O_TRUNC, STDOUT_FILENO));
 		else if (redirection == '+')
-			cmd = construct_redircmd(cmd, q, eq, O_WRONLY | O_CREAT | O_APPEND, STDOUT_FILENO);
+			cmd = construct_redircmd(cmd, q, eq, set_open(O_WRONLY | O_CREAT | O_APPEND, STDOUT_FILENO));
+
 	}
 	return (cmd);
 }
