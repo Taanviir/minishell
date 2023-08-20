@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+         #
+#    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/14 14:38:29 by tanas             #+#    #+#              #
-#    Updated: 2023/08/17 21:45:17 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/08/19 21:46:40 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ TESTER = test/test.a
 LD =   $(PARSER) $(EXECUTION) $(BUILTINS) $(LIBFT) -lreadline -L /usr/local/opt/readline/lib
 
 SRCS_DIR = src/
-SRCS_LIST = main.c signal.c environment.c free_tree.c wrappers.c
+SRCS_LIST = main.c signal.c environment.c free_tree.c wrappers.c utils.c
 SRCS = $(addprefix $(SRCS_DIR), $(SRCS_LIST))
 
 OBJS_DIR = obj/

@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 17:52:34 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/19 19:08:17 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/20 18:24:33 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,8 @@ void	here_doc(const int pipe_write, char *delimiter, t_env **env_list)
 	char	*temp;
 	char	quote;
 
-	//TODO need to handle SIGINT
+	//TODO need to handle SIGINT, should stop here_doc
+	// signal(SIGINT, signal_handler_heredoc);
 	quote = __is_quoted(delimiter, (delimiter + ft_strlen(delimiter)));
 	// Remove quotes from the delimiter if any.
 	if (quote)

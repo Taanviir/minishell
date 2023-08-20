@@ -6,19 +6,11 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 20:24:32 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/16 17:46:51 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/19 21:45:23 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// TODO maybe doesn't belong here, maybe libft or a more global file
-int	get_len(char *str1, char *str2)
-{
-	if (ft_strlen(str1) > ft_strlen(str2))
-		return (ft_strlen(str1));
-	return (ft_strlen(str2));
-}
 
 static void	write_bg(void)
 {

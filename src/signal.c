@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 18:55:49 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/19 19:48:34 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/20 18:16:38 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,31 +18,30 @@ static void	signal_handler(int signum)
 	{
 		write(2, "\n", 1);
 		rl_on_new_line();
-		// rl_replace_line("", 0);
+		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 }
 
-// TODO if SIGINT in child then print \n and interrupt child
-// TODO if SIGQUIT, print Quit: 3\n and exit code is 131
-void	sigint_handler_child(int signum)
+void	signal_handler_child(int signum)
 {
-	(void) signum;
 	int status;
 
-	printf("\n");
+	if (signum == SIGINT)
+		printf("\n");
+	else if (signum == SIGQUIT)
+		printf("Quit: 3\n");
 	waitpid(-1, &status, 0);
-	if (!WIFEXITED(status))
+	if (!WIFEXITED(status) && signum == SIGINT)
 		g_exit_status = 130 << 8;
+	else if (!WIFEXITED(status) && signum == SIGINT)
+		g_exit_status = 131 << 8;
 }
 
-// TODO SIGINT just stops heredoc (prints \n)
-// TODO SIGQUIT does nothing
-// CTRL D does nothing 
 void	signal_handler_heredoc(int signum)
 {
 	if (signum == SIGINT)
-		return ;
+		printf("\n");
 	else if (signum == SIGQUIT)
 		return ;
 }
