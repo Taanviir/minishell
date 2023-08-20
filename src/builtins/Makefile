@@ -6,7 +6,7 @@
 #    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/16 22:46:50 by tanas             #+#    #+#              #
-#    Updated: 2023/08/06 13:59:23 by tanas            ###   ########.fr        #
+#    Updated: 2023/08/21 01:20:00 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ NAME:= builtins.a
 C_FLAGS:= -Wall -Werror -Wextra -ggdb3
 INCLUDES:= -I ../../include -I ../../libft/include
 
-SRCS:= builtins.c ft_cd.c ft_unset.c ft_export.c
+SRCS:= builtins.c ft_cd.c ft_unset.c ft_export.c ft_echo.c ft_exit.c
 OBJS_DIR:= builtins_objs/
 OBJS:= $(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
 

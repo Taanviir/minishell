@@ -6,14 +6,14 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 04:00:27 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/19 19:23:09 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/21 01:14:37 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "tokenizer.h"
-
 #ifndef BUILTINS_H
 # define BUILTINS_H
+
+# include "tokenizer.h"
 
 // UTILS
 int		name_len(char *arg);

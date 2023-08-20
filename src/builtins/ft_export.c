@@ -75,7 +75,8 @@ int	ft_export(char **argv, t_env **env_list)
 	i = 0;
 	while (argv[++i])
 	{
-		i += check_char(argv[i][0], argv[i]);
+		if (check_char(argv[i][0], argv[i]))
+			continue ;
 		temp = *env_list;
 		while (temp)
 		{

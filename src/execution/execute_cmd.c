@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:25:45 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/20 22:59:54 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/21 01:25:56 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ void	execute_cmd(t_cmd *cmd, t_env **env_list)
 // helper function that takes program name and writes error it encountered and sets the appropriate exit status
 static void	write_exec_error(char *program_name, int *l_exit)
 {
-	write(2, "minishell: ", 11);
+	ft_putstr_fd("minishell: ", 2);
 	if (errno == EACCES || errno == ENOENT)
 	{
 		write(2, program_name, ft_strlen(program_name));
@@ -133,7 +133,6 @@ static void	write_exec_error(char *program_name, int *l_exit)
 			write(2, ": Permission denied\n", 20);
 			*l_exit = 126;
 		}
-
 	}
 	else
 		perror(program_name);

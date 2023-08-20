@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/20 22:25:06 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/21 01:25:31 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,9 @@ bool	is_quote(char c);
 int		get_len(char *str1, char *str2);
 char	*remove_quotes(char *q, char *eq);
 bool	is_empty(char *line);
+void	print_error(char *err_msg, char *function);
 
 // WRAPPER FUNCTIONS
-int		wfork(void);
-
-// wrappers
 bool	verify_pipe(int pipe_return);
 int		wfork(void);
 
