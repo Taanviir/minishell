@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:25:45 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/20 19:58:23 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/20 22:59:54 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static int	execute_builtin(t_cmd *cmd, t_env **env_list)
 		return (ft_env(exec->argv, env_list));
 	else if (!ft_strncmp(exec->argv[0], "exit", get_len(exec->argv[0], "exit")))
 		return (ft_exit(cmd, env_list));
-	return (0);
+	return (1);
 }
 
 /**
