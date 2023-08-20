@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 18:55:49 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/20 18:16:38 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/20 18:27:22 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ void	signal_handler_heredoc(int signum)
 {
 	if (signum == SIGINT)
 		printf("\n");
-	else if (signum == SIGQUIT)
-		return ;
 }
 
 void	receive_signal(void)
