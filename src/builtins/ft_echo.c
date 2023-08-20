@@ -14,7 +14,7 @@
 
 static int	handle_tilde(char *arg, t_env *env_list)
 {
-	if (!ft_strncmp("~", arg, ft_strlen(arg)))
+	if (*arg && !ft_strncmp("~", arg, ft_strlen(arg)))
 	{
 		if (!ft_strncmp("~+", arg, get_len("~+", arg)))
 			ft_putstr_fd(get_env(env_list, "PWD"), 1);
@@ -29,19 +29,21 @@ int	ft_echo(t_exec *cmd, t_env *env_list)
 {
 	bool	show_newline;
 	size_t	i;
+	char	**tmp;
 
 	show_newline = true;
 	i = 1;
-	while (cmd->argv[i] && !ft_strncmp("-n", cmd->argv[i], get_len("-n", cmd->argv[i])))
+	tmp = cmd->argv;
+	while (tmp[i] && !ft_strncmp("-n", tmp[i], get_len("-n", tmp[i])))
 	{
 		show_newline = false;
 		i++;
 	}
 	while (i < cmd->argc)
 	{
-		if (!handle_tilde(cmd->argv[i], env_list))
-			ft_putstr_fd(cmd->argv[i], 1);
-		if (cmd->argv[i + 1])
+		if (!handle_tilde(tmp[i], env_list))
+			ft_putstr_fd(tmp[i], 1);
+		if (tmp[i + 1])
 			ft_putchar_fd(' ', 1);
 		i++;
 	}
