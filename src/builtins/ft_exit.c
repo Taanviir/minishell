@@ -23,7 +23,7 @@ static int	exit_check(t_exec *exec)
 		j = -1;
 		while (exec->argv[i][++j] && (!ft_is_digit(exec->argv[i][j]) || j > 19))
 		{
-			printf("minishell: exit: %s: numeric argument required\n", exec->argv[i]);
+			print_error("numeric argument required", "exit: ");
 			return (255);
 		}
 	}

@@ -12,12 +12,18 @@
 
 #include "minishell.h"
 
+//TODO HANDLE NULL DIR
 int	ft_pwd(t_env *env_list)
 {
 	char	*path;
 
-	path = get_env(env_list, "PWD");
+	path = getcwd(NULL, 0);
+	if (!path)
+		path = get_env(env_list, "PWD");
+	else
+		path = ft_strdup("NULL");
 	printf("%s\n", path);
+	free(path);
 	return (0);
 }
 

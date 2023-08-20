@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/21 01:38:56 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/21 03:04:13 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,21 @@
 
 int	g_exit_status;
 
+//TODO HANDLE NULL DIR
 static char	*get_dir(t_env *env_list)
 {
 	char	*dir;
 	char	*home;
 	char	*last;
 
-	dir = get_env(env_list, "PWD");
+	// dir = get_env(env_list, "PWD");
+	dir = getcwd(NULL, 0);
+	if (!dir)
+		return (ft_strdup("[.]"));
 	home = get_env(env_list, "HOME");
-	if (home && !ft_strncmp(dir, home, get_len(dir, home)))
+	if (dir && home && !ft_strncmp(dir, home, get_len(dir, home)))
 		dir = ft_strdup("[~]");
-	else if (dir[0] == '/' && !dir[1])
+	else if (dir && dir[0] == '/' && !dir[1])
 		dir = ft_strdup("[/]");
 	else
 	{

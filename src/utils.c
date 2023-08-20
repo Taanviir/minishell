@@ -41,5 +41,5 @@ void	print_error(char *err_msg, char *function)
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(function, 2);
 	ft_putstr_fd(err_msg, 2);
-	ft_putendl_fd(NULL, 2);
+	ft_putendl_fd("", 2);
 }

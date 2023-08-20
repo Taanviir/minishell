@@ -56,7 +56,8 @@ int	ft_unset(char **argv, t_env **env_list)
 	i = 0;
 	while (argv[++i])
 	{
-		i += check_char(argv[i][0], argv[i]);
+		if (check_char(argv[i][0], argv[i]))
+			continue ;
 		free_node_by_name(env_list, argv[i]);
 	}
 	return (0);
