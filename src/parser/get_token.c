@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_token.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/02 07:38:08 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/17 17:59:39 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/20 14:31:56 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,6 @@
 static bool	is_opr(char c)
 {
 	return (c == '<' || c == '|' || c == '>' || c == '&' || c == ';');
-}
-
-// check if the character is a quote
-bool is_quote(char c)
-{
-	return (c == '\'' || c == '"');
 }
 
 /**

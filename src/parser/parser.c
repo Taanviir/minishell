@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:19:12 by eva-1             #+#    #+#             */
-/*   Updated: 2023/08/18 19:03:19 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/19 21:46:24 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,17 +98,6 @@ t_cmd	*nullterminate(t_cmd *cmd)
 		nullterminate(bgcmd->cmd);
 	}
 	return (cmd);
-}
-
-bool	is_empty(char *line)
-{
-	while (*line)
-	{
-		if (!ft_is_whitespace(*line))
-			return (false);
-		line++;
-	}
-	return (true);
 }
 
 //! fix to adjust for exit, for now it only prints "SYNTAX MF" */

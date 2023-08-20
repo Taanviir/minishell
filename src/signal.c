@@ -3,50 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 18:55:49 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/17 18:42:06 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/20 22:34:36 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*
-* In interactive mode:
-* ctrl-C displays a new prompt on a new line. -> SIGINT
-* ctrl-\ does nothing. -> SIGQUIT
-
-* when in command:
-* ctrl-C interrupts the process and in heredoc it stops then returns a num. -> SIGINT
-* ctrl-\ quits the process, prints Quit; {} and in heredoc it does nothing. -> SIGQUIT
-* ctrl-D just stops the process and returns 0. -> EOF
-*/
-
-static void	signal_handler(int signum)
+void	signal_handler_parent(int signum)
 {
 	if (signum == SIGINT)
 	{
-		write(2, "\n", 1);
+		ft_putstr_fd("\n", 2);
 		rl_on_new_line();
-		// rl_replace_line("", 0);
+		rl_replace_line("", 0);
 		rl_redisplay();
+		g_exit_status = 130 << 8;
 	}
 }
 
-void	sigint_handler_child(int sig)
+void	signal_handler_child(int signum)
 {
-	(void) sig;
 	int status;
 
-	printf("\n");
+	if (signum == SIGINT)
+		printf("\n");
+	else if (signum == SIGQUIT)
+		printf("Quit: 3\n");
 	waitpid(-1, &status, 0);
-	if (!WIFEXITED(status))
+	if (!WIFEXITED(status) && signum == SIGINT)
 		g_exit_status = 130 << 8;
+	else if (!WIFEXITED(status) && signum == SIGINT)
+		g_exit_status = 131 << 8;
 }
+
+// void	signal_handler_heredoc(int signum)
+// {
+	// if (signum == SIGINT)
+	// {
+		// rl_done = 1;
+		// ioctl(0, TIOCSTI, "\n");
+		// g_exit_status = 5000;
+	// }
+// }
 
 void	receive_signal(void)
 {
-	signal(SIGINT, signal_handler);
+	signal(SIGINT, signal_handler_parent);
 	signal(SIGQUIT, SIG_IGN);
 }

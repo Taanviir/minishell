@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 17:39:08 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/18 19:38:44 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/20 20:40:04 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int	wfork(void)
 {
 	int	pid;
 
-	signal(SIGINT, sigint_handler_child);
+	signal(SIGINT, signal_handler_child);
+	signal(SIGQUIT, signal_handler_child);
 	pid = fork();
 	if (pid == -1)
 		perror("");
@@ -43,3 +44,4 @@ bool	verify_pipe(int pipe_return)
 	}
 	return (true);
 }
+// wrappers for dup, pipe and close failures

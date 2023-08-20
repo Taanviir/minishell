@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/18 19:19:45 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/20 22:25:06 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,9 @@ extern int	g_exit_status;
 
 // SIGNAL FUNCTIONS
 void	receive_signal(void);
-void	sigint_handler_child(int sig);
+void	signal_handler_parent(int signum);
+void	signal_handler_child(int sig);
+void	signal_handler_heredoc(int sig);
 
 // ENVIRONMENT FUNCTIONS
 void	environment_init(t_env **env, char **envp);
@@ -68,6 +70,10 @@ t_cmd	*runcmd(t_cmd *cmd, t_env **env_list);
 bool	is_quote(char c);
 int		get_len(char *str1, char *str2);
 char	*remove_quotes(char *q, char *eq);
+bool	is_empty(char *line);
+
+// WRAPPER FUNCTIONS
+int		wfork(void);
 
 // wrappers
 bool	verify_pipe(int pipe_return);

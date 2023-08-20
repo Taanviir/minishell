@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/17 18:54:16 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/20 18:42:28 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,20 @@ int	g_exit_status;
 static char	*get_dir(t_env *env_list)
 {
 	char	*dir;
+	char	*home;
 	char	*last;
-	char	*temp;
 
 	dir = get_env(env_list, "PWD");
-	if (!ft_strncmp(dir, get_env(env_list, "HOME"), ft_strlen(dir)))
+	home = get_env(env_list, "HOME");
+	if (home && !ft_strncmp(dir, home, get_len(dir, home)))
 		dir = ft_strdup("[~]");
+	else if (dir[0] == '/' && !dir[1])
+		dir = ft_strdup("[/]");
 	else
 	{
 		last = ft_strrchr(dir, '/');
 		if (last)
-		{
-			temp = ft_bigjoin(3, "[", last + 1, "]");
-			dir = temp;
-		}
+			dir = ft_bigjoin(3, "[", last + 1, "]");
 	}
 	return (dir);
 }
@@ -65,8 +65,6 @@ t_cmd	*get_cmd(char *line, t_env **env_list)
 
 	dir = get_dir(*env_list);
 	prompt = ft_bigjoin(3, MAGENTA_B "ghost@shell:" BLUE, dir, " → " WHITE);
-	// write(2, prompt, ft_strlen(prompt));
-	// rl_already_prompted = 1;
 	line = readline(prompt);
 	free(prompt);
 	free(dir);
@@ -96,6 +94,6 @@ int	main(int argc, char **argv __attribute__((unused)), char **envp)
 		free(line);
 	}
 	free_list(env_list);
-	// rl_clear_history();
+	rl_clear_history();
 	return (EXIT_SUCCESS);
 }
