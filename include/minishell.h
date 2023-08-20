@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/20 14:31:43 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/20 22:25:06 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ extern int	g_exit_status;
 
 // SIGNAL FUNCTIONS
 void	receive_signal(void);
+void	signal_handler_parent(int signum);
 void	signal_handler_child(int sig);
 void	signal_handler_heredoc(int sig);
 

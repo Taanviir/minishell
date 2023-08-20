@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 17:39:08 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/20 14:32:36 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/20 20:40:04 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,4 @@ int	wfork(void)
 	return (pid);
 }
 
-// wrappers for dup and close failures
+// wrappers for dup, pipe and close failures

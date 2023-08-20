@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 17:52:34 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/20 18:24:33 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/20 22:34:21 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,8 +136,6 @@ void	here_doc(const int pipe_write, char *delimiter, t_env **env_list)
 	char	*temp;
 	char	quote;
 
-	//TODO need to handle SIGINT, should stop here_doc
-	// signal(SIGINT, signal_handler_heredoc);
 	quote = __is_quoted(delimiter, (delimiter + ft_strlen(delimiter)));
 	// Remove quotes from the delimiter if any.
 	if (quote)
@@ -148,6 +146,7 @@ void	here_doc(const int pipe_write, char *delimiter, t_env **env_list)
 		write(STDERR_FILENO, "minishell: syntax error near unexpected token `newline'\n", 56);
 		return ;
 	}
+	//TODO need to handle SIGINT, should stop here_doc
 	// Continuously read input lines until the delimiter is matched.
 	while (true)
 	{

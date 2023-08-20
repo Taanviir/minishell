@@ -6,7 +6,7 @@
 #    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/14 14:38:29 by tanas             #+#    #+#              #
-#    Updated: 2023/08/19 21:46:40 by tanas            ###   ########.fr        #
+#    Updated: 2023/08/20 20:33:43 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,6 +60,7 @@ $(LIBFT) :
 	@echo $(GREEN_B)"\nLibft is ready. ✅\n"$(RESET)
 
 run : $(NAME)
+	clear
 	./$(NAME)
 
 libraries :

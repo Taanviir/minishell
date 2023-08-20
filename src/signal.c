@@ -6,20 +6,21 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 18:55:49 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/20 18:27:22 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/20 22:34:36 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	signal_handler(int signum)
+void	signal_handler_parent(int signum)
 {
 	if (signum == SIGINT)
 	{
-		write(2, "\n", 1);
+		ft_putstr_fd("\n", 2);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
+		g_exit_status = 130 << 8;
 	}
 }
 
@@ -38,14 +39,18 @@ void	signal_handler_child(int signum)
 		g_exit_status = 131 << 8;
 }
 
-void	signal_handler_heredoc(int signum)
-{
-	if (signum == SIGINT)
-		printf("\n");
-}
+// void	signal_handler_heredoc(int signum)
+// {
+	// if (signum == SIGINT)
+	// {
+		// rl_done = 1;
+		// ioctl(0, TIOCSTI, "\n");
+		// g_exit_status = 5000;
+	// }
+// }
 
 void	receive_signal(void)
 {
-	signal(SIGINT, signal_handler);
+	signal(SIGINT, signal_handler_parent);
 	signal(SIGQUIT, SIG_IGN);
 }
