@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:13:46 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/17 19:09:50 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/18 19:45:25 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,9 @@ t_cmd	*parseexec(char **b_start, char *b_end, t_env **env_list)
 	t_exec	*cmd;	// Temporary pointer to assist in command construction.
 	t_cmd	*ret;	// Return node
 
-	// initialize the command node
 	ret = construct_exec();
 	cmd = (t_exec *)ret;
-	// Handle redirections if they appear at the start of the buffer
 	ret = parseredir(ret, b_start, b_end, env_list);
-	// Loop through the buffer until we reach the end or an operator
 	while (!peek(b_start, b_end, "|&;"))
 	{
 		// break out if the token isn't a string
@@ -66,7 +63,7 @@ t_cmd	*parseexec(char **b_start, char *b_end, t_env **env_list)
 		es = expand(q, eq, env_list, false);
 		// Handle special case for empty double quotes
 		if ((!es && (*q - 1) == '"'))
-			cmd->argv[cmd->argc] = strdup(" ");
+			cmd->argv[cmd->argc] = ft_strdup(" ");
 		// remove quotes from the expanded token
 		else
 			cmd->argv[cmd->argc] = remove_quotes(es, es + ft_strlen(es));

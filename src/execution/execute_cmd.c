@@ -123,16 +123,17 @@ static void	write_exec_error(char *program_name, int *l_exit)
 	if (errno == EACCES || errno == ENOENT)
 	{
 		write(2, program_name, ft_strlen(program_name));
-		if (errno == EACCES)
-		{
-			write(2, ": Permission denied\n", 20);
-			*l_exit = 126;
-		}
-		else if (errno == ENOENT)
+		if (errno == ENOENT)
 		{
 			write(2, ": command not found\n", 20);
 			*l_exit = 127;
 		}
+		else if (errno == EACCES)
+		{
+			write(2, ": Permission denied\n", 20);
+			*l_exit = 126;
+		}
+
 	}
 	else
 		perror(program_name);

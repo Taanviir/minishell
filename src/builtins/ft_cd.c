@@ -12,6 +12,16 @@
 
 #include "minishell.h"
 
+// TODO handle unset HOME
+// static void get_home(t_env *env_list) {
+// 	char *home;
+
+// 	// we attempt get_env
+// 	// if env is unset
+// 	// iterate over all directories in /Users
+// 	// the one that doesn't error we set as home
+
+// }
 static void	update_env(t_env **env_list, char *old_path)
 {
 	char	**argv;

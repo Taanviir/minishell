@@ -75,6 +75,10 @@ bool	is_empty(char *line);
 // WRAPPER FUNCTIONS
 int		wfork(void);
 
+// wrappers
+bool	verify_pipe(int pipe_return);
+int		wfork(void);
+
 // FREE FUNCTIONS
 void	free_tree(t_cmd *cmd);
 

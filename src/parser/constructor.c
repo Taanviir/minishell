@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 21:13:29 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/17 00:12:07 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/19 17:11:49 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_cmd	*construct_exec(void)
 	return ((t_cmd *)cmd);
 }
 
-t_cmd	*construct_redircmd(t_cmd *command, char *fp, char *efp, int mode, int fd)
+t_cmd	*construct_redircmd(t_cmd *command, char *fp, char *efp, int *open_conditions)
 {
 	t_redircmd	*cmd;
 
@@ -38,8 +38,9 @@ t_cmd	*construct_redircmd(t_cmd *command, char *fp, char *efp, int mode, int fd)
 		cmd->fp = fp;
 		cmd->efp = efp;
 	}
-	cmd->mode = mode;
-	cmd->fd = fd;
+	cmd->mode = open_conditions[MODE];
+	cmd->fd = open_conditions[FD];
+	free(open_conditions);
 	return ((t_cmd *) cmd);
 }
 
