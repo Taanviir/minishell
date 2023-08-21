@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/21 12:44:03 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/21 13:55:00 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,9 @@ extern int	g_exit_status;
 
 // ERROR CODES
 # define ERR_ARGS 1
+
+# define EXECUTE_CHILD 1000
+# define QUIT_HEREDOC 5000
 
 // COLOR CODES
 # define MAGENTA_B "\033[1;35m"

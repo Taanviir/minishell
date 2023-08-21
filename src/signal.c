@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 18:55:49 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/20 22:34:36 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/21 14:04:25 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,16 @@ void	signal_handler_child(int signum)
 		g_exit_status = 131 << 8;
 }
 
-// void	signal_handler_heredoc(int signum)
-// {
-	// if (signum == SIGINT)
-	// {
-		// rl_done = 1;
+void	signal_handler_heredoc(int signum)
+{
+	if (signum == SIGINT)
+	{
+		rl_done = 1;
+		ft_putstr_fd("press enter", 2);
 		// ioctl(0, TIOCSTI, "\n");
-		// g_exit_status = 5000;
-	// }
-// }
+		g_exit_status = QUIT_HEREDOC;
+	}
+}
 
 void	receive_signal(void)
 {

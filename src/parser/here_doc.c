@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 17:52:34 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/21 12:29:52 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/21 14:11:54 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static char	__is_quoted(char *q, const char *eq)
  */
 char *remove_quotes(char *q, char *eq)
 {
-	char unquoted[4096]; //! hardcoding for days
+	char	unquoted[4096];
 	size_t	i;
 	int		in_quote;
 
@@ -142,16 +142,19 @@ void	here_doc(const int pipe_write, char *delimiter, t_env **env_list)
 	// If no delimiter is provided, it's considered a syntax error in Bash.
 	if (!*delimiter)
 	{
-		write(STDERR_FILENO, "minishell: syntax error near unexpected token `newline'\n", 56);
+		print_error("syntax error near unexpected token `newline'", NULL);
 		return ;
 	}
-	//TODO need to handle SIGINT, should stop here_doc
+	signal(SIGINT, signal_handler_heredoc);
 	// Continuously read input lines until the delimiter is matched.
-	while (true)
+	while (g_exit_status != QUIT_HEREDOC)
 	{
 		line = readline("> ");
 		if (!line || (delimiter && !ft_strncmp(delimiter, line, get_len(delimiter, line))))
+		{
+			close(pipe_write);
 			break ;
+		}
 		// If the delimiter isn't quoted, perform variable expansion.
 		if (!quote)
 		{
@@ -160,8 +163,7 @@ void	here_doc(const int pipe_write, char *delimiter, t_env **env_list)
 			free(temp);
 		}
 		// Write the processed line to the provided file descriptor.
-		write(pipe_write, line, ft_strlen(line));
-		write(pipe_write, "\n", 1);
+		ft_putendl_fd(line, pipe_write);
 		free(line);
 	}
 	// Free the line containing the delimiter and the delimiter itself.
