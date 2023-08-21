@@ -6,7 +6,7 @@
 #    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/14 14:38:29 by tanas             #+#    #+#              #
-#    Updated: 2023/08/21 17:31:35 by tanas            ###   ########.fr        #
+#    Updated: 2023/08/21 18:10:57 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ YELLOW = "\033[0;33m"
 RESET = "\033[0m"
 
 NAME = minishell
-C_FLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
+C_FLAGS = -Wall -Wextra -Werror -g3
 INCLUDES = -I include/ -I libft/include -I /usr/local/opt/readline/include
 LIBFT = libft/libft.a
 PARSER = src/parser/parser.a

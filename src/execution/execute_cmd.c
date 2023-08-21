@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:25:45 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/21 18:06:00 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/21 20:12:30 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ void	execute_cmd(t_cmd *cmd, t_env **env_list)
 			write_exec_error(program_name, &l_exit);
 		free_tree(cmd);
 		free_double_ptr((void **) env_array);
+		free_list(*env_list);
 		exit(l_exit);
 	}
 	wait(&g_exit_status);

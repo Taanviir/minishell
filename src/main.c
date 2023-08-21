@@ -6,18 +6,18 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/21 17:14:29 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/21 18:53:22 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char *get_dir(t_env *env_list)
+static char	*get_dir(t_env *env_list)
 {
-	char *dir;
-	char *home;
-	char *last;
-	char *result;
+	char	*dir;
+	char	*home;
+	char	*last;
+	char	*result;
 
 	dir = getcwd(NULL, 0);
 	if (!dir)
