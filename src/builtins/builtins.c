@@ -12,22 +12,18 @@
 
 #include "minishell.h"
 
-//TODO HANDLE NULL DIR
-int	ft_pwd(t_env *env_list)
+int	ft_pwd(void)
 {
 	char	*path;
 
 	path = getcwd(NULL, 0);
 	if (!path)
-		path = get_env(env_list, "PWD");
-	else
-		path = ft_strdup("NULL");
+		path = ft_strdup("minishell: pwd: directory not found");
 	printf("%s\n", path);
 	free(path);
 	return (0);
 }
 
-// TODO handle exit status
 int	ft_env(char **argv, t_env **env_list)
 {
 	t_env	*temp;

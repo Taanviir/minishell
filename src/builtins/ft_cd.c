@@ -5,23 +5,13 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/20 13:54:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/20 21:18:05 by tanas            ###   ########.fr       */
+/*   Created: 2023/08/21 12:06:57 by tanas             #+#    #+#             */
+/*   Updated: 2023/08/21 12:06:57 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// TODO handle unset HOME
-// static void get_home(t_env *env_list) {
-// 	char *home;
-
-// 	// we attempt get_env
-// 	// if env is unset
-// 	// iterate over all directories in /Users
-// 	// the one that doesn't error we set as home
-
-// }
 static void	update_env(t_env **env_list, char *old_path)
 {
 	char	**argv;
@@ -31,7 +21,11 @@ static void	update_env(t_env **env_list, char *old_path)
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 		return ;
-	line = ft_bigjoin(5, "export ", "OLDPWD=", old_path, " PWD=", cwd);
+	if (old_path)
+		line = ft_bigjoin(5, "export", " OLDPWD=", old_path, " PWD=", cwd);
+	else
+		line = ft_bigjoin(2, "export OLDPWD= PWD=", cwd);
+	printf("line: %s\n", line);
 	argv = ft_split(line, ' ');
 	ft_export(argv, env_list);
 	free_double_ptr((void **) argv);
@@ -80,7 +74,7 @@ int	ft_cd(char **argv, t_env **env_list)
 	char	*path;
 	char	*old_path;
 
-	if (!ft_strncmp(argv[1], "~", get_len(argv[1], "~")))
+	if (!argv[1] || !ft_strncmp(argv[1], "~", get_len(argv[1], "~")))
 	{
 		path = get_env(*env_list, "HOME");
 		if (!path)
@@ -96,8 +90,9 @@ int	ft_cd(char **argv, t_env **env_list)
 		path = argv[1];
 	if (expand_tilde(&path, env_list))
 		return (1);
-	old_path = get_env(*env_list, "PWD");
+	old_path = getcwd(NULL, 0);
 	if (change_path(env_list, path, old_path))
 		return (1);
+	free(old_path);
 	return (0);
 }

@@ -22,7 +22,7 @@ bool	check_char(char c, char *argv)
 	return (false);
 }
 
-void	free_node_by_name(t_env **env_list, const char *name)
+void	free_node_by_name(t_env **env_list, char *name)
 {
 	t_env	*current;
 	t_env	*prev;
@@ -31,7 +31,7 @@ void	free_node_by_name(t_env **env_list, const char *name)
 	prev = NULL;
 	while (current)
 	{
-		if (!ft_strncmp(current->name, name, ft_strlen(name)))
+		if (!ft_strncmp(current->name, name, _name(current->name, name)))
 		{
 			if (!prev)
 				*env_list = current->next;

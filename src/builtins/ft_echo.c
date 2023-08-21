@@ -14,14 +14,10 @@
 
 static int	handle_tilde(char *arg, t_env *env_list)
 {
-	if (*arg && !ft_strncmp("~", arg, ft_strlen(arg)))
-	{
-		if (!ft_strncmp("~+", arg, get_len("~+", arg)))
-			ft_putstr_fd(get_env(env_list, "PWD"), 1);
-		else
-			ft_putstr_fd(get_env(env_list, "HOME"), 1);
-		return (1);
-	}
+	if (!ft_strncmp("~+", arg, get_len("~+", arg)))
+		return (ft_putstr_fd(get_env(env_list, "PWD"), 1), 1);
+	else if (!ft_strncmp("~", arg, get_len("~", arg)))
+		return (ft_putstr_fd(get_env(env_list, "HOME"), 1), 1);
 	return (0);
 }
 

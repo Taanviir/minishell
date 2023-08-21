@@ -65,6 +65,13 @@ int	name_len(char *arg)
 	return (i);
 }
 
+int	_name(char *var1, char *var2)
+{
+	if (name_len(var1) > name_len(var2))
+		return (name_len(var1));
+	return (name_len(var2));
+}
+
 int	ft_export(char **argv, t_env **env_list)
 {
 	int		i;
@@ -80,7 +87,7 @@ int	ft_export(char **argv, t_env **env_list)
 		temp = *env_list;
 		while (temp)
 		{
-			if (!ft_strncmp(argv[i], temp->name, name_len(argv[i])))
+			if (!ft_strncmp(argv[i], temp->name, _name(argv[i], temp->name)))
 			{
 				free(temp->value);
 				temp->value = ft_strdup(argv[i] + name_len(argv[i]) + 1);

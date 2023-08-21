@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:25:45 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/21 01:25:56 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/21 12:26:43 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ static char	*get_full_path(char *program_name, t_env **env_list)
 
 	i = -1;
 	path = ft_split(get_env(*env_list, "PATH"), ':');
+	if (!path)
+		return NULL;
 	// Iterate over directories in PATH, attempting to construct and verify the full path.
 	while (path[++i])
 	{
@@ -55,13 +57,12 @@ static int	execute_builtin(t_cmd *cmd, t_env **env_list)
 	exec = (t_exec *) cmd;
 	if (!exec->argv[0])
 		return (0);
-	// TODO need to handle returns from builtins and have it in g_exit_status
 	if (!ft_strncmp(exec->argv[0], "echo", get_len(exec->argv[0], "echo")))
 		return (ft_echo(exec, *env_list));
 	if (!ft_strncmp(exec->argv[0], "cd", get_len(exec->argv[0], "cd")))
 		return (ft_cd(exec->argv, env_list));
 	else if (!ft_strncmp(exec->argv[0], "pwd", get_len(exec->argv[0], "pwd")))
-		return (ft_pwd(*env_list));
+		return (ft_pwd());
 	else if (!ft_strncmp(exec->argv[0], "export", get_len(exec->argv[0], "export")))
 		return (ft_export(exec->argv, env_list));
 	else if (!ft_strncmp(exec->argv[0], "unset", get_len(exec->argv[0], "unset")))
@@ -70,7 +71,7 @@ static int	execute_builtin(t_cmd *cmd, t_env **env_list)
 		return (ft_env(exec->argv, env_list));
 	else if (!ft_strncmp(exec->argv[0], "exit", get_len(exec->argv[0], "exit")))
 		return (ft_exit(cmd, env_list));
-	return (1);
+	return (1000);
 }
 
 /**
@@ -98,7 +99,7 @@ void	execute_cmd(t_cmd *cmd, t_env **env_list)
 	l_exit = 0;
 	// If the command is a builtin, execute it and return.
 	g_exit_status = execute_builtin(cmd, env_list);
-	if (!g_exit_status)
+	if (g_exit_status != 1000)
 		return ;
 	if (!wfork())
 	{
