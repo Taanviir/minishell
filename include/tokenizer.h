@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:25:28 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/21 18:01:19 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/21 23:43:43 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,8 @@ void	here_doc(const int fd, char *del, t_env **env_list);
 char	*get_delimiter(char *q, const char *eq);
 
 // execution
-void	execute_cmd(t_cmd *cmd, t_env **env_list);
-void	execute_redir(t_cmd *cmd, t_env **env_list);
-void	execute_pipe(t_cmd *cmd, t_env **env_list);
+void	execute_cmd(t_cmd *cmd, t_env **env_list, t_cmd *root);
+void	execute_redir(t_cmd *cmd, t_env **env_list, t_cmd *root);
+void	execute_pipe(t_cmd *cmd, t_env **env_list, t_cmd *root);
 
 #endif

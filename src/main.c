@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/21 18:53:22 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/21 23:42:30 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	main(int argc, char **argv __attribute__((unused)), char **envp)
 {
 	char	*line;
 	t_env	*env_list;
+	t_cmd *root;
 
 	if (argc != 1)
 		return (printf(RED_B "Error: %s\n" WHITE, strerror(E2BIG)), ERR_ARGS);
@@ -71,7 +72,8 @@ int	main(int argc, char **argv __attribute__((unused)), char **envp)
 	{
 		receive_signal();
 		line = NULL;
-		free_tree(runcmd(get_cmd(line, &env_list), &env_list));
+		root = get_cmd(line, &env_list);
+		free_tree(runcmd(root, &env_list, root));
 		free(line);
 	}
 	free_list(env_list);

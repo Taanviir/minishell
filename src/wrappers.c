@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wrappers.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 17:39:08 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/21 12:28:56 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/21 22:30:36 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,3 @@ bool	verify_pipe(int pipe_return)
 	}
 	return (true);
 }
-// TODO wrappers for dup and close failures

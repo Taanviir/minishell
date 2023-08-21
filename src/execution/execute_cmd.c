@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:25:45 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/21 20:12:30 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/21 23:39:35 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	write_exec_error(char *program_name, int *l_exit);
 /**
  * Retrieve the full path of a given program.
  *
- * This function tries to find the full path of the program by checking 
+ * This function tries to find the full path of the program by checking
  * each directory in the PATH environment variable.
  *
  * @param program_name Name of the program to locate.
@@ -86,13 +86,14 @@ static int	execute_builtin(t_cmd *cmd, t_env **env_list)
  * @param cmd      A structure holding command details.
  * @param env_list Environment list.
  */
-void	execute_cmd(t_cmd *cmd, t_env **env_list)
+void	execute_cmd(t_cmd *cmd, t_env **env_list, t_cmd *root)
 {
 	t_exec	*execcmd;
 	char	*program_name;
 	char	*full_path;
 	char	**env_array;
 	int		l_exit;
+
 
 	execcmd = (t_exec *)cmd;
 	program_name = execcmd->argv[0];
@@ -107,8 +108,8 @@ void	execute_cmd(t_cmd *cmd, t_env **env_list)
 		if ((execve(program_name, execcmd->argv, env_array) && !full_path)
 			|| (execve(full_path, execcmd->argv, env_array)))
 			write_exec_error(program_name, &l_exit);
-		free_tree(cmd);
 		free_double_ptr((void **) env_array);
+		free_tree(root);
 		free_list(*env_list);
 		exit(l_exit);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:20:49 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/21 15:36:29 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/21 23:08:11 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ static void	expand_env_var(char **q, char **es, char **env_array)
 	sub = substitute(q, env_array);
 	if (sub)
 		*es = ft_strjoin_m(*es, sub);
+	free(sub);
 }
 
 /**

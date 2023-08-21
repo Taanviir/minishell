@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_redir.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 20:34:01 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/21 18:05:44 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/21 23:40:47 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static bool	verify_file_opened(const int fd, const char *file_path)
  * @param cmd      A structure holding command details.
  * @param env_list	Linked list of environment variables.
  */
-void	execute_redir(t_cmd *cmd, t_env **env_list)
+void	execute_redir(t_cmd *cmd, t_env **env_list, t_cmd *root)
 {
 	t_redircmd	*redircmd;
 	int			new_fd;
@@ -50,7 +50,7 @@ void	execute_redir(t_cmd *cmd, t_env **env_list)
 		return ;
 	dup2(new_fd, redircmd->fd);
 	close(new_fd);
-	runcmd(redircmd->cmd, env_list);
+	runcmd(redircmd->cmd, env_list, root);
 	dup2(save_fd, redircmd->fd);
 	close(save_fd);
 }
