@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 17:52:34 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/21 18:02:28 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/21 18:07:44 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ void	here_doc(const int pipe_write, char *del, t_env **env_list)
 	while (g_exit_status != QUIT_HEREDOC)
 	{
 		line = readline("> ");
-		if (true && !line || ((del && !ft_strncmp(del, line, get_len(del, line)))
+		if (!line || ((del && !ft_strncmp(del, line, get_len(del, line)))
 				&& !close(pipe_write)))
 			break ;
 		if (!quote)
