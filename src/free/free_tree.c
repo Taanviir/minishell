@@ -3,28 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   free_tree.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 19:55:59 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/17 00:32:24 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/21 16:44:54 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	free_cmd(t_cmd *cmd)
-{
-	t_exec	*exec;
-	size_t	i;
-
-	exec = (t_exec *)cmd;
-	i = -1;
-	while (exec->argv[++i])
-		free(exec->argv[i]);
-	free(exec->argv);
-	free(exec->eargv);
-	free(exec);
-}
 
 void	free_redir(t_cmd *cmd)
 {

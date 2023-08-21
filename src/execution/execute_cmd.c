@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:25:45 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/21 13:53:59 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/21 18:06:00 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ static void	write_exec_error(char *program_name, int *l_exit);
 /**
  * Retrieve the full path of a given program.
  *
- * This function tries to find the full path of the program by checking each directory
- * in the PATH environment variable.
+ * This function tries to find the full path of the program by checking 
+ * each directory in the PATH environment variable.
  *
  * @param program_name Name of the program to locate.
  * @param env_list Environment list.
@@ -36,11 +36,9 @@ static char	*get_full_path(char *program_name, t_env **env_list)
 	path = ft_split(get_env(*env_list, "PATH"), ':');
 	if (!path)
 		return (NULL);
-	// Iterate over directories in PATH, attempting to construct and verify the full path.
 	while (path[++i])
 	{
 		full_path = ft_bigjoin(3, path[i], "/", program_name);
-		// If the constructed path points to an executable file, break from the loop.
 		if (full_path && !access(full_path, X_OK))
 			break ;
 		free(full_path);
@@ -53,23 +51,25 @@ static char	*get_full_path(char *program_name, t_env **env_list)
 static int	execute_builtin(t_cmd *cmd, t_env **env_list)
 {
 	t_exec	*exec;
+	char	**argv;
 
 	exec = (t_exec *) cmd;
-	if (!exec->argv[0])
+	argv = exec->argv;
+	if (!argv[0])
 		return (0);
-	if (!ft_strncmp(exec->argv[0], "echo", get_len(exec->argv[0], "echo")))
+	if (!ft_strncmp(argv[0], "echo", get_len(argv[0], "echo")))
 		return (ft_echo(exec, *env_list));
-	if (!ft_strncmp(exec->argv[0], "cd", get_len(exec->argv[0], "cd")))
-		return (ft_cd(exec->argv, env_list));
-	else if (!ft_strncmp(exec->argv[0], "pwd", get_len(exec->argv[0], "pwd")))
+	if (!ft_strncmp(argv[0], "cd", get_len(argv[0], "cd")))
+		return (ft_cd(argv, env_list));
+	else if (!ft_strncmp(argv[0], "pwd", get_len(argv[0], "pwd")))
 		return (ft_pwd());
-	else if (!ft_strncmp(exec->argv[0], "export", get_len(exec->argv[0], "export")))
-		return (ft_export(exec->argv, env_list));
-	else if (!ft_strncmp(exec->argv[0], "unset", get_len(exec->argv[0], "unset")))
-		return (ft_unset(exec->argv, env_list));
-	else if (!ft_strncmp(exec->argv[0], "env", get_len(exec->argv[0], "env")))
-		return (ft_env(exec->argv, env_list));
-	else if (!ft_strncmp(exec->argv[0], "exit", get_len(exec->argv[0], "exit")))
+	else if (!ft_strncmp(argv[0], "export", get_len(argv[0], "export")))
+		return (ft_export(argv, env_list));
+	else if (!ft_strncmp(argv[0], "unset", get_len(argv[0], "unset")))
+		return (ft_unset(argv, env_list));
+	else if (!ft_strncmp(argv[0], "env", get_len(argv[0], "env")))
+		return (ft_env(argv, env_list));
+	else if (!ft_strncmp(argv[0], "exit", get_len(argv[0], "exit")))
 		return (ft_exit(cmd, env_list));
 	return (EXECUTE_CHILD);
 }
@@ -77,13 +77,14 @@ static int	execute_builtin(t_cmd *cmd, t_env **env_list)
 /**
  * Execute a command, handling built-in commands and others.
  *
- * This function first checks if the command is a built-in; if it is, it executes the built-in.
- * If not a built-in, it attempts to execute the command either as an absolute path or by
- * locating it within the system's PATH environment variable. If the command fails to execute
- * in both scenarios, an error message is displayed.
+ * This function first checks if the command is a built-in; if it is,
+ * it executes the built-in. If not a built-in, it attempts to execute the
+ * command either as an absolute path or by locating it within the system's
+ * PATH environment variable. If the command fails to execute in both
+ * scenarios, an error message is displayed.
  *
  * @param cmd      A structure holding command details.
- * @param env      Environment variables as key-value pairs.
+ * @param env_list Environment list.
  */
 void	execute_cmd(t_cmd *cmd, t_env **env_list)
 {
@@ -93,11 +94,9 @@ void	execute_cmd(t_cmd *cmd, t_env **env_list)
 	char	**env_array;
 	int		l_exit;
 
-	// Typecast the cmd structure to access command-specific parameters.
 	execcmd = (t_exec *)cmd;
 	program_name = execcmd->argv[0];
 	l_exit = 0;
-	// If the command is a builtin, execute it and return.
 	g_exit_status = execute_builtin(cmd, env_list);
 	if (g_exit_status != EXECUTE_CHILD)
 		return ;
@@ -105,11 +104,9 @@ void	execute_cmd(t_cmd *cmd, t_env **env_list)
 	{
 		env_array = list_to_array(*env_list);
 		full_path = get_full_path(program_name, env_list);
-		// Attempt to execute as absolute path or from PATH. If both fail, write an appropriate error.
 		if ((execve(program_name, execcmd->argv, env_array) && !full_path)
 			|| (execve(full_path, execcmd->argv, env_array)))
 			write_exec_error(program_name, &l_exit);
-		// Free command tree in the child process.
 		free_tree(cmd);
 		free_double_ptr((void **) env_array);
 		exit(l_exit);
@@ -117,21 +114,22 @@ void	execute_cmd(t_cmd *cmd, t_env **env_list)
 	wait(&g_exit_status);
 }
 
-// helper function that takes program name and writes error it encountered and sets the appropriate exit status
+// helper function that takes program name and writes error it
+// encountered and sets the appropriate exit status
 static void	write_exec_error(char *program_name, int *l_exit)
 {
 	ft_putstr_fd("minishell: ", 2);
 	if (errno == EACCES || errno == ENOENT)
 	{
-		write(2, program_name, ft_strlen(program_name));
+		ft_putstr_fd(program_name, 2);
 		if (errno == ENOENT)
 		{
-			write(2, ": command not found\n", 20);
+			ft_putstr_fd(": command not found\n", 2);
 			*l_exit = 127;
 		}
 		else if (errno == EACCES)
 		{
-			write(2, ": Permission denied\n", 20);
+			ft_putstr_fd(": Permission denied\n", 2);
 			*l_exit = 126;
 		}
 	}

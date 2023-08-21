@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 20:24:32 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/19 21:45:23 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/21 14:41:58 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,9 @@ static void	write_bg(void)
 	char	*pid;
 
 	pid = ft_itoa((int)getpid());
-	write(1, "[1] ", 4); // TODO update the number of bg processes
-	write(1, pid, ft_strlen(pid));
-	write(1, "\n", 1);
+	printf("[%i] %s\n", 1, pid);
 }
 
-//! handle printf &
 static void	execute_bgcmd(t_cmd *cmd, t_env **env_list)
 {
 	t_bgcmd	*bgcmd;
@@ -35,9 +32,7 @@ static void	execute_bgcmd(t_cmd *cmd, t_env **env_list)
 		free_tree(cmd);
 		exit(0);
 	}
-	// wait(0);
 }
-// TODO some missing behaviour how to call back to fg and update number
 
 static void	execute_seq(t_cmd *cmd, t_env **env_list)
 {

@@ -6,7 +6,7 @@
 #    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/16 22:46:50 by tanas             #+#    #+#              #
-#    Updated: 2023/08/21 01:20:00 by tanas            ###   ########.fr        #
+#    Updated: 2023/08/21 16:58:05 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,8 +39,7 @@ clean:
 
 fclean: clean
 	@rm -f $(NAME)
-	@rm -f test
 
 re: fclean all
 
-.PHONY: all clean fclean re test
+.PHONY: all clean fclean re

@@ -30,17 +30,12 @@ bool	is_empty(char *line)
 	return (true);
 }
 
-// check if the character is a quote
-bool is_quote(char c)
-{
-	return (c == '\'' || c == '"');
-}
-
-void	print_error(char *err_msg, char *function)
+int	print_error(char *err_msg, char *function)
 {
 	ft_putstr_fd("minishell: ", 2);
 	if (function)
 		ft_putstr_fd(function, 2);
 	ft_putstr_fd(err_msg, 2);
 	ft_putendl_fd("", 2);
+	return (0);
 }

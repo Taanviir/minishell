@@ -25,7 +25,6 @@ static void	update_env(t_env **env_list, char *old_path)
 		line = ft_bigjoin(5, "export", " OLDPWD=", old_path, " PWD=", cwd);
 	else
 		line = ft_bigjoin(2, "export OLDPWD= PWD=", cwd);
-	printf("line: %s\n", line);
 	argv = ft_split(line, ' ');
 	ft_export(argv, env_list);
 	free_double_ptr((void **) argv);

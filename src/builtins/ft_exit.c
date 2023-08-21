@@ -24,28 +24,25 @@ static long	check_digit(bool is_negative, long result, int digit)
 	return (0);
 }
 
-static long	ft_strtol(const char *str, char **endptr)
+static long	ft_strtol(char *str, char **endptr)
 {
 	long	result;
 	bool	is_negative;
-	int		digit;
 
 	result = 0;
 	while (*str == ' ' || *str == '\t' || *str == '\n')
 		str++;
 	is_negative = (*str == '-');
-	if (*str == '-' || *str == '-')
-		str++;
+	(*str) += (*str == '-' || *str == '+');
 	while (*str >= '0' && *str <= '9')
 	{
-		digit = *str - '0';
-		if (check_digit(is_negative, result, digit))
+		if (check_digit(is_negative, result, (*str - '0')))
 		{
 			if (endptr)
 				*endptr = (char *)str;
-			return (check_digit(is_negative, result, digit));
+			return (check_digit(is_negative, result, (*str - '0')));
 		}
-		result = result * 10 + digit;
+		result = result * 10 + (*str - '0');
 		str++;
 	}
 	if (endptr)

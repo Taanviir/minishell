@@ -6,58 +6,38 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/21 12:29:01 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/21 17:14:29 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../test/test.h"
 #include "minishell.h"
 
-int	g_exit_status;
-
-static char	*get_dir(t_env *env_list)
+static char *get_dir(t_env *env_list)
 {
-	char	*dir;
-	char	*home;
-	char	*last;
+	char *dir;
+	char *home;
+	char *last;
+	char *result;
 
 	dir = getcwd(NULL, 0);
 	if (!dir)
 		return (ft_strdup("[.]"));
 	home = get_env(env_list, "HOME");
 	if (home && !ft_strncmp(dir, home, get_len(dir, home)))
-		return (ft_strdup("[~]"));
+		result = ft_strdup("[~]");
 	else if (dir[0] == '/' && !dir[1])
-		return (ft_strdup("[/]"));
+		result = ft_strdup("[/]");
 	else
 	{
 		last = ft_strrchr(dir, '/');
 		if (last)
-			dir = ft_bigjoin(3, "[", last + 1, "]");
+			result = ft_bigjoin(3, "[", last + 1, "]");
+		else
+			result = dir;
 	}
-	return (dir);
-}
-
-#ifdef TEST
-t_cmd	*get_cmd(char *line, t_env **env_list)
-{
-	t_cmd	*root;
-	char	*dir;
-	char	*prompt;
-
-	dir = get_dir(*env_list);
-	prompt = ft_bigjoin(3, MAGENTA_B "ghost@shell:" BLUE, dir, " → " WHITE);
-	line = readline(prompt);
-	free(prompt);
 	free(dir);
-	if (!line)
-		return (ft_exit(NULL, 0, env_list), NULL);
-	add_history(line);
-	root = parsecmd(line, env_list);
-	test(root);
-	return (root);
+	return (result);
 }
-#else
 
 t_cmd	*get_cmd(char *line, t_env **env_list)
 {
@@ -76,8 +56,8 @@ t_cmd	*get_cmd(char *line, t_env **env_list)
 	root = parsecmd(line, env_list);
 	return (root);
 }
-#endif
 
+//TODO add line to _ VAR
 int	main(int argc, char **argv __attribute__((unused)), char **envp)
 {
 	char	*line;
@@ -92,7 +72,6 @@ int	main(int argc, char **argv __attribute__((unused)), char **envp)
 		receive_signal();
 		line = NULL;
 		free_tree(runcmd(get_cmd(line, &env_list), &env_list));
-		//TODO add line to _ VAR
 		free(line);
 	}
 	free_list(env_list);

@@ -6,44 +6,44 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/21 13:55:00 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/21 16:55:39 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <stdio.h> // printf
-# include <stdlib.h> // malloc, free, exit
-# include <unistd.h> // write, access, close, fork, execve, dup, dup2, pipe, unlink
-# include <readline/readline.h> // readline
-# include <readline/history.h> // rl_clear_history, rl_on_new_line, rl_replace_line, rl_redisplay, add_history
-# include <sys/types.h> // wait, waitpid, wait3, wait4, kill
-# include <signal.h> // signal, sigaction, sigemptyset, sigaddset
-# include <sys/stat.h> // stat, lstat, fstat
-# include <sys/ioctl.h> // ioctl
-# include <dirent.h> // opendir, readdir, closedir
-# include <string.h> // strerror
-# include <errno.h> // perror
-# include <termios.h> // tcsetattr, tcgetattr
-# include <curses.h> // tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
-# include <fcntl.h> // open
-# include <stdbool.h> // bool
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <sys/types.h>
+# include <signal.h>
+# include <sys/ioctl.h>
+# include <dirent.h>
+# include <string.h>
+# include <errno.h> 
+# include <termios.h>
+# include <fcntl.h>
+# include <stdbool.h>
 # include <stdint.h>
-# include <sys/wait.h> // is wait not allowed?
+# include <sys/wait.h>
 # include <limits.h>
-# include "../libft/include/libft.h" // libft
+# include "../libft/include/libft.h"
 # include "tokenizer.h"
 # include "builtins.h"
 
 // EXIT_STATUS
-extern int	g_exit_status;
+int	g_exit_status;
 
 // ERROR CODES
 # define ERR_ARGS 1
 
 # define EXECUTE_CHILD 1000
 # define QUIT_HEREDOC 5000
+
+# define DELI_ERROR "syntax error near unexpected token `newline'"
 
 // COLOR CODES
 # define MAGENTA_B "\033[1;35m"
@@ -71,17 +71,17 @@ t_cmd	*get_cmd(char *line, t_env **env_list);
 t_cmd	*runcmd(t_cmd *cmd, t_env **env_list);
 
 // UTIL FUNCTIONS
-bool	is_quote(char c);
 int		get_len(char *str1, char *str2);
 char	*remove_quotes(char *q, char *eq);
 bool	is_empty(char *line);
-void	print_error(char *err_msg, char *function);
+int		print_error(char *err_msg, char *function);
 
 // WRAPPER FUNCTIONS
 bool	verify_pipe(int pipe_return);
 int		wfork(void);
 
 // FREE FUNCTIONS
+void	free_cmd(t_cmd *cmd);
 void	free_tree(t_cmd *cmd);
 
 #endif

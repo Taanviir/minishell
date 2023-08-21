@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 18:55:49 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/21 14:04:25 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/21 17:30:37 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	signal_handler_parent(int signum)
 
 void	signal_handler_child(int signum)
 {
-	int status;
+	int	status;
 
 	if (signum == SIGINT)
 		printf("\n");
@@ -44,8 +44,7 @@ void	signal_handler_heredoc(int signum)
 	if (signum == SIGINT)
 	{
 		rl_done = 1;
-		ft_putstr_fd("press enter", 2);
-		// ioctl(0, TIOCSTI, "\n");
+		ft_putstr_fd("Please press Enter.", 2);
 		g_exit_status = QUIT_HEREDOC;
 	}
 }

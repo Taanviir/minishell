@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+         #
+#    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/18 14:50:05 by sabdelra          #+#    #+#              #
-#    Updated: 2023/08/08 22:14:19 by sabdelra         ###   ########.fr        #
+#    Updated: 2023/08/21 16:58:08 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,4 +42,4 @@ fclean : clean
 
 re : fclean all
 
-.PHONY : all test fclean clean re
+.PHONY : all fclean clean re

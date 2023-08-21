@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:25:28 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/19 16:55:59 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/21 18:01:19 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,23 +71,28 @@ typedef struct s_env
 	char			*value;
 	struct s_env	*next;
 }	t_env;
+
 /* open conditions */
-enum e_open_conditions {
+enum e_open_conditions
+{
 	MODE,
 	FD
 };
 
+# include <readline/readline.h>
+
 /* tokenizers */
-char	get_token(char **buffer_start, char *buffer_end, char **token_start, char **token_end);
+char	get_token(char **bs, char *be, char **ts, char **te);
 char	*expand(char *q, char *eq, t_env **env_list, bool here_doc);
 int		peek(char **b_start, char *b_end, const char *str);
 /* parsers */
 t_cmd	*parseredir(t_cmd *cmd, char **b_start, char *b_end, t_env **env_list);
 t_cmd	*parseexec(char **b_start, char *b_end, t_env **env_list);
 t_cmd	*parsecmd(char *b_start, t_env **env_list);
+t_cmd	*nullterminate(t_cmd *cmd);
 /* constructors */
 t_cmd	*construct_exec(void);
-t_cmd	*construct_redircmd(t_cmd *command, char *fp, char *efp, int *open_conditions);
+t_cmd	*construct_redircmd(t_cmd *cmd, char *fp, char *efp, int *oc);
 t_cmd	*construct_pipecmd(t_cmd *left, t_cmd *right);
 t_cmd	*construct_seqcmd(t_cmd *left, t_cmd *right);
 t_cmd	*construct_bgcmd(t_cmd *cmd);

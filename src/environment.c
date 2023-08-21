@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 03:46:11 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/21 12:24:56 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/21 16:46:31 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,6 @@ char	*get_env(t_env *env_list, char *name)
 		env_list = env_list->next;
 	}
 	return (NULL);
-}
-
-void	free_list(t_env *env_list)
-{
-	t_env	*temp;
-	t_env	*next;
-
-	temp = env_list;
-	while (temp)
-	{
-		next = temp->next;
-		free(temp->name);
-		free(temp->value);
-		free(temp);
-		temp = next;
-	}
 }
 
 char	**list_to_array(t_env *env_list)

@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 17:52:34 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/21 14:11:54 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/21 18:02:28 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
  * @param q   Start pointer of the string range.
  * @param eq  End pointer of the string range (exclusive).
  *
- * @return    The type of quote character ('"' or '\'') if a closed quoted section is
- *            found. Otherwise, returns 0.
+ * @return    The type of quote character ('"' or '\'') if a closed quoted
+ *            section is found. Otherwise, returns 0.
  */
 static char	__is_quoted(char *q, const char *eq)
 {
@@ -30,33 +30,33 @@ static char	__is_quoted(char *q, const char *eq)
 	quote = 0;
 	while (q < eq)
 	{
-		// if found a matching quote 0 the quote
 		if (!(*q - quote))
 			return (*q);
-		// If no quote character has been found yet, check for one.
 		if (!quote && (*q == '"' || *q == '\''))
 			quote = *q;
 		q++;
 	}
-	// return 0 if it is not quoted or is quoted but not closed
 	return (0);
 }
 
 /**
  * Removes specified quote characters from a given string.
  *
- * This function processes the input string to eliminate specified quote characters
- * and returns a newly allocated string without the quotes. It's the caller's responsibility
- * to free the memory of the original string.
+ * This function processes the input string to eliminate specified quote
+ * characters and returns a newly allocated string without the quotes.
+ * It's the caller's responsibility to free the memory of the original string.
  *
- * Note: Currently, the function supports a maximum string length of 4096 due to hardcoded buffer size.
+ * Note: Currently, the function supports a maximum string length of 4096
+ * due to hardcoded buffer size.
  *
- * @param q      Pointer to the beginning of the string from which quotes are to be removed.
- * @param eq     Pointer to the end of the string (just after the last character).
+ * @param q Pointer to the beginning of the string from which quotes are 
+ *          to be removed.
+ * @param eq Pointer to the end of the string (just after the last character).
  *
- * @return       A newly allocated string with quotes removed or NULL if memory allocation fails.
+ * @return A newly allocated string with quotes removed or NULL if memory
+ *         allocation fails.
  */
-char *remove_quotes(char *q, char *eq)
+char	*remove_quotes(char *q, char *eq)
 {
 	char	unquoted[4096];
 	size_t	i;
@@ -76,13 +76,13 @@ char *remove_quotes(char *q, char *eq)
 			if (!(in_quote - *q))
 			{
 				q++;
-				break;
+				break ;
 			}
 			else
 				unquoted[i++] = *q++;
 		}
 	}
-	return(ft_strdup(unquoted));
+	return (ft_strdup(unquoted));
 }
 
 /**
@@ -100,24 +100,31 @@ char *remove_quotes(char *q, char *eq)
  */
 char	*get_delimiter(char *q, const char *eq)
 {
-	char	*delimiter;
+	char	*del;
 	size_t	i;
 	size_t	len;
 
 	i = 0;
 	len = eq - q;
-	// Allocate memory for the delimiterimeter
-	delimiter = malloc(sizeof(char) * (len + 1));
-	if (!delimiter)
+	del = malloc(sizeof(char) * (len + 1));
+	if (!del)
 	{
 		write(STDERR_FILENO, "malloc failed in get_delimiter\n", 25);
 		return (NULL);
 	}
-	// Copy characters from range to delimiter
 	while (i < len)
-		delimiter[i++] = *q++;
-	delimiter[i] = 0;
-	return (delimiter);
+		del[i++] = *q++;
+	del[i] = 0;
+	return (del);
+}
+
+static void	__dumb(char **line, t_env **env_list)
+{
+	char	*temp;
+
+	temp = *line;
+	*line = expand(*line, *line + ft_strlen(*line), env_list, true);
+	free(temp);
 }
 
 /**
@@ -129,44 +136,30 @@ char	*get_delimiter(char *q, const char *eq)
  * @param del         Delimiter string used to terminate input.
  * @param env_list        Environment variables for potential expansion.
  */
-void	here_doc(const int pipe_write, char *delimiter, t_env **env_list)
+void	here_doc(const int pipe_write, char *del, t_env **env_list)
 {
 	char	*line;
-	char	*temp;
 	char	quote;
 
-	quote = __is_quoted(delimiter, (delimiter + ft_strlen(delimiter)));
-	// Remove quotes from the delimiter if any.
+	quote = __is_quoted(del, (del + ft_strlen(del)));
 	if (quote)
-		delimiter = remove_quotes(delimiter, delimiter + ft_strlen(delimiter));
-	// If no delimiter is provided, it's considered a syntax error in Bash.
-	if (!*delimiter)
-	{
-		print_error("syntax error near unexpected token `newline'", NULL);
+		del = remove_quotes(del, del + ft_strlen(del));
+	if (!*del && !print_error(DELI_ERROR, NULL))
 		return ;
-	}
 	signal(SIGINT, signal_handler_heredoc);
-	// Continuously read input lines until the delimiter is matched.
+	line = NULL;
 	while (g_exit_status != QUIT_HEREDOC)
 	{
 		line = readline("> ");
-		if (!line || (delimiter && !ft_strncmp(delimiter, line, get_len(delimiter, line))))
-		{
-			close(pipe_write);
+		if (true && !line || ((del && !ft_strncmp(del, line, get_len(del, line)))
+				&& !close(pipe_write)))
 			break ;
-		}
-		// If the delimiter isn't quoted, perform variable expansion.
 		if (!quote)
-		{
-			temp = line;
-			line = expand(line, line + ft_strlen(line), env_list, true);
-			free(temp);
-		}
-		// Write the processed line to the provided file descriptor.
+			__dumb(&line, env_list);
 		ft_putendl_fd(line, pipe_write);
 		free(line);
 	}
-	// Free the line containing the delimiter and the delimiter itself.
+	printf("L: %s D: %s\n", line, del);
 	free(line);
-	free(delimiter);
+	free(del);
 }
