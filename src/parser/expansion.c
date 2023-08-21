@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:20:49 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/21 15:36:29 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/22 01:15:15 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static char	*substitute(char **q, char **env_array)
 		return (*q += 2, ft_itoa((int)getpid()));
 	else if (*var_s == '?')
 		return (*q += 2, ft_itoa(WEXITSTATUS(g_exit_status)));
-	else if (ft_is_whitespace(*var_s) || *var_s == '\0' || *var_s == '"')
+	else if (ft_is_whitespace(*var_s) || *var_s == '\0' || *var_s == '\"')
 		return (*q += 1, ft_strdup("$"));
 	*q += 1;
 	while (var_s[lvar_s] && !ft_strchr("\" $|;&", var_s[lvar_s]))
@@ -71,7 +71,7 @@ static char	*substitute(char **q, char **env_array)
 	while (*env_array)
 	{
 		if (!ft_strncmp(*env_array, var_s, longer(lvar_s, *env_array)))
-			return (*env_array + lvar_s + 1);
+			return (ft_strdup(*env_array + lvar_s + 1));
 		env_array++;
 	}
 	return (0);
@@ -92,6 +92,7 @@ static void	expand_env_var(char **q, char **es, char **env_array)
 	sub = substitute(q, env_array);
 	if (sub)
 		*es = ft_strjoin_m(*es, sub);
+	free(sub);
 }
 
 /**

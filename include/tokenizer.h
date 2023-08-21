@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:25:28 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/21 18:01:19 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/22 00:03:07 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,6 @@ enum e_open_conditions
 	MODE,
 	FD
 };
-
-# include <readline/readline.h>
 
 /* tokenizers */
 char	get_token(char **bs, char *be, char **ts, char **te);

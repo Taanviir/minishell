@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 17:52:34 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/21 18:08:06 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/22 01:08:59 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,8 @@ void	here_doc(const int pipe_write, char *del, t_env **env_list)
 {
 	char	*line;
 	char	quote;
+	char	*buffer;
+	bool	fdel;
 
 	quote = __is_quoted(del, (del + ft_strlen(del)));
 	if (quote)
@@ -148,17 +150,24 @@ void	here_doc(const int pipe_write, char *del, t_env **env_list)
 		return ;
 	signal(SIGINT, signal_handler_heredoc);
 	line = NULL;
+	buffer = ft_strdup("");
+	fdel = false;
 	while (g_exit_status != QUIT_HEREDOC)
 	{
 		line = readline("> ");
-		if (!line || ((del && !ft_strncmp(del, line, get_len(del, line)))
-				&& !close(pipe_write)))
+		if (!line || (del && !ft_strncmp(del, line, get_len(del, line))))
+		{
+			fdel = true;
 			break ;
+		}
 		if (!quote)
 			__dumb(&line, env_list);
-		ft_putendl_fd(line, pipe_write);
+		buffer = ft_strjoin_m(buffer, line);
+		buffer = ft_strjoin_m(buffer, "\n");
 		free(line);
 	}
+	if (buffer && (g_exit_status != QUIT_HEREDOC || line || fdel))
+		ft_putstr_fd(buffer, pipe_write);
 	free(line);
 	free(del);
 }
