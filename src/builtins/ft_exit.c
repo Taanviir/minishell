@@ -12,25 +12,69 @@
 
 #include "minishell.h"
 
+static long	check_digit(bool is_negative, long result, int digit)
+{
+	if ((!is_negative && (result > (LONG_MAX - digit) / 10))
+		|| (is_negative && (-result < (LONG_MIN + digit) / 10)))
+	{
+		if (is_negative)
+			return (LONG_MIN);
+		return (LONG_MAX);
+	}
+	return (0);
+}
+
+static long	ft_strtol(const char *str, char **endptr)
+{
+	long	result;
+	bool	is_negative;
+	int		digit;
+
+	result = 0;
+	while (*str == ' ' || *str == '\t' || *str == '\n')
+		str++;
+	is_negative = (*str == '-');
+	if (*str == '-' || *str == '-')
+		str++;
+	while (*str >= '0' && *str <= '9')
+	{
+		digit = *str - '0';
+		if (check_digit(is_negative, result, digit))
+		{
+			if (endptr)
+				*endptr = (char *)str;
+			return (check_digit(is_negative, result, digit));
+		}
+		result = result * 10 + digit;
+		str++;
+	}
+	if (endptr)
+		*endptr = (char *)str;
+	if (is_negative)
+		return (-result);
+	return (result);
+}
+
 static int	exit_check(t_exec *exec)
 {
-	int	i;
-	int	j;
+	int		i;
+	char	*endptr;
+	long	num;
 
 	i = 0;
 	while (exec->argv && exec->argv[++i])
 	{
-		j = -1;
-		while (exec->argv[i][++j] && (!ft_is_digit(exec->argv[i][j]) || j > 19))
-		{
-			print_error("numeric argument required", "exit: ");
-			return (255);
-		}
+		num = ft_strtol(exec->argv[i], &endptr);
+		if (*endptr != '\0' || (num == LONG_MIN || num == LONG_MAX))
+			return (print_error("numeric argument required", "exit: "), 255);
 	}
 	if (exec->argc == 2 && ft_strncmp(exec->argv[1], "255", 3) > 0)
-		return (ft_atoi(exec->argv[1]) % 256); //! ft_atoi can break
+	{
+		num = ft_strtol(exec->argv[1], NULL);
+		return ((int)(num % 256));
+	}
 	else if (exec->argc == 2)
-		return (ft_atoi(exec->argv[1]));
+		return ((int) ft_strtol(exec->argv[1], NULL));
 	return (0);
 }
 

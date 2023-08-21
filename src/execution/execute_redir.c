@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   execute_redir.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 20:34:01 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/19 16:58:24 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/21 12:29:26 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// TODO dup and close failures???
 
 // Handle file open failures.
 static bool	verify_file_opened(const int fd, const char *file_path)
@@ -62,5 +60,3 @@ void	execute_redir(t_cmd *cmd, t_env **env_list)
 	dup2(save_fd, redircmd->fd);
 	close(save_fd);
 }
-
-

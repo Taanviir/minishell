@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/21 12:25:05 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/21 12:29:01 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 int	g_exit_status;
 
-//TODO HANDLE NULL DIR
 static char	*get_dir(t_env *env_list)
 {
 	char	*dir;

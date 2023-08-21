@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 21:48:42 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/19 21:44:13 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/21 12:29:09 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ static void	close_pipe_ends(int *pipe_fds)
 	close(pipe_fds[1]);
 }
 
-
-// TODO child get correct exit status
 /**
  * Executes a pipe node, connecting the standard outputs and inputs
  * of two commands.

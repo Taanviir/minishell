@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 17:39:08 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/21 01:29:49 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/21 12:28:56 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,4 @@ bool	verify_pipe(int pipe_return)
 	}
 	return (true);
 }
-// wrappers for dup, pipe and close failures
+// TODO wrappers for dup and close failures

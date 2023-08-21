@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/21 12:21:51 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/21 12:44:03 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # include <stdbool.h> // bool
 # include <stdint.h>
 # include <sys/wait.h> // is wait not allowed?
+# include <limits.h>
 # include "../libft/include/libft.h" // libft
 # include "tokenizer.h"
 # include "builtins.h"
