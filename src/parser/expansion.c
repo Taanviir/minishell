@@ -60,7 +60,7 @@ static char	*substitute(char **q, char **env_array)
 		return (*q += 2, ft_itoa((int)getpid()));
 	else if (*var_s == '?')
 		return (*q += 2, ft_itoa(WEXITSTATUS(g_exit_status)));
-	else if (ft_is_whitespace(*var_s) || *var_s == '\0' || *var_s == '"')
+	else if (ft_is_whitespace(*var_s) || *var_s == '\0' || *var_s == '\"')
 		return (*q += 1, ft_strdup("$"));
 	*q += 1;
 	// while (var_s[lvar_s] && !ft_strchr("\"\' $|;&", var_s[lvar_s]))

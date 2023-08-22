@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 17:52:34 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/21 18:08:06 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/22 16:11:29 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ char	*remove_quotes(char *q, char *eq)
 	int		in_quote;
 
 	i = 0;
-	memset(unquoted, 0, 4096);
+	ft_memset(unquoted, 0, 4096);
 	in_quote = 0;
 	while (q < eq)
 	{
@@ -108,23 +108,11 @@ char	*get_delimiter(char *q, const char *eq)
 	len = eq - q;
 	del = malloc(sizeof(char) * (len + 1));
 	if (!del)
-	{
-		write(STDERR_FILENO, "malloc failed in get_delimiter\n", 25);
-		return (NULL);
-	}
+		return (print_error("malloc failed", "get_delimiter"), NULL);
 	while (i < len)
 		del[i++] = *q++;
 	del[i] = 0;
 	return (del);
-}
-
-static void	__dumb(char **line, t_env **env_list)
-{
-	char	*temp;
-
-	temp = *line;
-	*line = expand(*line, *line + ft_strlen(*line), env_list, true);
-	free(temp);
 }
 
 /**
@@ -134,31 +122,48 @@ static void	__dumb(char **line, t_env **env_list)
  *
  * @param pipe_write  File descriptor to which the function writes the input.
  * @param del         Delimiter string used to terminate input.
- * @param env_list        Environment variables for potential expansion.
+ * @param env_list    Environment variables for potential expansion.
  */
-void	here_doc(const int pipe_write, char *del, t_env **env_list)
+int	here_doc(const int pipe_write, char *del, t_env **env_list)
 {
-	char	*line;
 	char	quote;
+	char	*line;
+	char	*buffer;
+	char	*temp;
 
 	quote = __is_quoted(del, (del + ft_strlen(del)));
 	if (quote)
+	{
+		temp = del;
 		del = remove_quotes(del, del + ft_strlen(del));
+		free(del);
+	}
 	if (!*del && !print_error(DELI_ERROR, NULL))
-		return ;
+		return (free(del), 0);
 	signal(SIGINT, signal_handler_heredoc);
 	line = NULL;
+	buffer = NULL;
 	while (g_exit_status != QUIT_HEREDOC)
 	{
 		line = readline("> ");
-		if (!line || ((del && !ft_strncmp(del, line, get_len(del, line)))
-				&& !close(pipe_write)))
+		if (!line || (del && !ft_strncmp(del, line, get_len(del, line))))
 			break ;
+		if (!*line)
+		{
+			buffer = ft_strjoin_m(buffer, "\n");
+			continue ;
+		}
 		if (!quote)
-			__dumb(&line, env_list);
-		ft_putendl_fd(line, pipe_write);
+			expand_line(&line, env_list);
+		temp = buffer;
+		buffer = ft_bigjoin(3, buffer, line, "\n");
+		free(temp);
 		free(line);
 	}
+	if (buffer && (g_exit_status != QUIT_HEREDOC || line || del))
+		ft_putstr_fd(buffer, pipe_write);
+	free(buffer);
 	free(line);
 	free(del);
+	return (0);
 }

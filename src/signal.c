@@ -43,8 +43,11 @@ void	signal_handler_heredoc(int signum)
 {
 	if (signum == SIGINT)
 	{
-		// rl_done = 1;
-		ft_putstr_fd("Please press Enter.", 2);
+		rl_done = 1;
+		ioctl(0, TIOCSTI, "\0");
+		ft_putstr_fd("\b\b\b  \n", 2);
+		rl_on_new_line();
+		rl_replace_line("", 0);
 		g_exit_status = QUIT_HEREDOC;
 	}
 }

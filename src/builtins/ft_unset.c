@@ -12,16 +12,6 @@
 
 #include "minishell.h"
 
-bool	check_char(char c, char *argv)
-{
-	if (!ft_is_alpha(c) && c != '\"' && c != '\'')
-	{
-		printf("export: `%s': not a valid identifier\n", argv);
-		return (true);
-	}
-	return (false);
-}
-
 void	free_node_by_name(t_env **env_list, char *name)
 {
 	t_env	*current;
@@ -56,7 +46,7 @@ int	ft_unset(char **argv, t_env **env_list)
 	i = 0;
 	while (argv[++i])
 	{
-		if (check_char(argv[i][0], argv[i]))
+		if (check_var_unset(argv[i]))
 			continue ;
 		free_node_by_name(env_list, argv[i]);
 	}
