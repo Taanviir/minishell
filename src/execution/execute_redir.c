@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 20:34:01 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/23 00:09:12 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/23 02:13:28by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,33 @@ static bool	verify_file_opened(const int fd, const char *file_path)
 	}
 	return (true);
 }
+// Recursive function to open and discard all output redirections
+t_redircmd	*depth_first(t_redircmd *redircmd)
+{
+	int tmp_fd;
+	t_redircmd *deepest_redircmd;
+	t_redircmd *old_redircmd;
 
+	deepest_redircmd = redircmd;
+	//old_redircmd = NULL;
+	if (redircmd->cmd->type == REDIR && (redircmd->fd == 1 && ((t_redircmd *)redircmd->cmd)->fd == redircmd->fd))
+	{
+		//old_redircmd = (t_redircmd *)redircmd->cmd;
+		// Recursive call to find the deepest valid redirection node
+		deepest_redircmd = depth_first((t_redircmd *)redircmd->cmd);
+		// Reassign this deepest node to be the direct child of the current node
+		redircmd->cmd = (t_cmd *)deepest_redircmd;
+	}
+	tmp_fd = open(redircmd->fp, redircmd->mode, S_IRUSR | S_IWUSR);
+	if (!verify_file_opened(tmp_fd, redircmd->fp)) {
+		close(tmp_fd);
+		return NULL; // Signal an error using NULL
+	}
+	//if (old_redircmd)
+	//	free(old_redircmd); // specifically not calling free_tree() here, not to free the cmd under it
+	close(tmp_fd);
+	return (deepest_redircmd);
+}
 /**
  * Executes a command with stream redirection.
  *
@@ -41,13 +67,33 @@ void	execute_redir(t_cmd *cmd, t_env **env_list, t_cmd *root)
 	int			save_fd;
 
 	redircmd = (t_redircmd *)cmd;
+	if (!depth_first(redircmd))
+		return ;
 	save_fd = dup(redircmd->fd);
 	if (redircmd->here_doc)
 		new_fd = redircmd->here_doc;
 	else
 		new_fd = open(redircmd->fp, redircmd->mode, S_IRUSR | S_IWUSR);
+	//// this loop has to be done recursively, to reproduce the exact behaviour
+	//while (redircmd->cmd->type == REDIR && (redircmd->fd == 1 && ((t_redircmd *)redircmd->cmd)->fd == redircmd->fd))
+	//{
+	//	redircmd = (t_redircmd *)redircmd->cmd;
+	//	tmp_fd = open(redircmd->fp, redircmd->mode, S_IRUSR | S_IWUSR);
+	//	if (!verify_file_opened(tmp_fd, redircmd->fp))
+	//	{
+	//		close(save_fd);
+	//		close(new_fd);
+	//		close(tmp_fd);
+	//		return ;
+	//	}
+	//	close(tmp_fd);
+	//}
 	if (!verify_file_opened(new_fd, redircmd->fp))
+	{
+		close(save_fd);
+		close(new_fd);
 		return ;
+	}
 	root->open_fd = new_fd;
 	dup2(new_fd, redircmd->fd);
 	close(new_fd);

@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 21:48:42 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/23 00:40:54 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/23 00:49:58 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ void	execute_pipe(t_cmd *cmd, t_env **env_list, t_cmd *root)
 		free_stuff(root, *env_list);
 		exit(WEXITSTATUS(g_exit_status));
 	}
-	//close(root->open_fd);
 	close_pipe_ends(pipe_fds);
 	wait(&g_exit_status);
 	wait(&g_exit_status);
