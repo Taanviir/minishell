@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/22 13:55:33 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/23 02:59:57 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	main(int argc, char **argv __attribute__((unused)), char **envp)
 {
 	char	*line;
 	t_env	*env_list;
-	t_cmd *root;
+	t_cmd	*root;
 
 	if (argc != 1)
 		return (printf(RED_B "Error: %s\n" WHITE, strerror(E2BIG)), ERR_ARGS);
@@ -77,6 +77,6 @@ int	main(int argc, char **argv __attribute__((unused)), char **envp)
 		free(line);
 	}
 	free_list(env_list);
-	// rl_clear_history();
+	rl_clear_history();
 	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:25:28 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/22 20:53:42 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/23 02:58:32 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ typedef struct s_env
 {
 	char			*name;
 	char			*value;
-	int				equal;
 	struct s_env	*next;
 }	t_env;
 

@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 03:46:11 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/22 21:14:05 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/23 02:58:29 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,6 @@ void	add_node_bottom(t_env **env_list, char *env_var)
 	env_array = ft_split(env_var, '=');
 	new_node->name = ft_strdup(env_array[0]);
 	new_node->value = node_value(env_var, env_array[1]);
-	new_node->equal = 0;
-	if (ft_strchr(env_var, '='))
-		new_node->equal = 1;
 	new_node->next = NULL;
 	if (!(*env_list))
 		*env_list = new_node;
