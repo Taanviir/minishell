@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:25:45 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/21 23:39:35 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/22 19:03:06 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static char	*get_full_path(char *program_name, t_env **env_list)
 
 	i = -1;
 	path = ft_split(get_env(*env_list, "PATH"), ':');
-	if (!path)
+	if (!path || !*program_name)
 		return (NULL);
 	while (path[++i])
 	{
@@ -108,6 +108,7 @@ void	execute_cmd(t_cmd *cmd, t_env **env_list, t_cmd *root)
 		if ((execve(program_name, execcmd->argv, env_array) && !full_path)
 			|| (execve(full_path, execcmd->argv, env_array)))
 			write_exec_error(program_name, &l_exit);
+		free(full_path);
 		free_double_ptr((void **) env_array);
 		free_tree(root);
 		free_list(*env_list);

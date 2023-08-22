@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/21 23:42:30 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/22 13:55:33 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,6 @@ int	main(int argc, char **argv __attribute__((unused)), char **envp)
 		free(line);
 	}
 	free_list(env_list);
-	rl_clear_history();
+	// rl_clear_history();
 	return (EXIT_SUCCESS);
 }
