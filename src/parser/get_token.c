@@ -70,17 +70,8 @@ static char	find_type(char **scan)
 			break ;
 		*scan += 1;
 	}
-	// while (scan[0][1] && (in_quote
-	// 	|| (!ft_is_whitespace(scan[0][1]) && !is_opr(scan[0][1]))))
-	// {
-	// 	if (!in_quote && is_quote(**scan))
-	// 		in_quote = **scan;
-	// 	else if (in_quote && (**scan == in_quote))
-	// 		in_quote = 0;
-	// 	*scan += 1;
-	// }
 	if (in_quote)
-		return (0);
+		return (print_error("unclosed quote", NULL), 0);
 	return ('a');
 }
 

@@ -34,6 +34,7 @@ static void	sort_array(char **arr)
 	}
 }
 
+// copy and sort linked list instead
 static void	print_env_list(t_env **env_list)
 {
 	char	**temp;
