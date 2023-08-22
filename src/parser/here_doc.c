@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 17:52:34 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/22 16:11:29 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/22 19:49:59 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ int	here_doc(const int pipe_write, char *del, t_env **env_list)
 		free(temp);
 		free(line);
 	}
-	if (buffer && (g_exit_status != QUIT_HEREDOC || line || del))
+	if (buffer && g_exit_status != QUIT_HEREDOC)
 		ft_putstr_fd(buffer, pipe_write);
 	free(buffer);
 	free(line);

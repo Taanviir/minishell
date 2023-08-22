@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:25:45 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/22 16:29:58 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/22 20:01:47 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ void	execute_cmd(t_cmd *cmd, t_env **env_list, t_cmd *root)
 	char	*full_path;
 	char	**env_array;
 	int		l_exit;
-
 
 	execcmd = (t_exec *)cmd;
 	program_name = execcmd->argv[0];
