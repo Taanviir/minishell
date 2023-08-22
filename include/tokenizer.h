@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:25:28 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/22 15:24:22 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/22 21:57:52 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 typedef struct s_cmd
 {
 	int	type;
+	// int	open_fds[10];
 }	t_cmd;
 
 typedef struct s_exec

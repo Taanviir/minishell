@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 20:24:32 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/21 23:39:08 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/22 21:01:09 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ static void	execute_bgcmd(t_cmd *cmd, t_env **env_list, t_cmd *root)
 	{
 		write_bg();
 		runcmd(bgcmd->cmd, env_list, root);
-		free_tree(cmd);
+		free_tree(root);
+		free_list(*env_list);
 		exit(0);
 	}
 }
@@ -43,7 +44,8 @@ static void	execute_seq(t_cmd *cmd, t_env **env_list, t_cmd *root)
 	if (!wfork())
 	{
 		runcmd(seqcmd->left, env_list, root);
-		free_tree(cmd);
+		free_tree(root);
+		free_list(*env_list);
 		exit(0);
 	}
 	wait(NULL);

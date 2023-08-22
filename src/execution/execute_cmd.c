@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:25:45 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/22 20:01:47 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/22 20:33:08by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,14 @@
 
 // helper error function
 static void	write_exec_error(char *program_name, int *l_exit);
-
+bool has_consecutive_slashes(char *str) {
+	while (*str) {
+		if (*str == '/' && *(str + 1) == '/')
+			return true;
+		str++;
+	}
+	return false;
+}
 /**
  * Retrieve the full path of a given program.
  *
@@ -33,9 +40,12 @@ static char	*get_full_path(char *program_name, t_env **env_list)
 	int		i;
 
 	i = -1;
+	full_path = NULL;
+	if (has_consecutive_slashes(program_name))
+		return (full_path);
 	path = ft_split(get_env(*env_list, "PATH"), ':');
 	if (!path || !*program_name)
-		return (NULL);
+		return (free_double_ptr((void **)path), NULL);
 	while (path[++i])
 	{
 		full_path = ft_bigjoin(3, path[i], "/", program_name);
