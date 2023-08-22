@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pipe.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 21:48:42 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/21 23:45:22 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/23 00:40:54 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static void	close_pipe_ends(int *pipe_fds)
 
 static void	free_stuff(t_cmd *cmd, t_env *env_list)
 {
+	close_fds(cmd);
 	free_tree(cmd);
 	free_list(env_list);
 }
@@ -64,6 +65,7 @@ void	execute_pipe(t_cmd *cmd, t_env **env_list, t_cmd *root)
 		free_stuff(root, *env_list);
 		exit(WEXITSTATUS(g_exit_status));
 	}
+	//close(root->open_fd);
 	close_pipe_ends(pipe_fds);
 	wait(&g_exit_status);
 	wait(&g_exit_status);

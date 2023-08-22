@@ -39,3 +39,11 @@ int	print_error(char *err_msg, char *function)
 	ft_putendl_fd("", 2);
 	return (0);
 }
+
+void	close_fds(t_cmd *root)
+{
+	close(0);
+	close(1);
+	close(2);
+	close(root->open_fd);
+}

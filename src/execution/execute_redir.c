@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_redir.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 20:34:01 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/22 21:53:33 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/23 00:09:12 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	execute_redir(t_cmd *cmd, t_env **env_list, t_cmd *root)
 		new_fd = open(redircmd->fp, redircmd->mode, S_IRUSR | S_IWUSR);
 	if (!verify_file_opened(new_fd, redircmd->fp))
 		return ;
+	root->open_fd = new_fd;
 	dup2(new_fd, redircmd->fd);
 	close(new_fd);
 	runcmd(redircmd->cmd, env_list, root);

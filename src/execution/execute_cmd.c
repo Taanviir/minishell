@@ -14,6 +14,8 @@
 
 // helper error function
 static void	write_exec_error(char *program_name, int *l_exit);
+
+// helper function that checks if a string has consecutive slashes
 bool has_consecutive_slashes(char *str) {
 	while (*str) {
 		if (*str == '/' && *(str + 1) == '/')
@@ -22,6 +24,7 @@ bool has_consecutive_slashes(char *str) {
 	}
 	return false;
 }
+
 /**
  * Retrieve the full path of a given program.
  *
@@ -118,6 +121,8 @@ void	execute_cmd(t_cmd *cmd, t_env **env_list, t_cmd *root)
 			|| (execve(full_path, execcmd->argv, env_array)))
 			write_exec_error(program_name, &l_exit);
 		free(full_path);
+		// just close this fd since this process is exiting
+		close_fds(root);
 		free_double_ptr((void **) env_array);
 		free_tree(root);
 		free_list(*env_list);

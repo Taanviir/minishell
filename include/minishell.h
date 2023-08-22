@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/21 23:41:00 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/23 00:34:04 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 # include "builtins.h"
 
 // EXIT_STATUS
-int	g_exit_status;
+extern int	g_exit_status;
 
 // ERROR CODES
 # define ERR_ARGS 1
@@ -75,6 +75,7 @@ int		get_len(char *str1, char *str2);
 char	*remove_quotes(char *q, char *eq);
 bool	is_empty(char *line);
 int		print_error(char *err_msg, char *function);
+void	close_fds(t_cmd *root);
 
 // WRAPPER FUNCTIONS
 bool	verify_pipe(int pipe_return);
