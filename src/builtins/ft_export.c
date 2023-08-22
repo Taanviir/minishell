@@ -45,7 +45,7 @@ static void	print_env_list(t_env **env_list)
 	i = -1;
 	while (temp[++i])
 	{
-		var = ft_split(temp[i], '=');
+		var = ft_split(temp[i], '='); // sets empty var to NULL
 		if (ft_strncmp(temp[i], "_=", 2) && var[1])
 			printf("declare -x %s=\"%s\"\n", var[0], var[1]);
 		if (!var[1])
@@ -53,23 +53,6 @@ static void	print_env_list(t_env **env_list)
 		free_double_ptr((void **) var);
 	}
 	free_double_ptr((void **) temp);
-}
-
-int	name_len(char *arg)
-{
-	int	i;
-
-	i = 0;
-	while (arg[i] && arg[i] != '=')
-		i++;
-	return (i);
-}
-
-int	_name(char *var1, char *var2)
-{
-	if (name_len(var1) > name_len(var2))
-		return (name_len(var1));
-	return (name_len(var2));
 }
 
 int	ft_export(char **argv, t_env **env_list)
@@ -82,15 +65,18 @@ int	ft_export(char **argv, t_env **env_list)
 	i = 0;
 	while (argv[++i])
 	{
-		if (check_char(argv[i][0], argv[i]))
+		if (check_var_export(argv[i]))
 			continue ;
 		temp = *env_list;
 		while (temp)
 		{
 			if (!ft_strncmp(argv[i], temp->name, _name(argv[i], temp->name)))
 			{
-				free(temp->value);
-				temp->value = ft_strdup(argv[i] + name_len(argv[i]) + 1);
+				if (ft_strchr(argv[i], '='))
+				{
+					free(temp->value);
+					temp->value = ft_strdup(ft_strchr(argv[i], '=') + 1);
+				}
 				break ;
 			}
 			temp = temp->next;
