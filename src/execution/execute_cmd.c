@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:25:45 by tanas             #+#    #+#             */
 /*   Updated: 2023/08/22 16:29:58 by tanas            ###   ########.fr       */
@@ -18,7 +18,7 @@ static void	write_exec_error(char *program_name, int *l_exit);
 /**
  * Retrieve the full path of a given program.
  *
- * This function tries to find the full path of the program by checking 
+ * This function tries to find the full path of the program by checking
  * each directory in the PATH environment variable.
  *
  * @param program_name Name of the program to locate.
@@ -34,7 +34,7 @@ static char	*get_full_path(char *program_name, t_env **env_list)
 
 	i = -1;
 	path = ft_split(get_env(*env_list, "PATH"), ':');
-	if (!path)
+	if (!path || !*program_name)
 		return (NULL);
 	while (path[++i])
 	{
@@ -86,13 +86,14 @@ static int	execute_builtin(t_cmd *cmd, t_env **env_list)
  * @param cmd      A structure holding command details.
  * @param env_list Environment list.
  */
-void	execute_cmd(t_cmd *cmd, t_env **env_list)
+void	execute_cmd(t_cmd *cmd, t_env **env_list, t_cmd *root)
 {
 	t_exec	*execcmd;
 	char	*program_name;
 	char	*full_path;
 	char	**env_array;
 	int		l_exit;
+
 
 	execcmd = (t_exec *)cmd;
 	program_name = execcmd->argv[0];
@@ -109,7 +110,7 @@ void	execute_cmd(t_cmd *cmd, t_env **env_list)
 			write_exec_error(program_name, &l_exit);
 		free(full_path);
 		free_double_ptr((void **) env_array);
-		free_tree(cmd);
+		free_tree(root);
 		free_list(*env_list);
 		exit(l_exit);
 	}

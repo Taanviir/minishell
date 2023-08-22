@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:20:49 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/22 01:15:15 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/22 18:42:46 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ static char	*substitute(char **q, char **env_array)
 	else if (ft_is_whitespace(*var_s) || *var_s == '\0' || *var_s == '\"')
 		return (*q += 1, ft_strdup("$"));
 	*q += 1;
-	while (var_s[lvar_s] && !ft_strchr("\" $|;&", var_s[lvar_s]))
+	// while (var_s[lvar_s] && !ft_strchr("\"\' $|;&", var_s[lvar_s]))
+	while (var_s[lvar_s] && ft_is_alnum(var_s[lvar_s]) && var_s[lvar_s] != '_')
 	{
 		lvar_s++;
 		(*q)++;
@@ -85,6 +86,13 @@ static void	handle_single_quotes(char **q, int *s_quote)
 		*s_quote = 0;
 }
 
+static void	handle_double_quotes(char **q, int *d_quote)
+{
+	if (!*d_quote && **q == '"')
+		*d_quote = 1;
+	else if (*d_quote && **q == '"')
+		*d_quote = 0;
+}
 static void	expand_env_var(char **q, char **es, char **env_array)
 {
 	char	*sub;
@@ -116,14 +124,18 @@ char	*expand(char *q, char *eq, t_env **env_list, bool here_doc)
 	char	buffer[2];
 	char	**env_array;
 	int		s_quote;
+	int		d_quote;
 
 	buffer[1] = 0;
 	es = NULL;
 	env_array = list_to_array(*env_list);
 	s_quote = 0;
+	d_quote = 0;
 	while (q < eq)
 	{
-		handle_single_quotes(&q, &s_quote);
+		handle_double_quotes(&q, &d_quote);
+		if (!d_quote)
+			handle_single_quotes(&q, &s_quote);
 		if ((!s_quote || here_doc) && *q == '$' && !ft_is_whitespace(*(q + 1)))
 			expand_env_var(&q, &es, env_array);
 		else

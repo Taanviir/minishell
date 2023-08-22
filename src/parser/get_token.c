@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_token.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/02 07:38:08 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/21 15:27:06 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/22 16:42:31by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static char	find_type(char **scan)
 {
 	int	in_quote;
 
-	in_quote = is_quote(**scan);
+	in_quote = 0;
 	if (!**scan)
 		return (0);
 	else if (is_opr(**scan))
@@ -57,15 +57,28 @@ static char	find_type(char **scan)
 			return ('-');
 		return (**scan);
 	}
-	while (scan[0][1] && (in_quote
-		|| (!ft_is_whitespace(scan[0][1]) && !is_opr(scan[0][1]))))
+	while (**scan)
 	{
-		if (!in_quote && is_quote(**scan))
-			in_quote = **scan;
+		if (is_quote(**scan))
+		{
+			if (!in_quote)
+				in_quote = **scan;
+			else if (in_quote == **scan)
+				in_quote = 0;
+		}
+		if (!in_quote && (!scan[0][1] || ft_is_whitespace(scan[0][1]) || is_opr(scan[0][1])))
+			break ;
 		*scan += 1;
-		if (in_quote && (**scan == in_quote))
-			in_quote = 0;
 	}
+	// while (scan[0][1] && (in_quote
+	// 	|| (!ft_is_whitespace(scan[0][1]) && !is_opr(scan[0][1]))))
+	// {
+	// 	if (!in_quote && is_quote(**scan))
+	// 		in_quote = **scan;
+	// 	else if (in_quote && (**scan == in_quote))
+	// 		in_quote = 0;
+	// 	*scan += 1;
+	// }
 	if (in_quote)
 		return (0);
 	return ('a');

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/21 16:55:39 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/21 23:41:00 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include <sys/ioctl.h>
 # include <dirent.h>
 # include <string.h>
-# include <errno.h> 
+# include <errno.h>
 # include <termios.h>
 # include <fcntl.h>
 # include <stdbool.h>
@@ -68,7 +68,7 @@ char	*get_env(t_env *env_list, char *name);
 t_cmd	*get_cmd(char *line, t_env **env_list);
 
 // EXECUTION FUNCTION
-t_cmd	*runcmd(t_cmd *cmd, t_env **env_list);
+t_cmd	*runcmd(t_cmd *cmd, t_env **env_list, t_cmd *root);
 
 // UTIL FUNCTIONS
 int		get_len(char *str1, char *str2);

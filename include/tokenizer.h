@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:25:28 by tanas             #+#    #+#             */
 /*   Updated: 2023/08/22 15:24:22 by tanas            ###   ########.fr       */
@@ -100,8 +100,8 @@ char	*get_delimiter(char *q, const char *eq);
 void	expand_line(char **line, t_env **env_list);
 
 // execution
-void	execute_cmd(t_cmd *cmd, t_env **env_list);
-void	execute_redir(t_cmd *cmd, t_env **env_list);
-void	execute_pipe(t_cmd *cmd, t_env **env_list);
+void	execute_cmd(t_cmd *cmd, t_env **env_list, t_cmd *root);
+void	execute_redir(t_cmd *cmd, t_env **env_list, t_cmd *root);
+void	execute_pipe(t_cmd *cmd, t_env **env_list, t_cmd *root);
 
 #endif
