@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:47:35 by tanas             #+#    #+#             */
-/*   Updated: 2023/07/31 00:16:22 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/22 16:12:47 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,15 @@ char	*ft_strjoin_m(char *stash, char *buffer)
 		string[i] = stash[i];
 		i++;
 	}
-	free(stash);
 	j = 0;
 	while (buffer[j])
 		string[i++] = buffer[j++];
 	string[i] = '\0';
+	free(stash);
 	return (string);
 }
 
+// if ("hello", NULL, "hello") passed then NULL returned due to NULL in middle
 char	*ft_bigjoin(int count, ...)
 {
 	va_list	args;
