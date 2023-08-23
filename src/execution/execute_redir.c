@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:21:30 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/23 23:53:47 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/24 00:35:14 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,33 +24,24 @@ static bool	verify_file_opened(const int fd, const char *file_path)
 	return (true);
 }
 
-// Recursive function to open and discard all output redirections
-// t_redircmd	*depth_first(t_redircmd *redircmd)
-// {
-// 	int			tmp_fd;
-// 	t_redircmd	*deepest_redircmd;
-// 	// t_redircmd *old_redircmd;
-// 	deepest_redircmd = redircmd;
-// 	//old_redircmd = NULL;
-// 	if (redircmd->cmd->type == REDIR && (redircmd->fd == 1 && ((t_redircmd *)redircmd->cmd)->fd == redircmd->fd))
-// 	{
-// 		//old_redircmd = (t_redircmd *)redircmd->cmd;
-// 		// Recursive call to find the deepest valid redirection node
-// 		deepest_redircmd = depth_first((t_redircmd *)redircmd->cmd);
-// 		// Reassign this deepest node to be the direct child of the current node
-// 		redircmd->cmd = (t_cmd *)deepest_redircmd;
-// 	}
-// 	tmp_fd = open(redircmd->fp, redircmd->mode, S_IRUSR | S_IWUSR);
-// 	if (!verify_file_opened(tmp_fd, redircmd->fp))
-// 	{
-// 		close(tmp_fd);
-// 		return (NULL); // Signal an error using NULL
-// 	}
-// 	//if (old_redircmd)
-// 	//	free(old_redircmd); // specifically not calling free_tree() here, not to free the cmd under it
-// 	close(tmp_fd);
-// 	return (deepest_redircmd);
-// }
+// WIP recursive call to reproduce bash's opening order
+//t_cmd	*depth_first_open(t_redircmd *redircmd) {
+//	int	tmp_fd;
+
+//	// Base case: If the current node is not a redirection node or does not fit the condition
+//	if (redircmd->cmd->type != REDIR || !(((t_redircmd *)redircmd->cmd)->fd == redircmd->fd))
+//		return (redircmd->cmd); // Return success without opening
+//	// Recursive call
+//	if (!depth_first_open((t_redircmd *)redircmd->cmd))
+//		return (NULL); // If any error occurred down the line, propagate it up
+//	tmp_fd = open(redircmd->fp, redircmd->mode, S_IRUSR | S_IWUSR);
+//	if (!verify_file_opened(tmp_fd, redircmd->fp)) {
+//		close(tmp_fd);
+//		return (NULL); // Error occurred
+//	}
+//	close(tmp_fd);
+//	return (redircmd->cmd); // Success
+//}
 
 /**
  * Executes a command with stream redirection.
@@ -101,7 +92,7 @@ void	execute_redir(t_cmd *cmd, t_env **env_list, t_cmd *root)
 	root->open_fd = new_fd;
 	dup2(new_fd, redircmd->fd);
 	close(new_fd);
-	runcmd(redircmd->cmd, env_list, root); //! the dup save_fd is not being closed inside the forked process
+	runcmd(redircmd->cmd, env_list, root);
 	dup2(save_fd, redircmd->fd);
 	close(save_fd);
 }
