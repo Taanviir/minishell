@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:20:43 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/23 19:30:59 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/23 19:42:27 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ static int	execute_builtin(t_cmd *cmd, t_env **env_list)
  *
  * @param cmd      A structure holding command details.
  * @param env_list Environment list.
+ * @param root     Root variable.
  */
 void	execute_cmd(t_cmd *cmd, t_env **env_list, t_cmd *root)
 {
@@ -111,7 +112,7 @@ void	execute_cmd(t_cmd *cmd, t_env **env_list, t_cmd *root)
 	execcmd = (t_exec *)cmd;
 	program_name = execcmd->argv[0];
 	g_exit_status = (execute_builtin(cmd, env_list) << 8); //! need to bitshift before returning
-	if (g_exit_status != EXECUTE_CHILD)
+	if ((g_exit_status >> 8) != EXECUTE_CHILD)
 		return ;
 	if (!wfork())
 	{

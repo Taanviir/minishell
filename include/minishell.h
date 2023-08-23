@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/23 19:32:27 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/23 19:40:43 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 // EXIT_STATUS
 extern int	g_exit_status;
 
-# define EXECUTE_CHILD 10000
+# define EXECUTE_CHILD 1000
 # define QUIT_HEREDOC 5000
 
 # define DELI_ERROR "syntax error near unexpected token `newline'"
