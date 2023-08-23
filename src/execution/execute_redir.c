@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_redir.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:21:30 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/23 18:42:02 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/23 23:53:47 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	execute_redir(t_cmd *cmd, t_env **env_list, t_cmd *root)
 	root->open_fd = new_fd;
 	dup2(new_fd, redircmd->fd);
 	close(new_fd);
-	runcmd(redircmd->cmd, env_list, root);
+	runcmd(redircmd->cmd, env_list, root); //! the dup save_fd is not being closed inside the forked process
 	dup2(save_fd, redircmd->fd);
 	close(save_fd);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_redir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 19:01:49 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/21 15:53:23 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/24 00:06:31 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,27 @@ static int	*set_open(int mode, int fd)
 	return (open_conditions);
 }
 
+static char	*expand_filename(char *q, char *eq, t_env **env_list)
+{
+	char	*expanded_filename;
+	char	*end_of_filename;
+	char	*tmp_filename;
+
+	tmp_filename = expand(q, eq, env_list, false);
+	end_of_filename = tmp_filename + ft_strlen(tmp_filename);
+	expanded_filename = remove_quotes(tmp_filename, end_of_filename);
+	free(tmp_filename);
+	return (expanded_filename);
+}
+
 t_cmd	*parseredir(t_cmd *cmd, char **b_start, char *b_end, t_env **env_list)
 {
 	int		redirection;
 	int		hc_pipe[2];
 	char	*q;
 	char	*eq;
+	char	*expanded_filename;
+	char	*end_of_filename;
 
 	while (peek(b_start, b_end, "<>"))
 	{
@@ -60,12 +75,16 @@ t_cmd	*parseredir(t_cmd *cmd, char **b_start, char *b_end, t_env **env_list)
 		}
 		else if (get_token(b_start, b_end, &q, &eq) != 'a')
 			return (token_error(q, eq));
-		else if (redirection == '<')
-			cmd = construct_redircmd(cmd, q, eq, set_open(O_RDONLY, STDIN_FILENO));
+		expanded_filename = expand_filename(q, eq, env_list);
+		end_of_filename = expanded_filename + ft_strlen(expanded_filename);
+		if (redirection == '<')
+			cmd = construct_redircmd(cmd, expanded_filename, end_of_filename, set_open(O_RDONLY, STDIN_FILENO));
 		else if (redirection == '>')
-			cmd = construct_redircmd(cmd, q, eq, set_open(O_WRONLY | O_CREAT | O_TRUNC, STDOUT_FILENO));
+			cmd = construct_redircmd(cmd, expanded_filename, end_of_filename, set_open(O_WRONLY | O_CREAT | O_TRUNC, STDOUT_FILENO));
 		else if (redirection == '+')
-			cmd = construct_redircmd(cmd, q, eq, set_open(O_WRONLY | O_CREAT | O_APPEND, STDOUT_FILENO));
+			cmd = construct_redircmd(cmd, expanded_filename, end_of_filename, set_open(O_WRONLY | O_CREAT | O_APPEND, STDOUT_FILENO));
 	}
 	return (cmd);
 }
+
+
