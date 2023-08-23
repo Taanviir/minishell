@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/15 15:25:45 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/22 20:33:08by sabdelra         ###   ########.fr       */
+/*   Created: 2023/08/23 13:20:43 by tanas             #+#    #+#             */
+/*   Updated: 2023/08/23 19:30:59 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,15 @@
 static void	write_exec_error(char *program_name, int *l_exit);
 
 // helper function that checks if a string has consecutive slashes
-bool has_consecutive_slashes(char *str) {
-	while (*str) {
+bool	has_consecutive_slashes(char *str)
+{
+	while (*str)
+	{
 		if (*str == '/' && *(str + 1) == '/')
-			return true;
+			return (true);
 		str++;
 	}
-	return false;
+	return (false);
 }
 
 /**
@@ -71,7 +73,7 @@ static int	execute_builtin(t_cmd *cmd, t_env **env_list)
 	if (!argv[0])
 		return (0);
 	if (!ft_strncmp(argv[0], "echo", get_len(argv[0], "echo")))
-		return (ft_echo(exec, *env_list));
+		return (ft_echo(exec->argc, exec->argv, *env_list));
 	if (!ft_strncmp(argv[0], "cd", get_len(argv[0], "cd")))
 		return (ft_cd(argv, env_list));
 	else if (!ft_strncmp(argv[0], "pwd", get_len(argv[0], "pwd")))
@@ -105,12 +107,10 @@ void	execute_cmd(t_cmd *cmd, t_env **env_list, t_cmd *root)
 	char	*program_name;
 	char	*full_path;
 	char	**env_array;
-	int		l_exit;
 
 	execcmd = (t_exec *)cmd;
 	program_name = execcmd->argv[0];
-	l_exit = 0;
-	g_exit_status = execute_builtin(cmd, env_list);
+	g_exit_status = (execute_builtin(cmd, env_list) << 8); //! need to bitshift before returning
 	if (g_exit_status != EXECUTE_CHILD)
 		return ;
 	if (!wfork())
@@ -119,14 +119,13 @@ void	execute_cmd(t_cmd *cmd, t_env **env_list, t_cmd *root)
 		full_path = get_full_path(program_name, env_list);
 		if ((execve(program_name, execcmd->argv, env_array) && !full_path)
 			|| (execve(full_path, execcmd->argv, env_array)))
-			write_exec_error(program_name, &l_exit);
+			write_exec_error(program_name, &g_exit_status);
 		free(full_path);
-		// just close this fd since this process is exiting
 		close_fds(root);
 		free_double_ptr((void **) env_array);
 		free_tree(root);
 		free_list(*env_list);
-		exit(l_exit);
+		exit(WEXITSTATUS(g_exit_status));
 	}
 	wait(&g_exit_status);
 }

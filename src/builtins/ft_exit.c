@@ -33,7 +33,7 @@ static long	ft_strtol(char *str, char **endptr)
 	while (*str == ' ' || *str == '\t' || *str == '\n')
 		str++;
 	is_negative = (*str == '-');
-	(*str) += (*str == '-' || *str == '+');
+	str += (*str == '-' || *str == '+');
 	while (*str >= '0' && *str <= '9')
 	{
 		if (check_digit(is_negative, result, (*str - '0')))
@@ -83,7 +83,10 @@ int	ft_exit(t_cmd *cmd, t_env **env_list)
 	{
 		exec = (t_exec *) cmd;
 		if (exec->argc > 2)
-			return (printf("minishell: exit: too many arguments\n"), 1);
+		{
+			ft_putendl_fd("exit", 2);
+			return (print_error("too many arguments", "exit: "), 1);
+		}
 		g_exit_status = exit_check((t_exec *) cmd);
 	}
 	free_tree(cmd);

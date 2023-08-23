@@ -81,6 +81,8 @@ static void	print_env_list(t_env **env_list)
 	temp = copy;
 	while (temp)
 	{
+		if (!ft_strncmp(temp->name, "_", get_len(temp->name, "_")))
+			temp = temp->next;
 		if (temp->value)
 			printf("declare -x %s=\"%s\"\n", temp->name, temp->value);
 		else

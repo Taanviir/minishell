@@ -22,7 +22,7 @@ static void	update_env(t_env **env_list, char *old_path)
 	if (!cwd)
 		return ;
 	if (old_path)
-		line = ft_bigjoin(5, "export", " OLDPWD=", old_path, " PWD=", cwd);
+		line = ft_bigjoin(4, "export OLDPWD=", old_path, " PWD=", cwd);
 	else
 		line = ft_bigjoin(2, "export OLDPWD= PWD=", cwd);
 	argv = ft_split(line, ' ');

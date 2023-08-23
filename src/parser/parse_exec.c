@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:13:46 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/23 02:57:22 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/23 17:49:40 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static t_exec	*inc_argsize(t_exec *cmd, size_t argc)
 	return (ret);
 }
 
-static char	*__dumb_the_second(char *es, char *q)
+static char	*open_quotes(char *es, char *q)
 {
 	if ((!es && (*q - 1) == '"'))
 		return (ft_strdup(" "));
@@ -66,7 +66,7 @@ t_cmd	*parseexec(char **b_start, char *b_end, t_env **env_list)
 		if (get_token(b_start, b_end, &q, &eq) != 'a')
 			break ;
 		es = expand(q, eq, env_list, false);
-		c->argv[c->argc] = __dumb_the_second(es, q); // ! mallocs here
+		c->argv[c->argc] = open_quotes(es, q); // ! mallocs here
 		free(es);
 		c->eargv[c->argc] = c->argv[c->argc] + ft_strlen(c->argv[c->argc]);
 		c->argc++;

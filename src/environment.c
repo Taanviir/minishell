@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 03:46:11 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/23 02:58:29 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/23 14:27:34 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static char	*node_value(char *var, char *value)
 		else
 			return (ft_strdup("1"));
 	}
-	if (!ft_strchr(var, '=') || !ft_strncmp(var, "OLDPWD", name_len(var)))
+	if (!ft_strchr(var, '='))
 		return (NULL);
 	check = ft_strchr(var, '=') + 1;
 	if (!check[0])
@@ -97,9 +97,13 @@ void	add_node_bottom(t_env **env_list, char *env_var)
 void	environment_init(t_env **env_list, char **envp)
 {
 	int	i;
+	char	**argv;
 
 	(*env_list) = NULL;
 	i = -1;
 	while (envp[++i])
 		add_node_bottom(env_list, envp[i]);
+	argv = ft_split("unset OLDPWD", ' ');
+	ft_unset(argv, env_list);
+	free_double_ptr((void **) argv);	
 }

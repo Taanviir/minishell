@@ -3,9 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/12 22:46:53 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/23 02:59:57 by tanas            ###   ########.fr       */
+/*   Created: 2023/08/23 02:59:57 by tanas             #+#    #+#             */
+/*   Updated: 2023/08/23 18:52:31 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +67,7 @@ int	main(int argc, char **argv __attribute__((unused)), char **envp)
 	t_cmd	*root;
 
 	if (argc != 1)
-		return (printf(RED_B "Error: %s\n" WHITE, strerror(E2BIG)), ERR_ARGS);
+		return (printf(RED_B "Error: %s\n" WHITE, strerror(E2BIG)), 1);
 	g_exit_status = 0;
 	environment_init(&env_list, envp);
 	while (true)

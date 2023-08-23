@@ -21,25 +21,37 @@ static int	handle_tilde(char *arg, t_env *env_list)
 	return (0);
 }
 
-int	ft_echo(t_exec *cmd, t_env *env_list)
+int		ft_echo(int argc, char **argv, t_env *env_list)
 {
 	bool	show_newline;
-	size_t	i;
-	char	**tmp;
+	int		i;
+	int		j;
 
 	show_newline = true;
 	i = 1;
-	tmp = cmd->argv;
-	while (tmp[i] && !ft_strncmp("-n", tmp[i], get_len("-n", tmp[i])))
+	while (i < argc && !ft_strncmp("-n", argv[i], 2))
 	{
-		show_newline = false;
+		j = 1;
+		while (argv[i][j] && argv[i][j] == 'n')
+			j++;
+		if (argv[i][j] && argv[i][j] != 'n')
+		{
+			show_newline = true;
+			break ;
+		}
+		else if (!argv[i][j])
+		{
+			i++;
+			show_newline = false;
+			continue ;
+		}
 		i++;
 	}
-	while (i < cmd->argc)
+	while (i < argc)
 	{
-		if (!handle_tilde(tmp[i], env_list))
-			ft_putstr_fd(tmp[i], 1);
-		if (tmp[i + 1])
+		if (!handle_tilde(argv[i], env_list))
+			ft_putstr_fd(argv[i], 1);
+		if (argv[i + 1])
 			ft_putchar_fd(' ', 1);
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 18:55:49 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/23 03:00:30 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/23 13:41:41 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	signal_handler_child(int signum)
 	waitpid(-1, &status, 0);
 	if (!WIFEXITED(status) && signum == SIGINT)
 		g_exit_status = 130 << 8;
-	else if (!WIFEXITED(status) && signum == SIGINT)
+	else if (!WIFEXITED(status) && signum == SIGQUIT)
 		g_exit_status = 131 << 8;
 }
 
@@ -43,11 +43,11 @@ void	signal_handler_heredoc(int signum)
 {
 	if (signum == SIGINT)
 	{
-		// rl_done = 1;
+		rl_done = 1;
 		ioctl(0, TIOCSTI, "\0");
 		ft_putstr_fd("\b\b\b  \n", 2);
 		rl_on_new_line();
-		// rl_replace_line("", 0);
+		rl_replace_line("", 0);
 		g_exit_status = QUIT_HEREDOC;
 	}
 }

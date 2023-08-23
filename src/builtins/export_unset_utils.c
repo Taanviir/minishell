@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 17:50:38 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/23 03:00:16 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/23 16:53:46 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ bool	check_var_unset(char *arg)
 {
 	int	i;
 
-	if (!ft_is_alpha(arg[0]))
+	if (!ft_is_alpha(arg[0]) && arg[0] != '_')
 	{
 		print_msg(arg, "unset");
 		return (true);
