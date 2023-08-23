@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 17:52:34 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/22 19:49:59 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/23 20:25:48 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static char	__is_quoted(char *q, const char *eq)
  * Note: Currently, the function supports a maximum string length of 4096
  * due to hardcoded buffer size.
  *
- * @param q Pointer to the beginning of the string from which quotes are 
+ * @param q Pointer to the beginning of the string from which quotes are
  *          to be removed.
  * @param eq Pointer to the end of the string (just after the last character).
  *
@@ -136,7 +136,7 @@ int	here_doc(const int pipe_write, char *del, t_env **env_list)
 	{
 		temp = del;
 		del = remove_quotes(del, del + ft_strlen(del));
-		free(del);
+		free(temp);
 	}
 	if (!*del && !print_error(DELI_ERROR, NULL))
 		return (free(del), 0);
