@@ -24,6 +24,7 @@
 typedef struct s_cmd
 {
 	int	type;
+	int	open_fd;
 }	t_cmd;
 
 typedef struct s_exec
