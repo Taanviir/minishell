@@ -71,6 +71,15 @@ static t_env	*copy_list(t_env *original)
 	return (new_list);
 }
 
+void	print_export(char *name, char *value)
+{
+	ft_putstr_fd("declare -x ", 1);
+	ft_putstr_fd(name, 1);
+	ft_putstr_fd("=\"", 1);
+	ft_putstr_fd(value, 1);
+	ft_putendl_fd("\"", 1);
+}
+
 static void	print_env_list(t_env **env_list)
 {
 	t_env	*copy;
@@ -95,14 +104,16 @@ static void	print_env_list(t_env **env_list)
 int	ft_export(char **argv, t_env **env_list)
 {
 	int		i;
+	int		ret;
 	t_env	*temp;
 
 	if (!argv[1])
 		return (print_env_list(env_list), 1);
 	i = 0;
+	ret = 0;
 	while (argv[++i])
 	{
-		if (check_var_export(argv[i]))
+		if (check_var_export(argv[i], &ret))
 			continue ;
 		temp = *env_list;
 		while (temp)
@@ -121,5 +132,5 @@ int	ft_export(char **argv, t_env **env_list)
 		if (!temp)
 			add_node_bottom(env_list, argv[i]);
 	}
-	return (0);
+	return (ret);
 }

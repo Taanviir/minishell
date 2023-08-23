@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 04:00:27 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/23 14:34:39 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/23 20:17:33 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 // UTILS
 int		name_len(char *arg);
 int		_name(char *var1, char *var2);
-bool	check_var_export(char *arg);
+bool	check_var_export(char *arg, int *ret);
 bool	check_var_unset(char *arg);
 
 // BUILTINS

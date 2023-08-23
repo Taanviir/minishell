@@ -34,7 +34,11 @@ int	ft_env(char **argv, t_env **env_list)
 	while (temp)
 	{
 		if (temp->value)
-			printf("%s=%s\n", temp->name, temp->value);
+		{
+			ft_putstr_fd(temp->name, 1);
+			ft_putstr_fd("=", 1);
+			ft_putendl_fd(temp->value, 1);
+		}
 		temp = temp->next;
 	}
 	return (0);
