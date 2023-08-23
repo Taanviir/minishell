@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:20:49 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/22 18:42:46 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/23 03:01:42 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ static char	*substitute(char **q, char **env_array)
 	else if (ft_is_whitespace(*var_s) || *var_s == '\0' || *var_s == '\"')
 		return (*q += 1, ft_strdup("$"));
 	*q += 1;
-	// while (var_s[lvar_s] && !ft_strchr("\"\' $|;&", var_s[lvar_s]))
 	while (var_s[lvar_s] && ft_is_alnum(var_s[lvar_s]) && var_s[lvar_s] != '_')
 	{
 		lvar_s++;
@@ -93,6 +92,7 @@ static void	handle_double_quotes(char **q, int *d_quote)
 	else if (*d_quote && **q == '"')
 		*d_quote = 0;
 }
+
 static void	expand_env_var(char **q, char **es, char **env_array)
 {
 	char	*sub;

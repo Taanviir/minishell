@@ -64,7 +64,6 @@ static int	change_path(t_env **env_list, char *path, char *old_path)
 		update_env(env_list, old_path);
 		return (0);
 	}
-	printf("minishell: cd: %s: %s\n", path, strerror(ENOENT));
 	return (1);
 }
 

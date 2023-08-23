@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 03:46:11 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/21 16:46:31 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/23 02:58:29 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,7 @@ char	**list_to_array(t_env *env_list)
 	temp = env_list;
 	while (temp)
 	{
-		env_array[++i] = ft_strjoin(temp->name, "=");
-		if (temp->value)
-			env_array[i] = ft_strjoin_m(env_array[i], temp->value);
+		env_array[++i] = ft_bigjoin(3, temp->name, "=", temp->value);
 		temp = temp->next;
 	}
 	env_array[++i] = NULL;

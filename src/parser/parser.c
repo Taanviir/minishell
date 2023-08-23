@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:19:12 by eva-1             #+#    #+#             */
-/*   Updated: 2023/08/21 18:05:03 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/23 03:00:46 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	peek(char **b_start, char *b_end, const char *str)
 
 	s = *b_start;
 	while (s < b_end && ft_is_whitespace(*s))
-	s++;
+		s++;
 	*b_start = s;
 	return (*s && ft_strchr(str, *s));
 }

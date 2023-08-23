@@ -12,47 +12,82 @@
 
 #include "minishell.h"
 
-static void	sort_array(char **arr)
+static void	sort_list(t_env **head)
 {
-	int		i;
-	int		j;
-	char	*temp;
+	t_env	*temp;
+	t_env	*temp2;
+	char	*temp_name;
+	char	*temp_value;
 
-	i = -1;
-	while (arr[++i])
+	temp = *head;
+	while (temp)
 	{
-		j = i;
-		while (arr[++j])
+		temp2 = temp->next;
+		while (temp2)
 		{
-			if (ft_strncmp(arr[i], arr[j], ft_strlen(arr[i])) > 0)
+			if (ft_strncmp(temp->name, temp2->name, ft_strlen(temp->name)) > 0)
 			{
-				temp = arr[i];
-				arr[i] = arr[j];
-				arr[j] = temp;
+				temp_name = temp->name;
+				temp_value = temp->value;
+				temp->name = temp2->name;
+				temp->value = temp2->value;
+				temp2->name = temp_name;
+				temp2->value = temp_value;
 			}
+			temp2 = temp2->next;
 		}
+		temp = temp->next;
 	}
+}
+
+static t_env	*copy_list(t_env *original)
+{
+	t_env	*new_list;
+	t_env	*new_node;
+	t_env	*current;
+
+	new_list = NULL;
+	while (original)
+	{
+		new_node = malloc(sizeof(t_env));
+		if (!new_node)
+			return (NULL);
+		new_node->name = ft_strdup(original->name);
+		new_node->value = NULL;
+		if (original->value)
+			new_node->value = ft_strdup(original->value);
+		new_node->next = NULL;
+		if (!new_list)
+			new_list = new_node;
+		else
+		{
+			current = new_list;
+			while (current->next)
+				current = current->next;
+			current->next = new_node;
+		}
+		original = original->next;
+	}
+	return (new_list);
 }
 
 static void	print_env_list(t_env **env_list)
 {
-	char	**temp;
-	int		i;
-	char	**var;
+	t_env	*copy;
+	t_env	*temp;
 
-	temp = list_to_array(*env_list);
-	sort_array(temp);
-	i = -1;
-	while (temp[++i])
+	copy = copy_list(*env_list);
+	sort_list(&copy);
+	temp = copy;
+	while (temp)
 	{
-		var = ft_split(temp[i], '='); // sets empty var to NULL
-		if (ft_strncmp(temp[i], "_=", 2) && var[1])
-			printf("declare -x %s=\"%s\"\n", var[0], var[1]);
-		if (!var[1])
-			printf("declare -x %s\n", var[0]);
-		free_double_ptr((void **) var);
+		if (temp->value)
+			printf("declare -x %s=\"%s\"\n", temp->name, temp->value);
+		else
+			printf("declare -x %s\n", temp->name);
+		temp = temp->next;
 	}
-	free_double_ptr((void **) temp);
+	free_list(copy);
 }
 
 int	ft_export(char **argv, t_env **env_list)
