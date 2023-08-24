@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 03:46:11 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/23 14:27:34 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/24 10:03:04 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,7 @@ static char	*node_value(char *var, char *value)
 	{
 		if (value)
 			return (ft_itoa(ft_atoi(value) + 1));
-		else
-			return (ft_strdup("1"));
+		return (ft_strdup("1"));
 	}
 	if (!ft_strchr(var, '='))
 		return (NULL);
@@ -96,14 +95,21 @@ void	add_node_bottom(t_env **env_list, char *env_var)
 
 void	environment_init(t_env **env_list, char **envp)
 {
-	int	i;
-	char	**argv;
+	int		i;
+	t_env	*temp;
 
 	(*env_list) = NULL;
 	i = -1;
 	while (envp[++i])
 		add_node_bottom(env_list, envp[i]);
-	argv = ft_split("unset OLDPWD", ' ');
-	ft_unset(argv, env_list);
-	free_double_ptr((void **) argv);	
+	temp = *env_list;
+	while (temp)
+	{
+		if (!ft_strncmp(temp->name, "OLDPWD", 6))
+		{
+			free(temp->value);
+			temp->value = NULL;
+		}
+		temp = temp->next;
+	}
 }

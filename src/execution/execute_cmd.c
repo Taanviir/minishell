@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:20:43 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/23 20:29:23 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/23 21:12:07 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void	execute_cmd(t_cmd *cmd, t_env **env_list, t_cmd *root)
 
 	execcmd = (t_exec *)cmd;
 	program_name = execcmd->argv[0];
-	g_exit_status = (execute_builtin(cmd, env_list) << 8); //! need to bitshift before returning
+	g_exit_status = (execute_builtin(cmd, env_list) << 8);
 	if ((g_exit_status >> 8) != EXECUTE_CHILD)
 		return ;
 	if (!wfork())
@@ -130,7 +130,7 @@ void	execute_cmd(t_cmd *cmd, t_env **env_list, t_cmd *root)
 		free_double_ptr((void **) env_array);
 		free_tree(root);
 		free_list(*env_list);
-		exit(WEXITSTATUS(g_exit_status));
+		exit(g_exit_status);
 	}
 	wait(&g_exit_status);
 }

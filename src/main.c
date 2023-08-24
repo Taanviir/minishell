@@ -6,13 +6,13 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 02:59:57 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/23 18:52:31 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/24 09:31:29 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int g_exit_status;
+int	g_exit_status;
 
 static char	*get_dir(t_env *env_list)
 {

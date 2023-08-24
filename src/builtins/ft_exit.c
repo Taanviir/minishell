@@ -62,7 +62,7 @@ static int	exit_check(t_exec *exec)
 	while (exec->argv && exec->argv[++i])
 	{
 		num = ft_strtol(exec->argv[i], &endptr);
-		if (*endptr != '\0' || (num == LONG_MIN || num == LONG_MAX))
+		if (*endptr != '\0' || (num < LONG_MIN || num > LONG_MAX))
 			return (print_error("numeric argument required", "exit: "), 255);
 	}
 	if (exec->argc == 2 && ft_strncmp(exec->argv[1], "255", 3) > 0)
@@ -84,7 +84,7 @@ int	ft_exit(t_cmd *cmd, t_env **env_list)
 		exec = (t_exec *) cmd;
 		if (exec->argc > 2)
 		{
-			ft_putendl_fd("exit", 2);
+			ft_putendl_fd("exit", 1);
 			return (print_error("too many arguments", "exit: "), 1);
 		}
 		g_exit_status = exit_check((t_exec *) cmd);
