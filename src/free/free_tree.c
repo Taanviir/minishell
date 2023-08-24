@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_tree.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 19:55:59 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/21 16:44:54 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/23 23:46:07 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	free_redir(t_cmd *cmd)
 	t_redircmd	*redir;
 
 	redir = (t_redircmd *)cmd;
+	free(redir->fp);
 	free_tree(redir->cmd);
 	free(redir);
 }
