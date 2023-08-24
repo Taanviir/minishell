@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 03:02:01 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/23 03:02:03 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/24 17:34:00 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // check if the character is an operator
 static bool	is_opr(char c)
 {
-	return (c == '<' || c == '|' || c == '>' || c == '&' || c == ';');
+	return (c == '<' || c == '|' || c == '>');
 }
 
 // check if the character is a quote

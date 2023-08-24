@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:19:12 by eva-1             #+#    #+#             */
-/*   Updated: 2023/08/23 03:00:46 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/24 17:40:45 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,26 +41,6 @@ t_cmd	*parsepipe(char **b_start, char *b_end, t_env **env_list)
 	return (cmd);
 }
 
-t_cmd	*parseline(char **b_start, char *b_end, t_env **env_list)
-{
-	t_cmd	*cmd;
-
-	cmd = parsepipe(b_start, b_end, env_list);
-	while (peek(b_start, b_end, "&"))
-	{
-		get_token(b_start, b_end, 0, 0);
-		cmd = construct_bgcmd(cmd);
-	}
-	while (peek(b_start, b_end, ";"))
-	{
-		get_token(b_start, b_end, 0, 0);
-		if (*b_start == b_end)
-			ft_putstr_fd("syntax error near unexpected token `;'\n", 2);
-		cmd = construct_seqcmd(cmd, parseline(b_start, b_end, env_list));
-	}
-	return (cmd);
-}
-
 t_cmd	*parsecmd(char *b_start, t_env **env_list)
 {
 	char	*b_end;
@@ -69,7 +49,7 @@ t_cmd	*parsecmd(char *b_start, t_env **env_list)
 	if (!b_start[0] || is_empty(b_start))
 		return (free(b_start), NULL);
 	b_end = ft_strlen(b_start) + b_start;
-	root = parseline(&b_start, b_end, env_list);
+	root = parsepipe(&b_start, b_end, env_list);
 	if (peek(&b_start, b_end, ""))
 		ft_putstr_fd("minishell: syntax error\n", 2);
 	nullterminate(root);

@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 10:07:28 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/24 10:08:07 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/24 13:27:12 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,19 @@ static t_env	*copy_list(t_env *original)
 	return (new_list);
 }
 
+static void	print_export(char *name, char *value)
+{
+	ft_putstr_fd("declare -x ", 1);
+	ft_putstr_fd(name, 1);
+	if (value)
+	{
+		ft_putstr_fd("=\"", 1);
+		ft_putstr_fd(value, 1);
+		ft_putstr_fd("\"", 1);
+	}
+	ft_putendl_fd("", 1);
+}
+
 void	print_env_list(t_env **env_list)
 {
 	t_env	*copy;
@@ -89,9 +102,9 @@ void	print_env_list(t_env **env_list)
 		if (!ft_strncmp(temp->name, "_", get_len(temp->name, "_")))
 			temp = temp->next;
 		if (temp->value)
-			printf("declare -x %s=\"%s\"\n", temp->name, temp->value);
+			print_export(temp->name, temp->value);
 		else
-			printf("declare -x %s\n", temp->name);
+			print_export(temp->name, NULL);
 		temp = temp->next;
 	}
 	free_list(copy);

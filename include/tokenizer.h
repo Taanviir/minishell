@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:25:28 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/23 02:58:32 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/24 18:09:02 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@
 # define EXEC 0
 # define REDIR 1
 # define PIPE 2
-# define SEQUENCE 3
-# define BG 4
+
 
 typedef struct s_cmd
 {
@@ -53,19 +52,6 @@ typedef struct s_pipecmd
 	t_cmd	*right;
 }	t_pipecmd;
 
-typedef struct s_seqcmd
-{
-	int		type;
-	t_cmd	*left;
-	t_cmd	*right;
-}	t_seqcmd;
-
-typedef struct s_bgcmd
-{
-	int		type;
-	t_cmd	*cmd;
-}	t_bgcmd;
-
 typedef struct s_env
 {
 	char			*name;
@@ -93,8 +79,6 @@ t_cmd	*nullterminate(t_cmd *cmd);
 t_cmd	*construct_exec(void);
 t_cmd	*construct_redircmd(t_cmd *cmd, char *fp, char *efp, int *oc);
 t_cmd	*construct_pipecmd(t_cmd *left, t_cmd *right);
-t_cmd	*construct_seqcmd(t_cmd *left, t_cmd *right);
-t_cmd	*construct_bgcmd(t_cmd *cmd);
 /* here_document */
 int		here_doc(const int fd, char *del, t_env **env_list);
 char	*get_delimiter(char *q, const char *eq);

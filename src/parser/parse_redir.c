@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_redir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 19:01:49 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/24 00:06:31 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/24 15:44:55 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,11 @@ t_cmd	*parseredir(t_cmd *cmd, char **b_start, char *b_end, t_env **env_list)
 		}
 		else if (get_token(b_start, b_end, &q, &eq) != 'a')
 			return (token_error(q, eq));
-		expanded_filename = expand_filename(q, eq, env_list);
-		end_of_filename = expanded_filename + ft_strlen(expanded_filename);
+		else
+		{
+			expanded_filename = expand_filename(q, eq, env_list);
+			end_of_filename = expanded_filename + ft_strlen(expanded_filename);
+		}
 		if (redirection == '<')
 			cmd = construct_redircmd(cmd, expanded_filename, end_of_filename, set_open(O_RDONLY, STDIN_FILENO));
 		else if (redirection == '>')

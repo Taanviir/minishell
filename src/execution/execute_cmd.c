@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:20:43 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/23 21:12:07 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/24 18:02:19 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,6 @@ void	execute_cmd(t_cmd *cmd, t_env **env_list, t_cmd *root)
 	{
 		env_array = list_to_array(*env_list);
 		full_path = get_full_path(program_name, env_list);
-		if (execve(program_name, execcmd->argv, env_array))
 		if ((execve(program_name, execcmd->argv, env_array) && !full_path)
 			|| (execve(full_path, execcmd->argv, env_array)))
 			write_exec_error(program_name, &g_exit_status);

@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:13:46 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/23 17:49:40 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/24 18:04:47 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,12 @@ t_cmd	*parseexec(char **b_start, char *b_end, t_env **env_list)
 	ret = construct_exec();
 	c = (t_exec *)ret;
 	ret = parseredir(ret, b_start, b_end, env_list);
-	while (!peek(b_start, b_end, "|&;"))
+	while (!peek(b_start, b_end, "|"))
 	{
 		if (get_token(b_start, b_end, &q, &eq) != 'a')
 			break ;
 		es = expand(q, eq, env_list, false);
+		// if (!es) continue ;
 		c->argv[c->argc] = open_quotes(es, q); // ! mallocs here
 		free(es);
 		c->eargv[c->argc] = c->argv[c->argc] + ft_strlen(c->argv[c->argc]);

@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 21:13:29 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/21 14:43:43 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/24 17:34:57 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,25 +53,4 @@ t_cmd	*construct_pipecmd(t_cmd *left, t_cmd *right)
 	cmd->left = left;
 	cmd->right = right;
 	return ((t_cmd *) cmd);
-}
-
-t_cmd	*construct_seqcmd(t_cmd *left, t_cmd *right)
-{
-	t_seqcmd	*cmd;
-
-	cmd = ft_calloc(sizeof(t_seqcmd), 1);
-	cmd->type = SEQUENCE;
-	cmd->left = left;
-	cmd->right = right;
-	return ((t_cmd *) cmd);
-}
-
-t_cmd	*construct_bgcmd(t_cmd *cmd)
-{
-	t_bgcmd	*bgcmd;
-
-	bgcmd = ft_calloc(sizeof(t_bgcmd), 1);
-	bgcmd->type = BG;
-	bgcmd->cmd = cmd;
-	return ((t_cmd *) bgcmd);
 }
