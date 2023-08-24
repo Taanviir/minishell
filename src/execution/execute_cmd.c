@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:20:43 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/24 18:02:19 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/24 19:37:03 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,9 +123,9 @@ void	execute_cmd(t_cmd *cmd, t_env **env_list, t_cmd *root)
 			write_exec_error(program_name, &g_exit_status);
 		free(full_path);
 		close_fds(root);
-		close(0);
-		close(1);
-		close(2);
+		// close(0);
+		// close(1);
+		// close(2);
 		free_double_ptr((void **) env_array);
 		free_tree(root);
 		free_list(*env_list);
