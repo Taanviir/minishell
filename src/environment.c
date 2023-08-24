@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 03:46:11 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/23 21:28:18 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/24 10:03:04 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,7 @@ static char	*node_value(char *var, char *value)
 	{
 		if (value)
 			return (ft_itoa(ft_atoi(value) + 1));
-		else
-			return (ft_strdup("1"));
+		return (ft_strdup("1"));
 	}
 	if (!ft_strchr(var, '='))
 		return (NULL);
@@ -113,5 +112,4 @@ void	environment_init(t_env **env_list, char **envp)
 		}
 		temp = temp->next;
 	}
-	//! set OLDPWD to NULL
 }

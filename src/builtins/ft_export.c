@@ -12,93 +12,15 @@
 
 #include "minishell.h"
 
-static void	sort_list(t_env **head)
+static t_env	*find_env_node(t_env *env_list, char *name)
 {
-	t_env	*temp;
-	t_env	*temp2;
-	char	*temp_name;
-	char	*temp_value;
-
-	temp = *head;
-	while (temp)
+	while (env_list)
 	{
-		temp2 = temp->next;
-		while (temp2)
-		{
-			if (ft_strncmp(temp->name, temp2->name, ft_strlen(temp->name)) > 0)
-			{
-				temp_name = temp->name;
-				temp_value = temp->value;
-				temp->name = temp2->name;
-				temp->value = temp2->value;
-				temp2->name = temp_name;
-				temp2->value = temp_value;
-			}
-			temp2 = temp2->next;
-		}
-		temp = temp->next;
+		if (!ft_strncmp(name, env_list->name, _name(name, env_list->name)))
+			return (env_list);
+		env_list = env_list->next;
 	}
-}
-
-static t_env	*copy_list(t_env *original)
-{
-	t_env	*new_list;
-	t_env	*new_node;
-	t_env	*current;
-
-	new_list = NULL;
-	while (original)
-	{
-		new_node = malloc(sizeof(t_env));
-		if (!new_node)
-			return (NULL);
-		new_node->name = ft_strdup(original->name);
-		new_node->value = NULL;
-		if (original->value)
-			new_node->value = ft_strdup(original->value);
-		new_node->next = NULL;
-		if (!new_list)
-			new_list = new_node;
-		else
-		{
-			current = new_list;
-			while (current->next)
-				current = current->next;
-			current->next = new_node;
-		}
-		original = original->next;
-	}
-	return (new_list);
-}
-
-void	print_export(char *name, char *value)
-{
-	ft_putstr_fd("declare -x ", 1);
-	ft_putstr_fd(name, 1);
-	ft_putstr_fd("=\"", 1);
-	ft_putstr_fd(value, 1);
-	ft_putendl_fd("\"", 1);
-}
-
-static void	print_env_list(t_env **env_list)
-{
-	t_env	*copy;
-	t_env	*temp;
-
-	copy = copy_list(*env_list);
-	sort_list(&copy);
-	temp = copy;
-	while (temp)
-	{
-		if (!ft_strncmp(temp->name, "_", get_len(temp->name, "_")))
-			temp = temp->next;
-		if (temp->value)
-			printf("declare -x %s=\"%s\"\n", temp->name, temp->value);
-		else
-			printf("declare -x %s\n", temp->name);
-		temp = temp->next;
-	}
-	free_list(copy);
+	return (NULL);
 }
 
 int	ft_export(char **argv, t_env **env_list)
@@ -115,21 +37,16 @@ int	ft_export(char **argv, t_env **env_list)
 	{
 		if (check_var_export(argv[i], &ret))
 			continue ;
-		temp = *env_list;
-		while (temp)
+		temp = find_env_node(*env_list, argv[i]);
+		if (temp)
 		{
-			if (!ft_strncmp(argv[i], temp->name, _name(argv[i], temp->name)))
+			if (ft_strchr(argv[i], '='))
 			{
-				if (ft_strchr(argv[i], '='))
-				{
-					free(temp->value);
-					temp->value = ft_strdup(ft_strchr(argv[i], '=') + 1);
-				}
-				break ;
+				free(temp->value);
+				temp->value = ft_strdup(ft_strchr(argv[i], '=') + 1);
 			}
-			temp = temp->next;
 		}
-		if (!temp)
+		else
 			add_node_bottom(env_list, argv[i]);
 	}
 	return (ret);
