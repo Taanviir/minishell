@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 16:45:14 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/21 16:46:40 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/24 20:47:27 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,10 @@ void	free_list(t_env *env_list)
 		free(temp);
 		temp = next;
 	}
+}
+
+void	free_two(char *str1, char *str2)
+{
+	free(str1);
+	free(str2);
 }

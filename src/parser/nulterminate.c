@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nulterminate.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 16:27:36 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/24 17:35:21 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/24 20:03:09 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ static void	nullterminate_pipe(t_cmd *cmd)
 	nullterminate(pipecmd->left);
 	nullterminate(pipecmd->right);
 }
-
 
 typedef void	(*t_nullterm)(t_cmd *cmd);
 

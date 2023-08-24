@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:25:28 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/24 18:09:02 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/24 20:49:54 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 # define EXEC 0
 # define REDIR 1
 # define PIPE 2
-
 
 typedef struct s_cmd
 {
@@ -66,6 +65,12 @@ enum e_open_conditions
 	FD
 };
 
+enum e_quotes
+{
+	D,
+	S
+};
+
 /* tokenizers */
 char	get_token(char **bs, char *be, char **ts, char **te);
 char	*expand(char *q, char *eq, t_env **env_list, bool here_doc);
@@ -77,12 +82,13 @@ t_cmd	*parsecmd(char *b_start, t_env **env_list);
 t_cmd	*nullterminate(t_cmd *cmd);
 /* constructors */
 t_cmd	*construct_exec(void);
-t_cmd	*construct_redircmd(t_cmd *cmd, char *fp, char *efp, int *oc);
+t_cmd	*c_rdr(t_cmd *cmd, char *fp, char *efp, int *oc);
 t_cmd	*construct_pipecmd(t_cmd *left, t_cmd *right);
 /* here_document */
 int		here_doc(const int fd, char *del, t_env **env_list);
 char	*get_delimiter(char *q, const char *eq);
 void	expand_line(char **line, t_env **env_list);
+int		longer(int lvar_s, char *env_var);
 
 // execution
 void	execute_cmd(t_cmd *cmd, t_env **env_list, t_cmd *root);

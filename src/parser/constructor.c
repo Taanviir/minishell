@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   constructor.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 21:13:29 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/24 17:34:57 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/24 20:49:54 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_cmd	*construct_exec(void)
 	return ((t_cmd *)cmd);
 }
 
-t_cmd	*construct_redircmd(t_cmd *cmd, char *fp, char *efp, int *oc)
+t_cmd	*c_rdr(t_cmd *cmd, char *fp, char *efp, int *oc)
 {
 	t_redircmd	*redircmd;
 

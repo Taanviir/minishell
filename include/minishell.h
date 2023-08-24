@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/23 19:40:43 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/24 20:47:37 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,6 @@ int		wfork(void);
 // FREE FUNCTIONS
 void	free_cmd(t_cmd *cmd);
 void	free_tree(t_cmd *cmd);
+void	free_two(char *str1, char *str2);
 
 #endif
