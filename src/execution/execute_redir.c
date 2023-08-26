@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:21:30 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/25 17:26:46 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/27 02:02:23 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,45 +25,52 @@ static bool	verify_file_opened(const int fd, const char *file_path)
 }
 
 //WIP recursive call to reproduce bash's opening order
-t_cmd	*depth_first_open(t_redircmd *redircmd, int *new_fd, t_redircmd *top)
+t_cmd	*depth_first_open(t_redircmd *rcmd, int *new_fd, t_redircmd *top)
 {
-	t_cmd	*rcmd;
-	// Base case: If the current node is not a redirection node
-	if (redircmd->cmd->type != REDIR)
-	{
-		if (redircmd->here_doc)
-			*new_fd = redircmd->here_doc;
-		else if (!redircmd->mode)
-			*new_fd = open(redircmd->filename, redircmd->mode);
-		else
-			*new_fd = open(redircmd->filename, redircmd->mode, S_IRUSR | S_IWUSR);
-		if (!verify_file_opened(*new_fd, redircmd->filename))
-		{
-			close(*new_fd);
-			return (NULL); // Error occurred
-		}
-		if (redircmd != top)
-			close (*new_fd);
-		return (redircmd->cmd); // Return success without opening
-	}
-	// Recursive call
-	rcmd = depth_first_open((t_redircmd *)redircmd->cmd, new_fd, top);
-	if (!rcmd)
-		return (NULL);
-	if (redircmd->here_doc)
-		*new_fd = redircmd->here_doc;
-	else if (!redircmd->mode)
-		*new_fd = open(redircmd->filename, redircmd->mode);
+	t_cmd	*cmd;
+	int		tmp_fd;
+	// Base case
+	if (rcmd->type != REDIR)
+		return ((t_cmd *)rcmd); // not a redirection node
 	else
-		*new_fd = open(redircmd->filename, redircmd->mode, S_IRUSR | S_IWUSR);
-	if (!verify_file_opened(*new_fd, redircmd->filename))
+		cmd = depth_first_open((t_redircmd *)rcmd->cmd, new_fd, top);
+	if (!cmd)
+		return (NULL);
+	if (rcmd->FD == IN)
 	{
-		close(*new_fd);
-		return (NULL); // Error occurred
+		tmp_fd = new_fd[IN];
+		if (!rcmd->here_doc)
+			new_fd[IN] = open(rcmd->filename, rcmd->mode, rcmd->permissions);
+		else
+			new_fd[IN] = rcmd->here_doc;
+		if (tmp_fd != ERROR)
+			close(tmp_fd);
+		if (!verify_file_opened(new_fd[IN], rcmd->filename))
+			return (NULL);
 	}
-	if (redircmd != top)
+	else if (rcmd->FD == OUT)
+	{
+		tmp_fd = new_fd[OUT];
+		new_fd[OUT] = open(rcmd->filename, rcmd->mode, rcmd->permissions);
+		if (tmp_fd != ERROR)
+			close(tmp_fd);
+		if (!verify_file_opened(new_fd[OUT], rcmd->filename))
+			return (NULL);
+	}
+	return (cmd);
+}
+
+// if new_fd was set the redirection and save the old one
+static int duplicate_fd(int *new_fd, int stream)
+{
+	int	tmp_fd;
+	if (*new_fd > ERROR)
+	{
+		tmp_fd = dup(stream);
+		dup2(*new_fd, stream);
 		close(*new_fd);
-	return (rcmd); // Success
+	}
+	return (tmp_fd);
 }
 
 /**
@@ -76,22 +83,33 @@ t_cmd	*depth_first_open(t_redircmd *redircmd, int *new_fd, t_redircmd *top)
  * @param cmd      A structure holding command details.
  * @param env_list	Linked list of environment variables.
  */
-void	execute_redir(t_cmd *cmd, t_env **env_list, t_cmd *root)
+void	execute_redir(t_cmd *rcmd, t_env **env_list, t_cmd *root)
 {
 	t_redircmd	*redircmd;
-	int			new_fd;
-	int			save_fd;
-	t_cmd		*rcmd;
+	int			new_fd[2]; // for IN, OUT
+	int			save_fd[2]; // save the old FDs to open it back after redirection
+	t_cmd		*cmd;
 
-	redircmd = (t_redircmd *)cmd;
-	save_fd = dup(redircmd->FD);
-	rcmd = depth_first_open(redircmd, &new_fd, redircmd);
-	if (!rcmd)
-		g_exit_status = 1 << 8;
-	root->open_fd = new_fd;
-	dup2(new_fd, redircmd->FD);
-	close(new_fd);
-	runcmd(rcmd, env_list, root);
-	dup2(save_fd, redircmd->FD);
-	close(save_fd);
+	// start off with an ERROR state indicating that FD is not set
+	new_fd[IN] = ERROR;
+	new_fd[OUT] = ERROR;
+	redircmd = (t_redircmd *)rcmd;
+	cmd = depth_first_open(redircmd, new_fd, redircmd); // here we get the final cmd
+	// if new_fd was set the redirection and save the old one
+	save_fd[IN] = duplicate_fd(&new_fd[IN], STDIN_FILENO);
+	save_fd[OUT] = duplicate_fd(&new_fd[OUT], STDOUT_FILENO);
+	// means an error in redirection occured
+	if (!cmd)
+		g_exit_status = 1;
+	/* root->open_fd = new_fd; */
+	runcmd(cmd, env_list, root);
+	// return the old fds back
+	if (new_fd[IN] != ERROR)
+		dup2(save_fd[IN], STDIN_FILENO);
+	if (new_fd[OUT] != ERROR)
+		dup2(save_fd[OUT], STDOUT_FILENO);
+	close(save_fd[IN]);
+	close(save_fd[OUT]);
 }
+
+

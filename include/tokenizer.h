@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:25:28 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/25 17:24:22 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/27 01:43:48 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ enum	e_open_conditions
 
 enum	e_filedescriptors
 {
+	ERROR = -1,
 	IN,
 	OUT
 };
