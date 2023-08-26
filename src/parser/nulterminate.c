@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nulterminate.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 16:27:36 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/24 17:35:21 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/26 15:28:38 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ static void	nullterminate_redir(t_cmd *cmd)
 
 	redircmd = (t_redircmd *)cmd;
 	nullterminate(redircmd->cmd);
-	if (redircmd->fp)
-		*redircmd->efp = 0;
 }
 
 static void	nullterminate_pipe(t_cmd *cmd)
