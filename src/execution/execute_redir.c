@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_redir.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:21:30 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/27 03:48:31 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/27 13:17:55 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ static int	duplicate_fd(int *new_fd, int stream)
 {
 	int	tmp_fd;
 
+	tmp_fd = 0;
 	if (*new_fd > ERROR)
 	{
 		tmp_fd = dup(stream);
@@ -105,12 +106,16 @@ void	execute_redir(t_cmd *rcmd, t_env **env_list, t_cmd *root)
 	save_fd[IN] = duplicate_fd(&new_fd[IN], STDIN_FILENO);
 	save_fd[OUT] = duplicate_fd(&new_fd[OUT], STDOUT_FILENO);
 	if (!cmd)
-		g_exit_status = 1;
+		g_exit_status = 1 << 8;
 	runcmd(cmd, env_list, root);
 	if (new_fd[IN] != ERROR)
+	{
 		dup2(save_fd[IN], STDIN_FILENO);
+		close(save_fd[IN]);
+	}
 	if (new_fd[OUT] != ERROR)
+	{
 		dup2(save_fd[OUT], STDOUT_FILENO);
-	close(save_fd[IN]);
-	close(save_fd[OUT]);
+		close(save_fd[OUT]);
+	}
 }
