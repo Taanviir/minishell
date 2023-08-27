@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:13:46 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/18 19:45:25 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/24 21:10:38 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,14 @@ static t_exec	*inc_argsize(t_exec *cmd, size_t argc)
 	return (ret);
 }
 
-// TODO needs testing
+static char	*open_quotes(char *es, char *q)
+{
+	if ((!es && (*q - 1) == '"'))
+		return (ft_strdup(" "));
+	else
+		return (remove_quotes(es, es + ft_strlen(es)));
+}
+
 /**
  * Parses a buffer to construct and return an executable command object.
  *
@@ -45,40 +52,29 @@ static t_exec	*inc_argsize(t_exec *cmd, size_t argc)
  */
 t_cmd	*parseexec(char **b_start, char *b_end, t_env **env_list)
 {
-	char	*q;		// Start of the current token
-	char	*eq;	// End of the current token
-	char	*es;	// Expanded token
-	t_exec	*cmd;	// Temporary pointer to assist in command construction.
-	t_cmd	*ret;	// Return node
+	char	*argq[3];
+	t_exec	*c;
+	t_cmd	*ret;
 
 	ret = construct_exec();
-	cmd = (t_exec *)ret;
+	c = (t_exec *)ret;
 	ret = parseredir(ret, b_start, b_end, env_list);
-	while (!peek(b_start, b_end, "|&;"))
+	while (!peek(b_start, b_end, "|"))
 	{
-		// break out if the token isn't a string
-		if (get_token(b_start, b_end, &q, &eq) != 'a')
+		if (get_token(b_start, b_end, &argq[0], &argq[1]) != 'a')
 			break ;
-		// expand the token
-		es = expand(q, eq, env_list, false);
-		// Handle special case for empty double quotes
-		if ((!es && (*q - 1) == '"'))
-			cmd->argv[cmd->argc] = ft_strdup(" ");
-		// remove quotes from the expanded token
-		else
-			cmd->argv[cmd->argc] = remove_quotes(es, es + ft_strlen(es));
-		free(es);
-		// set the end of the token
-		cmd->eargv[cmd->argc] = cmd->argv[cmd->argc] + ft_strlen(cmd->argv[cmd->argc]);
-		cmd->argc++;
-		//! increment the argument count, needs fixing
-		if (cmd->argc > (ARGC - 1))
-			cmd = inc_argsize(cmd, cmd->argc);
-		// parse subsequent redirections
+		argq[2] = expand(argq[0], argq[1], env_list, false);
+		if (!argq[2])
+			continue ;
+		c->argv[c->argc] = open_quotes(argq[2], argq[0]);
+		free(argq[2]);
+		c->eargv[c->argc] = c->argv[c->argc] + ft_strlen(c->argv[c->argc]);
+		c->argc++;
+		if (c->argc > (ARGC - 1))
+			c = inc_argsize(c, c->argc);
 		ret = parseredir(ret, b_start, b_end, env_list);
 	}
-	// terminate the argument list
-	cmd->argv[cmd->argc] = 0;
-	cmd->eargv[cmd->argc] = 0;
+	c->argv[c->argc] = 0;
+	c->eargv[c->argc] = 0;
 	return (ret);
 }

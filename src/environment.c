@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 03:46:11 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/21 12:24:56 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/24 10:03:04 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,6 @@ char	*get_env(t_env *env_list, char *name)
 		env_list = env_list->next;
 	}
 	return (NULL);
-}
-
-void	free_list(t_env *env_list)
-{
-	t_env	*temp;
-	t_env	*next;
-
-	temp = env_list;
-	while (temp)
-	{
-		next = temp->next;
-		free(temp->name);
-		free(temp->value);
-		free(temp);
-		temp = next;
-	}
 }
 
 char	**list_to_array(t_env *env_list)
@@ -59,9 +43,7 @@ char	**list_to_array(t_env *env_list)
 	temp = env_list;
 	while (temp)
 	{
-		env_array[++i] = ft_strjoin(temp->name, "=");
-		if (temp->value)
-			env_array[i] = ft_strjoin_m(env_array[i], temp->value);
+		env_array[++i] = ft_bigjoin(3, temp->name, "=", temp->value);
 		temp = temp->next;
 	}
 	env_array[++i] = NULL;
@@ -76,10 +58,9 @@ static char	*node_value(char *var, char *value)
 	{
 		if (value)
 			return (ft_itoa(ft_atoi(value) + 1));
-		else
-			return (ft_strdup("1"));
+		return (ft_strdup("1"));
 	}
-	if (!ft_strchr(var, '=') || !ft_strncmp(var, "OLDPWD", name_len(var)))
+	if (!ft_strchr(var, '='))
 		return (NULL);
 	check = ft_strchr(var, '=') + 1;
 	if (!check[0])
@@ -114,10 +95,21 @@ void	add_node_bottom(t_env **env_list, char *env_var)
 
 void	environment_init(t_env **env_list, char **envp)
 {
-	int	i;
+	int		i;
+	t_env	*temp;
 
 	(*env_list) = NULL;
 	i = -1;
 	while (envp[++i])
 		add_node_bottom(env_list, envp[i]);
+	temp = *env_list;
+	while (temp)
+	{
+		if (!ft_strncmp(temp->name, "OLDPWD", 6))
+		{
+			free(temp->value);
+			temp->value = NULL;
+		}
+		temp = temp->next;
+	}
 }

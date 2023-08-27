@@ -12,91 +12,42 @@
 
 #include "minishell.h"
 
-static void	sort_array(char **arr)
+static t_env	*find_env_node(t_env *env_list, char *name)
 {
-	int		i;
-	int		j;
-	char	*temp;
-
-	i = -1;
-	while (arr[++i])
+	while (env_list)
 	{
-		j = i;
-		while (arr[++j])
-		{
-			if (ft_strncmp(arr[i], arr[j], ft_strlen(arr[i])) > 0)
-			{
-				temp = arr[i];
-				arr[i] = arr[j];
-				arr[j] = temp;
-			}
-		}
+		if (!ft_strncmp(name, env_list->name, _name(name, env_list->name)))
+			return (env_list);
+		env_list = env_list->next;
 	}
-}
-
-static void	print_env_list(t_env **env_list)
-{
-	char	**temp;
-	int		i;
-	char	**var;
-
-	temp = list_to_array(*env_list);
-	sort_array(temp);
-	i = -1;
-	while (temp[++i])
-	{
-		var = ft_split(temp[i], '=');
-		if (ft_strncmp(temp[i], "_=", 2) && var[1])
-			printf("declare -x %s=\"%s\"\n", var[0], var[1]);
-		if (!var[1])
-			printf("declare -x %s\n", var[0]);
-		free_double_ptr((void **) var);
-	}
-	free_double_ptr((void **) temp);
-}
-
-int	name_len(char *arg)
-{
-	int	i;
-
-	i = 0;
-	while (arg[i] && arg[i] != '=')
-		i++;
-	return (i);
-}
-
-int	_name(char *var1, char *var2)
-{
-	if (name_len(var1) > name_len(var2))
-		return (name_len(var1));
-	return (name_len(var2));
+	return (NULL);
 }
 
 int	ft_export(char **argv, t_env **env_list)
 {
 	int		i;
+	int		ret;
 	t_env	*temp;
 
 	if (!argv[1])
 		return (print_env_list(env_list), 1);
 	i = 0;
+	ret = 0;
 	while (argv[++i])
 	{
-		if (check_char(argv[i][0], argv[i]))
+		if (check_var_export(argv[i], &ret))
 			continue ;
-		temp = *env_list;
-		while (temp)
+		temp = find_env_node(*env_list, argv[i]);
+		if (temp)
 		{
-			if (!ft_strncmp(argv[i], temp->name, _name(argv[i], temp->name)))
+			if (ft_strchr(argv[i], '='))
 			{
 				free(temp->value);
-				temp->value = ft_strdup(argv[i] + name_len(argv[i]) + 1);
-				break ;
+				temp->value = ft_strdup(ft_strchr(argv[i], '=') + 1);
 			}
-			temp = temp->next;
 		}
-		if (!temp)
+		else
 			add_node_bottom(env_list, argv[i]);
 	}
-	return (0);
+	return (ret);
 }

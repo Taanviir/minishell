@@ -1,23 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.h                                             :+:      :+:    :+:   */
+/*   here_doc_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/19 08:38:13 by tanas             #+#    #+#             */
-/*   Updated: 2023/07/20 11:54:51 by codespace        ###   ########.fr       */
+/*   Created: 2023/08/22 15:23:06 by tanas             #+#    #+#             */
+/*   Updated: 2023/08/22 15:24:00 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TEST_H
-# define TEST_H
+#include "minishell.h"
 
-#include "../include/minishell.h"
+void	expand_line(char **line, t_env **env_list)
+{
+	char	*temp;
 
-/* testing */
-void    print(t_cmd *root);
-void	test(t_cmd *root);
-
-
-#endif
+	temp = *line;
+	*line = expand(*line, *line + ft_strlen(*line), env_list, true);
+	free(temp);
+}

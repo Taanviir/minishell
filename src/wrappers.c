@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wrappers.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 17:39:08 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/21 12:28:56 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/27 03:49:20 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,14 @@ bool	verify_pipe(int pipe_return)
 	}
 	return (true);
 }
-// TODO wrappers for dup and close failures
+
+bool	verify_open(const int fd, const char *file_path)
+{
+	if (fd < 0)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		perror(file_path);
+		return (false);
+	}
+	return (true);
+}

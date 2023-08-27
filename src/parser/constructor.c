@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   constructor.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 21:13:29 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/19 17:11:49 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/26 15:08:33 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 /* Constructors */
-//! all constructors malloc */
 t_cmd	*construct_exec(void)
 {
 	t_exec	*cmd;
@@ -24,24 +24,20 @@ t_cmd	*construct_exec(void)
 	return ((t_cmd *)cmd);
 }
 
-t_cmd	*construct_redircmd(t_cmd *command, char *fp, char *efp, int *open_conditions)
+t_cmd	*construct_redircmd(t_cmd *cmd, char *fp, int *oc)
 {
-	t_redircmd	*cmd;
+	t_redircmd	*redircmd;
 
-	cmd = ft_calloc(sizeof(t_redircmd), 1);
-	cmd->type = REDIR;
-	cmd->cmd = command;
-	if (fp == 0) //! here_doc case
-		cmd->here_doc = *(int *)efp; // read_end of the pipe
-	else
-	{
-		cmd->fp = fp;
-		cmd->efp = efp;
-	}
-	cmd->mode = open_conditions[MODE];
-	cmd->fd = open_conditions[FD];
-	free(open_conditions);
-	return ((t_cmd *) cmd);
+	redircmd = ft_calloc(sizeof(t_redircmd), 1);
+	redircmd->type = REDIR;
+	redircmd->cmd = cmd;
+	if (fp)
+		redircmd->filename= fp;
+	redircmd->mode = oc[MODE];
+	redircmd->FD= oc[FD];
+	redircmd->permissions= oc[PERMISSIONS];
+	free(oc);
+	return ((t_cmd *) redircmd);
 }
 
 t_cmd	*construct_pipecmd(t_cmd *left, t_cmd *right)
@@ -53,25 +49,4 @@ t_cmd	*construct_pipecmd(t_cmd *left, t_cmd *right)
 	cmd->left = left;
 	cmd->right = right;
 	return ((t_cmd *) cmd);
-}
-
-t_cmd	*construct_seqcmd(t_cmd *left, t_cmd *right)
-{
-	t_seqcmd	*cmd;
-
-	cmd = ft_calloc(sizeof(t_seqcmd), 1);
-	cmd->type = SEQUENCE;
-	cmd->left = left;
-	cmd->right = right;
-	return ((t_cmd *) cmd);
-}
-
-t_cmd	*construct_bgcmd(t_cmd *cmd)
-{
-	t_bgcmd	*bgcmd;
-
-	bgcmd = ft_calloc(sizeof(t_bgcmd), 1);
-	bgcmd->type = BG;
-	bgcmd->cmd = cmd;
-	return ((t_cmd *) bgcmd);
 }

@@ -3,46 +3,43 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tanas <tanas@student.42abudhabi.ae>        +#+  +:+       +#+         #
+#    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/07/19 10:35:41 by tanas             #+#    #+#              #
-#    Updated: 2023/07/20 13:35:06 by tanas            ###   ########.fr        #
+#    Created: 2023/08/21 16:47:11 by tanas             #+#    #+#              #
+#    Updated: 2023/08/21 16:58:10 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-### COLOURS
-GREEN_B = "\033[1;32m"
-BLUE_I = "\033[3;34m"
-RESET = "\033[0m"
+### COLORS
+GREEN_B:= "\033[1;32m"
+BLUE_I:= "\033[3;34m"
+RESET:= "\033[0m"
 
-NAME = test.a
-C_FLAGS = -Wall -Wextra -Werror -g3
-INCLUDES = -I ../include/ -I ../libft/include
-LIBFT = ../libft/libft.a
+NAME:= free.a
+C_FLAGS:= -Wall -Werror -Wextra -ggdb3
+INCLUDES:= -I ../../include -I ../../libft/include
 
-SRCS = test.c print_root.c
-
-OBJS_DIR = test_objs/
-OBJS = $(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
+SRCS:= free_tree.c free_utils.c
+OBJS_DIR:= free_objs/
+OBJS:= $(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
 
 all : $(NAME)
 
 $(NAME) : $(OBJS)
 	@ar -rcs $@ $^
-	@echo $(GREEN_B)"Test.png is ready. ✅\n"$(RESET)
+	@echo $(GREEN_B)"Free is ready. ✅\n"$(RESET)
 
 $(OBJS_DIR)%.o : %.c
 	@mkdir -p $(OBJS_DIR)
-	@$(CC) $(C_FLAGS) $(INCLUDES) -c $< -o $@
-	@echo $(BLUE_I)"Compiling $<."$(RESET)
+	@$(CC) $(C_FLAGS) $(INCLUDES) -c $^ -o $@
+	@echo $(BLUE_I)"Compiling src/free/$<."$(RESET)
 
 clean :
 	@rm -rf $(OBJS_DIR)
-	@rm -f test.dot test.png
 
 fclean : clean
 	@rm -f $(NAME)
 
 re : fclean all
 
-.PHONY : all clean fclean re
+.PHONY : all fclean clean re

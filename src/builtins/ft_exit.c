@@ -24,28 +24,25 @@ static long	check_digit(bool is_negative, long result, int digit)
 	return (0);
 }
 
-static long	ft_strtol(const char *str, char **endptr)
+static long	ft_strtol(char *str, char **endptr)
 {
 	long	result;
 	bool	is_negative;
-	int		digit;
 
 	result = 0;
 	while (*str == ' ' || *str == '\t' || *str == '\n')
 		str++;
 	is_negative = (*str == '-');
-	if (*str == '-' || *str == '-')
-		str++;
+	str += (*str == '-' || *str == '+');
 	while (*str >= '0' && *str <= '9')
 	{
-		digit = *str - '0';
-		if (check_digit(is_negative, result, digit))
+		if (check_digit(is_negative, result, (*str - '0')))
 		{
 			if (endptr)
 				*endptr = (char *)str;
-			return (check_digit(is_negative, result, digit));
+			return (check_digit(is_negative, result, (*str - '0')));
 		}
-		result = result * 10 + digit;
+		result = result * 10 + (*str - '0');
 		str++;
 	}
 	if (endptr)
@@ -65,7 +62,7 @@ static int	exit_check(t_exec *exec)
 	while (exec->argv && exec->argv[++i])
 	{
 		num = ft_strtol(exec->argv[i], &endptr);
-		if (*endptr != '\0' || (num == LONG_MIN || num == LONG_MAX))
+		if (*endptr != '\0' || (num < LONG_MIN || num > LONG_MAX))
 			return (print_error("numeric argument required", "exit: "), 255);
 	}
 	if (exec->argc == 2 && ft_strncmp(exec->argv[1], "255", 3) > 0)
@@ -86,7 +83,10 @@ int	ft_exit(t_cmd *cmd, t_env **env_list)
 	{
 		exec = (t_exec *) cmd;
 		if (exec->argc > 2)
-			return (printf("minishell: exit: too many arguments\n"), 1);
+		{
+			ft_putendl_fd("exit", 1);
+			return (print_error("too many arguments", "exit: "), 1);
+		}
 		g_exit_status = exit_check((t_exec *) cmd);
 	}
 	free_tree(cmd);

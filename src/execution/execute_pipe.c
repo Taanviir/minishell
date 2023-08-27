@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pipe.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 21:48:42 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/21 12:29:09 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/23 00:49:58 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,13 @@ static void	close_pipe_ends(int *pipe_fds)
 	close(pipe_fds[1]);
 }
 
+static void	free_stuff(t_cmd *cmd, t_env *env_list)
+{
+	close_fds(cmd);
+	free_tree(cmd);
+	free_list(env_list);
+}
+
 /**
  * Executes a pipe node, connecting the standard outputs and inputs
  * of two commands.
@@ -34,41 +41,31 @@ static void	close_pipe_ends(int *pipe_fds)
  * @param cmd		The pipe command structure.
  * @param env_list	Linked list of environment variables.
  */
-void	execute_pipe(t_cmd *cmd, t_env **env_list)
+void	execute_pipe(t_cmd *cmd, t_env **env_list, t_cmd *root)
 {
 	t_pipecmd	*pipecmd;
 	int			pipe_fds[2];
 
-	// Typecast the cmd structure to access pipe-specific parameters.
 	pipecmd = (t_pipecmd *)cmd;
-	// Create a pipe and check for success
 	if (!verify_pipe(pipe(pipe_fds)))
 		return ;
-	// Fork for the left side of the pipe.
 	if (!wfork())
 	{
 		dup2(pipe_fds[1], STDOUT_FILENO);
 		close_pipe_ends(pipe_fds);
-		runcmd(pipecmd->left, env_list);
-		free_tree(cmd);
-		free_list(*env_list);
+		runcmd(pipecmd->left, env_list, root);
+		free_stuff(root, *env_list);
 		exit(WEXITSTATUS(g_exit_status));
 	}
-	// Fork for the right side of the pipe.
 	else if (!wfork())
 	{
 		dup2(pipe_fds[0], STDIN_FILENO);
 		close_pipe_ends(pipe_fds);
-		runcmd(pipecmd->right, env_list);
-		free_tree(cmd);
-		free_list(*env_list);
+		runcmd(pipecmd->right, env_list, root);
+		free_stuff(root, *env_list);
 		exit(WEXITSTATUS(g_exit_status));
 	}
 	close_pipe_ends(pipe_fds);
 	wait(&g_exit_status);
 	wait(&g_exit_status);
 }
-
-
-
-

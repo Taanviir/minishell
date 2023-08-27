@@ -22,10 +22,9 @@ static void	update_env(t_env **env_list, char *old_path)
 	if (!cwd)
 		return ;
 	if (old_path)
-		line = ft_bigjoin(5, "export", " OLDPWD=", old_path, " PWD=", cwd);
+		line = ft_bigjoin(4, "export OLDPWD=", old_path, " PWD=", cwd);
 	else
 		line = ft_bigjoin(2, "export OLDPWD= PWD=", cwd);
-	printf("line: %s\n", line);
 	argv = ft_split(line, ' ');
 	ft_export(argv, env_list);
 	free_double_ptr((void **) argv);
@@ -65,7 +64,6 @@ static int	change_path(t_env **env_list, char *path, char *old_path)
 		update_env(env_list, old_path);
 		return (0);
 	}
-	printf("minishell: cd: %s: %s\n", path, strerror(ENOENT));
 	return (1);
 }
 

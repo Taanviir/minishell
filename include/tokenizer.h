@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:25:28 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/19 16:55:59 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/27 01:43:48 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,11 @@
 # define EXEC 0
 # define REDIR 1
 # define PIPE 2
-# define SEQUENCE 3
-# define BG 4
 
 typedef struct s_cmd
 {
 	int	type;
+	int	open_fd;
 }	t_cmd;
 
 typedef struct s_exec
@@ -34,15 +33,35 @@ typedef struct s_exec
 	char	**eargv;
 }	t_exec;
 
+/* Redirections */
+enum	e_open_conditions
+{
+	MODE,
+	FD,
+	PERMISSIONS
+};
+
+enum	e_filedescriptors
+{
+	ERROR = -1,
+	IN,
+	OUT
+};
+
+enum	e_pipe
+{
+	READ,
+	WRITE
+};
 typedef struct s_redircmd
 {
 	int		type;
 	t_cmd	*cmd;
-	char	*fp;
-	char	*efp;
+	char	*filename;
 	int		here_doc;
-	int		mode;
-	int		fd;
+	int		mode; // read/write/append
+	int		FD;
+	int		permissions;
 }	t_redircmd;
 
 typedef struct s_pipecmd
@@ -52,52 +71,43 @@ typedef struct s_pipecmd
 	t_cmd	*right;
 }	t_pipecmd;
 
-typedef struct s_seqcmd
-{
-	int		type;
-	t_cmd	*left;
-	t_cmd	*right;
-}	t_seqcmd;
-
-typedef struct s_bgcmd
-{
-	int		type;
-	t_cmd	*cmd;
-}	t_bgcmd;
-
 typedef struct s_env
 {
 	char			*name;
 	char			*value;
 	struct s_env	*next;
 }	t_env;
-/* open conditions */
-enum e_open_conditions {
-	MODE,
-	FD
+
+
+
+enum e_quotes
+{
+	D,
+	S
 };
 
 /* tokenizers */
-char	get_token(char **buffer_start, char *buffer_end, char **token_start, char **token_end);
+char	get_token(char **bs, char *be, char **ts, char **te);
 char	*expand(char *q, char *eq, t_env **env_list, bool here_doc);
 int		peek(char **b_start, char *b_end, const char *str);
 /* parsers */
 t_cmd	*parseredir(t_cmd *cmd, char **b_start, char *b_end, t_env **env_list);
 t_cmd	*parseexec(char **b_start, char *b_end, t_env **env_list);
 t_cmd	*parsecmd(char *b_start, t_env **env_list);
+t_cmd	*nullterminate(t_cmd *cmd);
 /* constructors */
 t_cmd	*construct_exec(void);
-t_cmd	*construct_redircmd(t_cmd *command, char *fp, char *efp, int *open_conditions);
+t_cmd	*construct_redircmd(t_cmd *cmd, char *filepath, int *oc);
 t_cmd	*construct_pipecmd(t_cmd *left, t_cmd *right);
-t_cmd	*construct_seqcmd(t_cmd *left, t_cmd *right);
-t_cmd	*construct_bgcmd(t_cmd *cmd);
 /* here_document */
-void	here_doc(const int fd, char *del, t_env **env_list);
+int		here_doc(const int fd, char *del, t_env **env_list);
 char	*get_delimiter(char *q, const char *eq);
+void	expand_line(char **line, t_env **env_list);
+int		longer(int lvar_s, char *env_var);
 
 // execution
-void	execute_cmd(t_cmd *cmd, t_env **env_list);
-void	execute_redir(t_cmd *cmd, t_env **env_list);
-void	execute_pipe(t_cmd *cmd, t_env **env_list);
+void	execute_cmd(t_cmd *cmd, t_env **env_list, t_cmd *root);
+void	execute_redir(t_cmd *cmd, t_env **env_list, t_cmd *root);
+void	execute_pipe(t_cmd *cmd, t_env **env_list, t_cmd *root);
 
 #endif
