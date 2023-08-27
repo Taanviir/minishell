@@ -56,17 +56,6 @@ static char	*expand_filename(char *q, char *eq, t_env **env_list)
 	return (exp_fn);
 }
 
-static t_cmd	*h(int redirection, t_cmd *cmd, char *exp_fn, char *end_fn)
-{
-	if (redirection == '<')
-		return (c_rdr(cmd, exp_fn, end_fn, so(0, 0)));
-	else if (redirection == '>')
-		return (c_rdr(cmd, exp_fn, end_fn, so(1537, 1)));
-	else if (redirection == '+')
-		return (c_rdr(cmd, exp_fn, end_fn, so(521, 1)));
-	return (NULL);
-}
-
 t_cmd	*parseredir(t_cmd *cmd, char **b_start, char *b_end, t_env **env_list)
 {
 	int		redirection;
