@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:25:28 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/24 20:49:54 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/27 01:43:48 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,35 @@ typedef struct s_exec
 	char	**eargv;
 }	t_exec;
 
+/* Redirections */
+enum	e_open_conditions
+{
+	MODE,
+	FD,
+	PERMISSIONS
+};
+
+enum	e_filedescriptors
+{
+	ERROR = -1,
+	IN,
+	OUT
+};
+
+enum	e_pipe
+{
+	READ,
+	WRITE
+};
 typedef struct s_redircmd
 {
 	int		type;
 	t_cmd	*cmd;
-	char	*fp;
-	char	*efp;
+	char	*filename;
 	int		here_doc;
-	int		mode;
-	int		fd;
+	int		mode; // read/write/append
+	int		FD;
+	int		permissions;
 }	t_redircmd;
 
 typedef struct s_pipecmd
@@ -58,12 +78,7 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
-/* open conditions */
-enum e_open_conditions
-{
-	MODE,
-	FD
-};
+
 
 enum e_quotes
 {
@@ -82,7 +97,7 @@ t_cmd	*parsecmd(char *b_start, t_env **env_list);
 t_cmd	*nullterminate(t_cmd *cmd);
 /* constructors */
 t_cmd	*construct_exec(void);
-t_cmd	*c_rdr(t_cmd *cmd, char *fp, char *efp, int *oc);
+t_cmd	*construct_redircmd(t_cmd *cmd, char *filepath, int *oc);
 t_cmd	*construct_pipecmd(t_cmd *left, t_cmd *right);
 /* here_document */
 int		here_doc(const int fd, char *del, t_env **env_list);

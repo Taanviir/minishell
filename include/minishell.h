@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/24 20:47:37 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/27 03:49:15 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void	close_fds(t_cmd *root);
 
 // WRAPPER FUNCTIONS
 bool	verify_pipe(int pipe_return);
+bool	verify_open(const int fd, const char *file_path);
 int		wfork(void);
 
 // FREE FUNCTIONS

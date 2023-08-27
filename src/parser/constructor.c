@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   constructor.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 21:13:29 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/24 20:49:54 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/26 15:08:33 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,22 +24,18 @@ t_cmd	*construct_exec(void)
 	return ((t_cmd *)cmd);
 }
 
-t_cmd	*c_rdr(t_cmd *cmd, char *fp, char *efp, int *oc)
+t_cmd	*construct_redircmd(t_cmd *cmd, char *fp, int *oc)
 {
 	t_redircmd	*redircmd;
 
 	redircmd = ft_calloc(sizeof(t_redircmd), 1);
 	redircmd->type = REDIR;
 	redircmd->cmd = cmd;
-	if (fp == 0)
-		redircmd->here_doc = *(int *)efp;
-	else
-	{
-		redircmd->fp = fp;
-		redircmd->efp = efp;
-	}
+	if (fp)
+		redircmd->filename= fp;
 	redircmd->mode = oc[MODE];
-	redircmd->fd = oc[FD];
+	redircmd->FD= oc[FD];
+	redircmd->permissions= oc[PERMISSIONS];
 	free(oc);
 	return ((t_cmd *) redircmd);
 }

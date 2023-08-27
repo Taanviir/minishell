@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_redir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 19:01:49 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/24 21:02:18 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/25 16:52:47by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,15 @@ static t_cmd	*token_error(char *q, char *eq)
 	return (NULL);
 }
 
-static int	*so(int mode, int fd)
+static int	*set_open(int mode, int fd, int permissions)
 {
 	int		*open_conditions;
 
-	open_conditions = malloc(sizeof(int) * 2);
+	// contains the mode/fd/permissions
+	open_conditions = malloc(sizeof(int) * 3);
 	open_conditions[MODE] = mode;
 	open_conditions[FD] = fd;
+	open_conditions[PERMISSIONS] = permissions;
 	return (open_conditions);
 }
 
@@ -68,28 +70,32 @@ static t_cmd	*h(int redirection, t_cmd *cmd, char *exp_fn, char *end_fn)
 t_cmd	*parseredir(t_cmd *cmd, char **b_start, char *b_end, t_env **env_list)
 {
 	int		redirection;
-	int		hc_pipe[2];
-	char	*argq[2];
-	char	*file[2];
+	int		pipe_fd[2];
+	char	*q;
+	char	*eq;
+	char	*expanded_filename;
 
 	while (peek(b_start, b_end, "<>"))
 	{
 		redirection = get_token(b_start, b_end, 0, 0);
-		if (redirection == '-' && verify_pipe(pipe(hc_pipe)))
+		if (redirection == '-' && verify_pipe(pipe(pipe_fd)))
 		{
-			cmd = c_rdr(cmd, 0, (char *)&hc_pipe[0], so(0, 0));
-			get_token(b_start, b_end, &argq[0], &argq[1]);
-			here_doc(hc_pipe[1], get_delimiter(argq[0], argq[1]), env_list);
-			close(hc_pipe[1]);
+			cmd = construct_redircmd(cmd, 0, set_open(O_RDONLY, STDIN_FILENO, 0));
+			((t_redircmd *)cmd)->here_doc = pipe_fd[READ];
+			get_token(b_start, b_end, &q, &eq); // finding the delimter
+			here_doc(pipe_fd[WRITE], get_delimiter(q, eq), env_list);
+			close(pipe_fd[WRITE]);
 		}
-		else if (get_token(b_start, b_end, &argq[0], &argq[1]) != 'a')
-			return (token_error(argq[0], argq[1]));
+		else if (get_token(b_start, b_end, &q, &eq) == 'a')
+			expanded_filename = expand_filename(q, eq, env_list);
 		else
-		{
-			file[0] = expand_filename(argq[0], argq[1], env_list);
-			file[1] = file[0] + ft_strlen(file[0]);
-		}
-		cmd = h(redirection, cmd, file[0], file[1]);
+			return (token_error(q, eq));
+		if (redirection == '<') // input case doesn't change permissions
+			cmd = construct_redircmd(cmd, expanded_filename, set_open(O_RDONLY, STDIN_FILENO, 0));
+		else if (redirection == '>')
+			cmd = construct_redircmd(cmd, expanded_filename, set_open(O_WRONLY | O_CREAT | O_TRUNC, STDOUT_FILENO, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH));
+		else if (redirection == '+')
+			cmd = construct_redircmd(cmd, expanded_filename, set_open(O_WRONLY | O_CREAT | O_APPEND, STDOUT_FILENO, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH));
 	}
 	return (cmd);
 }

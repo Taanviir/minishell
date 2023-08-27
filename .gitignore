@@ -64,3 +64,6 @@ compile_commands.json
 # vg_rlsuppressions.supp
 .cache/
 *.txt
+
+#tester
+minishell_tester/
