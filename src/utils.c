@@ -47,3 +47,26 @@ void	close_fds(t_cmd *root)
 	close(2);
 	close(root->open_fd);
 }
+
+/**
+ * Compares the lengths of the provided variable and environment variable.
+ * The function returns the length of the longer of the two.
+ *
+ * @param lvar_s: The length of the provided variable.
+ * @param env_var: The environment variable string in the format "KEY=VALUE".
+ *
+ * @return: The length of the longer of the two strings (either lvar_s or the
+ * length before '=' in env_var).
+ */
+int	longer(int lvar_s, char *env_var)
+{
+	int	i;
+
+	i = 0;
+	while (env_var[i] != '=')
+		i++;
+	if (i > lvar_s)
+		return (i);
+	else
+		return (lvar_s);
+}

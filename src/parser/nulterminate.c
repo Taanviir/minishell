@@ -7,6 +7,7 @@
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 16:27:36 by tanas             #+#    #+#             */
 /*   Updated: 2023/08/26 15:28:38 by sabdelra         ###   ########.fr       */
+
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +29,6 @@ static void	nullterminate_pipe(t_cmd *cmd)
 	nullterminate(pipecmd->left);
 	nullterminate(pipecmd->right);
 }
-
 
 typedef void	(*t_nullterm)(t_cmd *cmd);
 

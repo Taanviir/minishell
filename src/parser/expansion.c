@@ -3,37 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:20:49 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/23 03:01:42 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/24 20:31:56 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/**
- * Compares the lengths of the provided variable and environment variable.
- * The function returns the length of the longer of the two.
- *
- * @param lvar_s: The length of the provided variable.
- * @param env_var: The environment variable string in the format "KEY=VALUE".
- *
- * @return: The length of the longer of the two strings (either lvar_s or the
- * length before '=' in env_var).
- */
-static int	longer(int lvar_s, char *env_var)
-{
-	int	i;
-
-	i = 0;
-	while (env_var[i] != '=')
-		i++;
-	if (i > lvar_s)
-		return (i);
-	else
-		return (lvar_s);
-}
 
 /**
  * Substitutes a given variable (found after a '$' character) with its
@@ -85,12 +62,13 @@ static void	handle_single_quotes(char **q, int *s_quote)
 		*s_quote = 0;
 }
 
-static void	handle_double_quotes(char **q, int *d_quote)
+static int	handle_double_quotes(char **q, int *d_quote)
 {
 	if (!*d_quote && **q == '"')
 		*d_quote = 1;
 	else if (*d_quote && **q == '"')
 		*d_quote = 0;
+	return (1);
 }
 
 static void	expand_env_var(char **q, char **es, char **env_array)
@@ -123,20 +101,18 @@ char	*expand(char *q, char *eq, t_env **env_list, bool here_doc)
 	char	*es;
 	char	buffer[2];
 	char	**env_array;
-	int		s_quote;
-	int		d_quote;
+	int		qts[2];
 
 	buffer[1] = 0;
 	es = NULL;
 	env_array = list_to_array(*env_list);
-	s_quote = 0;
-	d_quote = 0;
+	qts[D] = 0;
+	qts[S] = 0;
 	while (q < eq)
 	{
-		handle_double_quotes(&q, &d_quote);
-		if (!d_quote)
-			handle_single_quotes(&q, &s_quote);
-		if ((!s_quote || here_doc) && *q == '$' && !ft_is_whitespace(*(q + 1)))
+		if (handle_double_quotes(&q, &qts[D]) && !qts[D])
+			handle_single_quotes(&q, &qts[S]);
+		if ((!qts[S] || here_doc) && *q == '$' && !ft_is_whitespace(*(q + 1)))
 			expand_env_var(&q, &es, env_array);
 		else
 		{

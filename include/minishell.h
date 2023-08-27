@@ -82,5 +82,6 @@ int		wfork(void);
 // FREE FUNCTIONS
 void	free_cmd(t_cmd *cmd);
 void	free_tree(t_cmd *cmd);
+void	free_two(char *str1, char *str2);
 
 #endif

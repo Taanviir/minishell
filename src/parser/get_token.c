@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_token.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 03:02:01 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/24 17:34:00 by tanas            ###   ########.fr       */
+/*   Updated: 2023/08/24 20:35:45 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,14 @@ static char	is_quote(char c)
 	if (c == '\'' || c == '\"')
 		return (c);
 	return (0);
+}
+
+static void	handle_opr(char **scan, int *in_quote)
+{
+	if (!*in_quote)
+		*in_quote = **scan;
+	else if (*in_quote == **scan)
+		*in_quote = 0;
 }
 
 /**
@@ -60,13 +68,9 @@ static char	find_type(char **scan)
 	while (**scan)
 	{
 		if (is_quote(**scan))
-		{
-			if (!in_quote)
-				in_quote = **scan;
-			else if (in_quote == **scan)
-				in_quote = 0;
-		}
-		if (!in_quote && (!scan[0][1] || ft_is_whitespace(scan[0][1]) || is_opr(scan[0][1])))
+			handle_opr(scan, &in_quote);
+		if (!in_quote && (!scan[0][1]
+			|| ft_is_whitespace(scan[0][1]) || is_opr(scan[0][1])))
 			break ;
 		*scan += 1;
 	}

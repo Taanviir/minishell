@@ -19,7 +19,6 @@
 # define REDIR 1
 # define PIPE 2
 
-
 typedef struct s_cmd
 {
 	int	type;
@@ -81,6 +80,12 @@ typedef struct s_env
 
 
 
+enum e_quotes
+{
+	D,
+	S
+};
+
 /* tokenizers */
 char	get_token(char **bs, char *be, char **ts, char **te);
 char	*expand(char *q, char *eq, t_env **env_list, bool here_doc);
@@ -98,6 +103,7 @@ t_cmd	*construct_pipecmd(t_cmd *left, t_cmd *right);
 int		here_doc(const int fd, char *del, t_env **env_list);
 char	*get_delimiter(char *q, const char *eq);
 void	expand_line(char **line, t_env **env_list);
+int		longer(int lvar_s, char *env_var);
 
 // execution
 void	execute_cmd(t_cmd *cmd, t_env **env_list, t_cmd *root);

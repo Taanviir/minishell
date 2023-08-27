@@ -91,7 +91,7 @@ Can be either a line break or an escape character
 Preserves the meaning of all characters until the next `'` is encountered. A single quote cannot occur within single quotes
 
 ## valgrind alias
-alias minival='valgrind --show-leak-kinds=all --track-fds=yes --leak-check=full --suppressions=vg_rlsuppressions.supp'
+alias minival='valgrind --show-leak-kinds=all --leak-check=full --suppressions=vg_rlsuppressions.supp'
 
 
 

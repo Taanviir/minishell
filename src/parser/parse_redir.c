@@ -45,15 +45,26 @@ static int	*set_open(int mode, int fd, int permissions)
 
 static char	*expand_filename(char *q, char *eq, t_env **env_list)
 {
-	char	*expanded_filename;
-	char	*end_of_filename;
+	char	*exp_fn;
+	char	*end_fn;
 	char	*tmp_filename;
 
 	tmp_filename = expand(q, eq, env_list, false);
-	end_of_filename = tmp_filename + ft_strlen(tmp_filename);
-	expanded_filename = remove_quotes(tmp_filename, end_of_filename);
+	end_fn = tmp_filename + ft_strlen(tmp_filename);
+	exp_fn = remove_quotes(tmp_filename, end_fn);
 	free(tmp_filename);
-	return (expanded_filename);
+	return (exp_fn);
+}
+
+static t_cmd	*h(int redirection, t_cmd *cmd, char *exp_fn, char *end_fn)
+{
+	if (redirection == '<')
+		return (c_rdr(cmd, exp_fn, end_fn, so(0, 0)));
+	else if (redirection == '>')
+		return (c_rdr(cmd, exp_fn, end_fn, so(1537, 1)));
+	else if (redirection == '+')
+		return (c_rdr(cmd, exp_fn, end_fn, so(521, 1)));
+	return (NULL);
 }
 
 t_cmd	*parseredir(t_cmd *cmd, char **b_start, char *b_end, t_env **env_list)
@@ -88,5 +99,3 @@ t_cmd	*parseredir(t_cmd *cmd, char **b_start, char *b_end, t_env **env_list)
 	}
 	return (cmd);
 }
-
-

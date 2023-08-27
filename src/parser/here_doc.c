@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 17:52:34 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/23 20:25:48 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/08/24 20:48:11 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,32 +115,12 @@ char	*get_delimiter(char *q, const char *eq)
 	return (del);
 }
 
-/**
- * Implements the here document ("here-doc") feature for the shell.
- * Reads input lines until the delimiter is matched, performs variable expansion
- * (if the delimiter isn't quoted), and writes to the specified file descriptor.
- *
- * @param pipe_write  File descriptor to which the function writes the input.
- * @param del         Delimiter string used to terminate input.
- * @param env_list    Environment variables for potential expansion.
- */
-int	here_doc(const int pipe_write, char *del, t_env **env_list)
+static void	handle_dumb(char *quote, char *del, t_env **env_list, int pw)
 {
-	char	quote;
 	char	*line;
 	char	*buffer;
 	char	*temp;
 
-	quote = __is_quoted(del, (del + ft_strlen(del)));
-	if (quote)
-	{
-		temp = del;
-		del = remove_quotes(del, del + ft_strlen(del));
-		free(temp);
-	}
-	if (!*del && !print_error(DELI_ERROR, NULL))
-		return (free(del), 0);
-	signal(SIGINT, signal_handler_heredoc);
 	line = NULL;
 	buffer = NULL;
 	while (g_exit_status != QUIT_HEREDOC)
@@ -153,17 +133,42 @@ int	here_doc(const int pipe_write, char *del, t_env **env_list)
 			buffer = ft_strjoin_m(buffer, "\n");
 			continue ;
 		}
-		if (!quote)
+		if (!*quote)
 			expand_line(&line, env_list);
 		temp = buffer;
 		buffer = ft_bigjoin(3, buffer, line, "\n");
-		free(temp);
-		free(line);
+		free_two(temp, line);
 	}
 	if (buffer && g_exit_status != QUIT_HEREDOC)
-		ft_putstr_fd(buffer, pipe_write);
-	free(buffer);
-	free(line);
+		ft_putstr_fd(buffer, pw);
+	free_two(buffer, line);
+}
+
+/**
+ * Implements the here document ("here-doc") feature for the shell.
+ * Reads input lines until the delimiter is matched, performs variable expansion
+ * (if the delimiter isn't quoted), and writes to the specified file descriptor.
+ *
+ * @param pipe_write  File descriptor to which the function writes the input.
+ * @param del         Delimiter string used to terminate input.
+ * @param env_list    Environment variables for potential expansion.
+ */
+int	here_doc(const int pipe_write, char *del, t_env **env_list)
+{
+	char	quote;
+	char	*temp;
+
+	quote = __is_quoted(del, (del + ft_strlen(del)));
+	if (quote)
+	{
+		temp = del;
+		del = remove_quotes(del, del + ft_strlen(del));
+		free(temp);
+	}
+	if (!*del && !print_error(DELI_ERROR, NULL))
+		return (free(del), 0);
+	signal(SIGINT, signal_handler_heredoc);
+	handle_dumb(&quote, del, env_list, pipe_write);
 	free(del);
 	return (0);
 }
