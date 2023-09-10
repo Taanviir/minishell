@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:25:28 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/27 01:43:48 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/09/10 13:39:40 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ typedef struct s_redircmd
 	t_cmd	*cmd;
 	char	*filename;
 	int		here_doc;
-	int		mode; // read/write/append
+	int		mode;
 	int		FD;
 	int		permissions;
 }	t_redircmd;
@@ -77,8 +77,6 @@ typedef struct s_env
 	char			*value;
 	struct s_env	*next;
 }	t_env;
-
-
 
 enum e_quotes
 {

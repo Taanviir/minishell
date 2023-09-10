@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_redir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/18 19:01:49 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/25 16:52:47by sabdelra         ###   ########.fr       */
+/*   Created: 2023/09/10 13:41:32 by tanas             #+#    #+#             */
+/*   Updated: 2023/09/10 14:35:23 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,8 @@ static t_cmd	*token_error(char *q, char *eq)
 
 static int	*set_open(int mode, int fd, int permissions)
 {
-	int		*open_conditions;
+	int	*open_conditions;
 
-	// contains the mode/fd/permissions
 	open_conditions = malloc(sizeof(int) * 3);
 	open_conditions[MODE] = mode;
 	open_conditions[FD] = fd;
@@ -71,7 +70,7 @@ t_cmd	*parseredir(t_cmd *cmd, char **b_start, char *b_end, t_env **env_list)
 		{
 			cmd = construct_redircmd(cmd, 0, set_open(O_RDONLY, STDIN_FILENO, 0));
 			((t_redircmd *)cmd)->here_doc = pipe_fd[READ];
-			get_token(b_start, b_end, &q, &eq); // finding the delimter
+			get_token(b_start, b_end, &q, &eq);
 			here_doc(pipe_fd[WRITE], get_delimiter(q, eq), env_list);
 			close(pipe_fd[WRITE]);
 		}
@@ -79,7 +78,7 @@ t_cmd	*parseredir(t_cmd *cmd, char **b_start, char *b_end, t_env **env_list)
 			expanded_filename = expand_filename(q, eq, env_list);
 		else
 			return (token_error(q, eq));
-		if (redirection == '<') // input case doesn't change permissions
+		if (redirection == '<')
 			cmd = construct_redircmd(cmd, expanded_filename, set_open(O_RDONLY, STDIN_FILENO, 0));
 		else if (redirection == '>')
 			cmd = construct_redircmd(cmd, expanded_filename, set_open(O_WRONLY | O_CREAT | O_TRUNC, STDOUT_FILENO, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH));

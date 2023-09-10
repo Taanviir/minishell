@@ -6,15 +6,13 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:21:30 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/27 13:17:55 by tanas            ###   ########.fr       */
+/*   Updated: 2023/09/10 13:40:46 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // Handle file open failures.
-
-
 static bool	input_redirection(t_redircmd *rcmd, int *fd)
 {
 	int	tmp_fd;

@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 02:59:57 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/24 18:09:29 by tanas            ###   ########.fr       */
+/*   Updated: 2023/09/10 13:35:46 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,5 @@ int	main(int argc, char **argv __attribute__((unused)), char **envp)
 		free_tree(runcmd(root, &env_list, root));
 		free(line);
 	}
-	free_list(env_list);
-	rl_clear_history();
 	return (EXIT_SUCCESS);
 }

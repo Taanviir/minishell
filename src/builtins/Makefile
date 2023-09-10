@@ -6,14 +6,14 @@
 #    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/16 22:46:50 by tanas             #+#    #+#              #
-#    Updated: 2023/08/24 10:07:22 by tanas            ###   ########.fr        #
+#    Updated: 2023/09/10 14:13:08 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 ### COLORS
 GREEN_B:= "\033[1;32m"
 BLUE_I:= "\033[3;34m"
-COLOUR_RESET:= "\033[0m"
+RESET:= "\033[0m"
 
 NAME:= builtins.a
 C_FLAGS:= -Wall -Werror -Wextra -ggdb3
@@ -28,12 +28,12 @@ all: $(NAME)
 
 $(NAME) : $(OBJS)
 	@ar -rcs $@ $^
-	@echo $(GREEN_B)"Builtins is ready. ✅\n"$(COLOUR_RESET)
+	@echo $(GREEN_B)"Builtins is ready. ✅\n"$(RESET)
 
 $(OBJS_DIR)%.o: %.c
 	@mkdir -p $(OBJS_DIR)
 	@$(CC) $(C_FLAGS) $(INCLUDES) -c $^ -o $@
-	@echo $(BLUE_I)"Compiling src/builtins/$<."$(COLOUR_RESET)
+	@echo $(BLUE_I)"Compiling src/builtins/$<."$(RESET)
 
 clean:
 	@rm -rf $(OBJS_DIR)
