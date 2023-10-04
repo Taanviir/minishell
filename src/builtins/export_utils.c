@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 10:07:28 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/24 13:27:12 by tanas            ###   ########.fr       */
+/*   Updated: 2023/10/04 22:35:23 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,10 @@ void	print_env_list(t_env **env_list)
 	while (temp)
 	{
 		if (!ft_strncmp(temp->name, "_", get_len(temp->name, "_")))
+		{
 			temp = temp->next;
+			continue ;
+		}
 		if (temp->value)
 			print_export(temp->name, temp->value);
 		else

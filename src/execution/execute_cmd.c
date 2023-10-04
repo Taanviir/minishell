@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:20:43 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/24 20:14:29 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/10/04 19:33:25 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void	execute_cmd(t_cmd *cmd, t_env **env_list, t_cmd *root)
 	{
 		env_array = list_to_array(*env_list);
 		full_path = get_full_path(program_name, env_list);
-		if ((execve(program_name, execcmd->argv, env_array) && !full_path)
+		if ((execve(program_name, execcmd->argv, env_array) && !full_path) //! executes a program in teh same directory without ./
 			|| (execve(full_path, execcmd->argv, env_array)))
 			write_exec_error(program_name, &g_exit_status);
 		free(full_path);
