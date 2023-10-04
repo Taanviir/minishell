@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 02:59:57 by tanas             #+#    #+#             */
-/*   Updated: 2023/09/10 13:35:46 by tanas            ###   ########.fr       */
+/*   Updated: 2023/10/04 19:14:39 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ t_cmd	*get_cmd(char *line, t_env **env_list)
 	return (root);
 }
 
-//TODO add line to _ VAR
 int	main(int argc, char **argv __attribute__((unused)), char **envp)
 {
 	char	*line;

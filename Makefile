@@ -55,6 +55,9 @@ run : $(NAME)
 	clear
 	./$(NAME)
 
+leaks :
+	valgrind --show-leak-kinds=all --leak-check=full --suppressions=vg_rlsuppressions.supp ./$(NAME)
+
 libraries :
 	@make -sC src/parser
 	@make -sC src/builtins

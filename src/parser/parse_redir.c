@@ -6,13 +6,13 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 13:41:32 by tanas             #+#    #+#             */
-/*   Updated: 2023/10/04 14:28:32 by tanas            ###   ########.fr       */
+/*   Updated: 2023/10/04 19:23:16 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/**
+/*
  * checking for syntax error in case next token is not a file name,
  * however bash error message takes the last token as the error token,
  * so this is not perfect, this takes the token immediately after redirection
@@ -58,11 +58,15 @@ static char	*expand_filename(char *q, char *eq, t_env **env_list)
 t_cmd	*commence_redirection(t_cmd *cmd, int redirection, char *full_fn)
 {
 	if (redirection == '<')
-		cmd = (construct_redircmd(cmd, full_fn, set_open(O_RDONLY, 0, 0)));
+		cmd = construct_redircmd(cmd, full_fn, set_open(O_RDONLY, 0, 0));
 	else if (redirection == '>')
-		cmd = (construct_redircmd(cmd, full_fn, set_open(1537, 1, 436)));
+		cmd = construct_redircmd(cmd, full_fn,
+				set_open(O_WRONLY | O_CREAT | O_TRUNC, STDOUT_FILENO,
+					S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH));
 	else if (redirection == '+')
-		cmd = (construct_redircmd(cmd, full_fn, set_open(521, 1, 436)));
+		cmd = construct_redircmd(cmd, full_fn,
+				set_open(O_WRONLY | O_CREAT | O_APPEND, STDOUT_FILENO,
+					S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH));
 	return (cmd);
 }
 
