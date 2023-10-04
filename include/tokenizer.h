@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:25:28 by tanas             #+#    #+#             */
-/*   Updated: 2023/09/10 13:39:40 by tanas            ###   ########.fr       */
+/*   Updated: 2023/10/04 14:28:30 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ enum	e_pipe
 	READ,
 	WRITE
 };
+
 typedef struct s_redircmd
 {
 	int		type;
@@ -60,7 +61,7 @@ typedef struct s_redircmd
 	char	*filename;
 	int		here_doc;
 	int		mode;
-	int		FD;
+	int		fd;
 	int		permissions;
 }	t_redircmd;
 

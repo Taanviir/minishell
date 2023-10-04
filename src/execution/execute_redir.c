@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:21:30 by tanas             #+#    #+#             */
-/*   Updated: 2023/09/10 13:40:46 by tanas            ###   ########.fr       */
+/*   Updated: 2023/10/04 13:59:25 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,12 @@ t_cmd	*depth_first_open(t_redircmd *rcmd, int *new_fd, t_redircmd *top)
 		cmd = depth_first_open((t_redircmd *)rcmd->cmd, new_fd, top);
 	if (!cmd)
 		return (NULL);
-	else if (rcmd->FD == IN)
+	else if (rcmd->fd == IN)
 	{
 		if (!input_redirection(rcmd, &new_fd[IN]))
 			return (NULL);
 	}
-	else if (rcmd->FD == OUT)
+	else if (rcmd->fd == OUT)
 	{
 		if (!output_redirection(rcmd, &new_fd[OUT]))
 			return (NULL);

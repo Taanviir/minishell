@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 21:13:29 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/09/10 13:41:09 by tanas            ###   ########.fr       */
+/*   Updated: 2023/10/04 13:59:05 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_cmd	*construct_redircmd(t_cmd *cmd, char *fp, int *oc)
 	if (fp)
 		redircmd->filename = fp;
 	redircmd->mode = oc[MODE];
-	redircmd->FD = oc[FD];
+	redircmd->fd = oc[FD];
 	redircmd->permissions = oc[PERMISSIONS];
 	free(oc);
 	return ((t_cmd *) redircmd);

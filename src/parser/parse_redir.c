@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 13:41:32 by tanas             #+#    #+#             */
-/*   Updated: 2023/09/10 14:35:23 by tanas            ###   ########.fr       */
+/*   Updated: 2023/10/04 14:28:32 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,35 +55,41 @@ static char	*expand_filename(char *q, char *eq, t_env **env_list)
 	return (exp_fn);
 }
 
+t_cmd	*commence_redirection(t_cmd *cmd, int redirection, char *full_fn)
+{
+	if (redirection == '<')
+		cmd = (construct_redircmd(cmd, full_fn, set_open(O_RDONLY, 0, 0)));
+	else if (redirection == '>')
+		cmd = (construct_redircmd(cmd, full_fn, set_open(1537, 1, 436)));
+	else if (redirection == '+')
+		cmd = (construct_redircmd(cmd, full_fn, set_open(521, 1, 436)));
+	return (cmd);
+}
+
 t_cmd	*parseredir(t_cmd *cmd, char **b_start, char *b_end, t_env **env_list)
 {
 	int		redirection;
 	int		pipe_fd[2];
 	char	*q;
 	char	*eq;
-	char	*expanded_filename;
+	char	*full_fn;
 
 	while (peek(b_start, b_end, "<>"))
 	{
 		redirection = get_token(b_start, b_end, 0, 0);
 		if (redirection == '-' && verify_pipe(pipe(pipe_fd)))
 		{
-			cmd = construct_redircmd(cmd, 0, set_open(O_RDONLY, STDIN_FILENO, 0));
+			cmd = construct_redircmd(cmd, 0, set_open(O_RDONLY, 0, 0));
 			((t_redircmd *)cmd)->here_doc = pipe_fd[READ];
 			get_token(b_start, b_end, &q, &eq);
 			here_doc(pipe_fd[WRITE], get_delimiter(q, eq), env_list);
 			close(pipe_fd[WRITE]);
 		}
 		else if (get_token(b_start, b_end, &q, &eq) == 'a')
-			expanded_filename = expand_filename(q, eq, env_list);
+			full_fn = expand_filename(q, eq, env_list);
 		else
 			return (token_error(q, eq));
-		if (redirection == '<')
-			cmd = construct_redircmd(cmd, expanded_filename, set_open(O_RDONLY, STDIN_FILENO, 0));
-		else if (redirection == '>')
-			cmd = construct_redircmd(cmd, expanded_filename, set_open(O_WRONLY | O_CREAT | O_TRUNC, STDOUT_FILENO, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH));
-		else if (redirection == '+')
-			cmd = construct_redircmd(cmd, expanded_filename, set_open(O_WRONLY | O_CREAT | O_APPEND, STDOUT_FILENO, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH));
+		cmd = commence_redirection(cmd, redirection, full_fn);
 	}
 	return (cmd);
 }
