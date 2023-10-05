@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:19:12 by eva-1             #+#    #+#             */
-/*   Updated: 2023/08/24 17:40:45 by tanas            ###   ########.fr       */
+/*   Updated: 2023/10/05 18:17:07 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,22 @@ int	peek(char **b_start, char *b_end, const char *str)
 t_cmd	*parsepipe(char **b_start, char *b_end, t_env **env_list)
 {
 	t_cmd	*cmd;
+	t_cmd	*right_cmd;
 
 	cmd = parseexec(b_start, b_end, env_list);
 	if (peek(b_start, b_end, "|"))
 	{
 		get_token(b_start, b_end, 0, 0);
-		if (*b_start == b_end)
+		if (*b_start == b_end) {
 			ft_putstr_fd("syntax error near unexpected token `|'\n", 2);
-		cmd = construct_pipecmd(cmd, parsepipe(b_start, b_end, env_list));
+			free_tree(cmd);
+			return (NULL);
+		}
+		right_cmd = parsepipe(b_start, b_end, env_list);
+		if (right_cmd)
+			cmd = construct_pipecmd(cmd, right_cmd);
+		else
+			return (NULL);
 	}
 	return (cmd);
 }
@@ -52,6 +60,7 @@ t_cmd	*parsecmd(char *b_start, t_env **env_list)
 	root = parsepipe(&b_start, b_end, env_list);
 	if (peek(&b_start, b_end, ""))
 		ft_putstr_fd("minishell: syntax error\n", 2);
-	nullterminate(root);
+	if (root)
+		nullterminate(root);
 	return (root);
 }
