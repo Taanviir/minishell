@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/27 03:49:15 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/10/05 17:19:32 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,6 @@ int		wfork(void);
 void	free_cmd(t_cmd *cmd);
 void	free_tree(t_cmd *cmd);
 void	free_two(char *str1, char *str2);
+void	cleanup_exec(char *fp, t_cmd *root, char **env, t_env *env_list);
 
 #endif

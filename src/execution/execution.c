@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 20:24:32 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/24 17:33:27 by tanas            ###   ########.fr       */
+/*   Updated: 2023/10/05 17:19:03 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,13 @@ t_cmd	*runcmd(t_cmd *cmd, t_env **env_list, t_cmd *root)
 		return (NULL);
 	executers[cmd->type](cmd, env_list, root);
 	return (cmd);
+}
+
+void	cleanup_exec(char *fp, t_cmd *root, char **env, t_env *env_list)
+{
+	free(fp);
+	close_fds(root);
+	free_double_ptr((void **) env);
+	free_tree(root);
+	free_list(env_list);
 }

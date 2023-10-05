@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:20:43 by tanas             #+#    #+#             */
-/*   Updated: 2023/10/04 19:33:25 by tanas            ###   ########.fr       */
+/*   Updated: 2023/10/05 17:19:46 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,14 +118,13 @@ void	execute_cmd(t_cmd *cmd, t_env **env_list, t_cmd *root)
 	{
 		env_array = list_to_array(*env_list);
 		full_path = get_full_path(program_name, env_list);
-		if ((execve(program_name, execcmd->argv, env_array) && !full_path) //! executes a program in teh same directory without ./
-			|| (execve(full_path, execcmd->argv, env_array)))
+		if (ft_strchr(program_name, '/')
+			&& execve(program_name, execcmd->argv, env_array))
 			write_exec_error(program_name, &g_exit_status);
-		free(full_path);
-		close_fds(root);
-		free_double_ptr((void **) env_array);
-		free_tree(root);
-		free_list(*env_list);
+		else if (full_path && (execve(full_path, execcmd->argv, env_array)))
+			write_exec_error(program_name, &g_exit_status);
+		write_exec_error(program_name, &g_exit_status);
+		cleanup_exec(full_path, root, env_array, *env_list);
 		exit(g_exit_status);
 	}
 	wait(&g_exit_status);
