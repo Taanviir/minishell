@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 18:55:49 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/23 13:41:41 by tanas            ###   ########.fr       */
+/*   Updated: 2023/10/06 19:33:44 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,17 @@ void	signal_handler_child(int signum)
 {
 	int	status;
 
-	if (signum == SIGINT)
-		printf("\n");
-	else if (signum == SIGQUIT)
-		printf("Quit: 3\n");
 	waitpid(-1, &status, 0);
 	if (!WIFEXITED(status) && signum == SIGINT)
+	{
+		ft_putendl_fd("", 1);
 		g_exit_status = 130 << 8;
+	}
 	else if (!WIFEXITED(status) && signum == SIGQUIT)
+	{
+		ft_putendl_fd("Quit: 3", 1);
 		g_exit_status = 131 << 8;
+	}
 }
 
 void	signal_handler_heredoc(int signum)

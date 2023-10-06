@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:19:12 by eva-1             #+#    #+#             */
-/*   Updated: 2023/10/05 18:17:07 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/10/06 19:33:13 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ t_cmd	*parsepipe(char **b_start, char *b_end, t_env **env_list)
 	if (peek(b_start, b_end, "|"))
 	{
 		get_token(b_start, b_end, 0, 0);
-		if (*b_start == b_end) {
+		if (*b_start == b_end)
+		{
 			ft_putstr_fd("syntax error near unexpected token `|'\n", 2);
 			free_tree(cmd);
 			return (NULL);
