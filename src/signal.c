@@ -6,12 +6,17 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 18:55:49 by tanas             #+#    #+#             */
-/*   Updated: 2023/10/06 19:33:44 by tanas            ###   ########.fr       */
+/*   Updated: 2023/10/07 16:40:53 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * @brief signal handler for parent process
+ * 
+ * @param signum received signal
+ */
 void	signal_handler_parent(int signum)
 {
 	if (signum == SIGINT)
@@ -24,6 +29,11 @@ void	signal_handler_parent(int signum)
 	}
 }
 
+/**
+ * @brief signal handler for child process
+ * 
+ * @param signum received signal
+ */
 void	signal_handler_child(int signum)
 {
 	int	status;
@@ -41,6 +51,12 @@ void	signal_handler_child(int signum)
 	}
 }
 
+/**
+ * @brief signal handler for heredoc
+ * 
+ * @param signum received signal
+ * @note 'rl_done' is a global variable from 'readline.h'
+ */
 void	signal_handler_heredoc(int signum)
 {
 	if (signum == SIGINT)
@@ -54,6 +70,9 @@ void	signal_handler_heredoc(int signum)
 	}
 }
 
+/**
+ * @brief receive signals from parent process
+ */
 void	receive_signal(void)
 {
 	signal(SIGINT, signal_handler_parent);

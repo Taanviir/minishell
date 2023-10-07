@@ -12,6 +12,14 @@
 
 #include "minishell.h"
 
+/**
+ * @brief checks if the digit is valid
+ * 
+ * @param is_negative is the number negative
+ * @param result result of the conversion
+ * @param digit digit to check
+ * @return long number
+ */
 static long	check_digit(bool is_negative, long result, int digit)
 {
 	if ((!is_negative && (result > (LONG_MAX - digit) / 10))
@@ -24,6 +32,13 @@ static long	check_digit(bool is_negative, long result, int digit)
 	return (0);
 }
 
+/**
+ * @brief converts string to long
+ * 
+ * @param str string to convert
+ * @param endptr pointer to the end of the string
+ * @return long number
+ */
 static long	ft_strtol(char *str, char **endptr)
 {
 	long	result;
@@ -52,6 +67,12 @@ static long	ft_strtol(char *str, char **endptr)
 	return (result);
 }
 
+/**
+ * @brief checks if the exit argument is valid
+ * 
+ * @param exec execution struct
+ * @return exit status
+ */
 static int	exit_check(t_exec *exec)
 {
 	int		i;
@@ -75,6 +96,13 @@ static int	exit_check(t_exec *exec)
 	return (0);
 }
 
+/**
+ * @brief cleanly exits the shell
+ * 
+ * @param cmd command struct
+ * @param env_list environment list
+ * @return exit status
+ */
 int	ft_exit(t_cmd *cmd, t_env **env_list)
 {
 	t_exec	*exec;

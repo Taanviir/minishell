@@ -12,6 +12,13 @@
 
 #include "minishell.h"
 
+/**
+ * @brief Get the length of the longer of two strings.
+ * 
+ * @param str1 string 1
+ * @param str2 string 2
+ * @return the length of the longer string
+ */
 int	get_len(char *str1, char *str2)
 {
 	if (ft_strlen(str1) > ft_strlen(str2))
@@ -19,6 +26,12 @@ int	get_len(char *str1, char *str2)
 	return (ft_strlen(str2));
 }
 
+/**
+ * @brief Checks if a string is empty.
+ * 
+ * @param line string to check
+ * @return true if the string is empty, false otherwise
+ */
 bool	is_empty(char *line)
 {
 	while (*line)
@@ -30,16 +43,27 @@ bool	is_empty(char *line)
 	return (true);
 }
 
+/**
+ * @brief Prints an error message to stderr.
+ * 
+ * @param err_msg error message to print
+ * @param function function name to print
+ * @return 0
+ */
 int	print_error(char *err_msg, char *function)
 {
 	ft_putstr_fd("minishell: ", 2);
 	if (function)
 		ft_putstr_fd(function, 2);
-	ft_putstr_fd(err_msg, 2);
-	ft_putendl_fd("", 2);
+	ft_putendl_fd(err_msg, 2);
 	return (0);
 }
 
+/**
+ * @brief Close standard file descriptors and with the one provided.
+ * 
+ * @param root cmd struct containing the file descriptor to close
+ */
 void	close_fds(t_cmd *root)
 {
 	close(0);

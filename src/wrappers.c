@@ -3,15 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   wrappers.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 17:39:08 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/27 03:49:20 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/10/07 16:35:18 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * @brief sets the child signal handler and forks a child process.
+ * @return the pid of the child process.
+ */
 int	wfork(void)
 {
 	int	pid;
@@ -42,6 +46,15 @@ bool	verify_pipe(int pipe_return)
 	return (true);
 }
 
+/**
+ * @brief Checks if a file was opened successfully.
+ *
+ * In case of an error during file opening, prints the error.
+ *
+ * @param fd The file descriptor returned by the open() system call.
+ * @param file_path The path of the file that was opened.
+ * @return true if the file was opened successfully, false otherwise.
+ */
 bool	verify_open(const int fd, const char *file_path)
 {
 	if (fd < 0)

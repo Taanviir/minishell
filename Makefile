@@ -28,7 +28,7 @@ FREE = src/free/free.a
 LD =   $(PARSER) $(EXECUTION) $(BUILTINS) $(FREE) $(LIBFT) -lreadline -L /usr/local/opt/readline/lib
 
 SRCS_DIR = src/
-SRCS_LIST = main.c signal.c environment.c wrappers.c utils.c
+SRCS_LIST = main.c signal.c environment.c wrappers.c utils.c get_cmd.c
 SRCS = $(addprefix $(SRCS_DIR), $(SRCS_LIST))
 
 OBJS_DIR = obj/
