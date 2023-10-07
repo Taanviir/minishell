@@ -65,7 +65,6 @@ libraries :
 	@make -sC src/free
 
 clean :
-	@rm -rf $(NAME)
 	@make clean -sC libft
 	@make clean -sC src/parser
 	@make clean -sC src/builtins
@@ -75,6 +74,7 @@ clean :
 	@echo $(RED_BI)"\nRemoving all object directories and files"$(RESET)
 
 fclean : clean
+	@rm -rf $(NAME)
 	@make fclean -sC libft
 	@make fclean -sC src/parser
 	@make fclean -sC src/builtins
