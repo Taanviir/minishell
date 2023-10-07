@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:20:43 by tanas             #+#    #+#             */
-/*   Updated: 2023/10/05 17:19:46 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/10/07 13:58:12 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ static char	*get_full_path(char *program_name, t_env **env_list)
 		full_path = NULL;
 	}
 	free_double_ptr((void **)path);
+	if (!full_path)
+		return (program_name);
 	return (full_path);
 }
 
@@ -118,12 +120,11 @@ void	execute_cmd(t_cmd *cmd, t_env **env_list, t_cmd *root)
 	{
 		env_array = list_to_array(*env_list);
 		full_path = get_full_path(program_name, env_list);
-		if (ft_strchr(program_name, '/')
-			&& execve(program_name, execcmd->argv, env_array))
+		if (ft_strchr(full_path, '/')
+			&& execve(full_path, execcmd->argv, env_array))
 			write_exec_error(program_name, &g_exit_status);
-		else if (full_path && (execve(full_path, execcmd->argv, env_array)))
+		else
 			write_exec_error(program_name, &g_exit_status);
-		write_exec_error(program_name, &g_exit_status);
 		cleanup_exec(full_path, root, env_array, *env_list);
 		exit(g_exit_status);
 	}
