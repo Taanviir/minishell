@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:20:43 by tanas             #+#    #+#             */
-/*   Updated: 2023/10/07 13:58:12 by tanas            ###   ########.fr       */
+/*   Updated: 2023/10/07 14:25:58 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static char	*get_full_path(char *program_name, t_env **env_list)
 	}
 	free_double_ptr((void **)path);
 	if (!full_path)
-		return (program_name);
+		return (ft_strdup(program_name));
 	return (full_path);
 }
 
@@ -135,8 +135,16 @@ void	execute_cmd(t_cmd *cmd, t_env **env_list, t_cmd *root)
 // encountered and sets the appropriate exit status
 static void	write_exec_error(char *program_name, int *l_exit)
 {
+	struct stat	file_stat;
+
 	ft_putstr_fd("minishell: ", 2);
-	if (errno == EACCES || errno == ENOENT)
+	if (stat(program_name, &file_stat) == 0 && S_ISDIR(file_stat.st_mode))
+	{
+		ft_putstr_fd(program_name, 2);
+		ft_putstr_fd(": Is a directory\n", 2);
+		*l_exit = 126;
+	}
+	else if (errno == EACCES || errno == ENOENT)
 	{
 		ft_putstr_fd(program_name, 2);
 		if (errno == ENOENT)
