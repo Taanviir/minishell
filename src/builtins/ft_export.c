@@ -12,15 +12,34 @@
 
 #include "minishell.h"
 
-static t_env	*find_env_node(t_env *env_list, char *name)
+/**
+ * @brief checks if the environment variable is valid
+ * 
+ * @param arg argument to check
+ * @param ret return value
+ * @return true if error, false if success 
+ */
+bool	check_var_export(char *arg, int *ret)
 {
-	while (env_list)
+	int	i;
+
+	if (!ft_is_alpha(arg[0]))
 	{
-		if (!ft_strncmp(name, env_list->name, _name(name, env_list->name)))
-			return (env_list);
-		env_list = env_list->next;
+		print_env_error(arg, "export");
+		*ret = 1;
+		return (true);
 	}
-	return (NULL);
+	i = 0;
+	while (arg[++i] && arg[i] != '=')
+	{
+		if (!ft_is_alnum(arg[i]) && arg[i] != '_')
+		{
+			print_env_error(arg, "export");
+			*ret = 1;
+			return (true);
+		}
+	}
+	return (false);
 }
 
 int	ft_export(char **argv, t_env **env_list)
@@ -37,7 +56,7 @@ int	ft_export(char **argv, t_env **env_list)
 	{
 		if (check_var_export(argv[i], &ret))
 			continue ;
-		temp = find_env_node(*env_list, argv[i]);
+		temp = get_env(*env_list, argv[i]);
 		if (temp)
 		{
 			if (ft_strchr(argv[i], '='))

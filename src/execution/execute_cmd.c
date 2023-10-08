@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:20:43 by tanas             #+#    #+#             */
-/*   Updated: 2023/10/07 14:25:58 by tanas            ###   ########.fr       */
+/*   Updated: 2023/10/07 20:48:53 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static char	*get_full_path(char *program_name, t_env **env_list)
 	full_path = NULL;
 	if (has_consecutive_slashes(program_name))
 		return (full_path);
-	path = ft_split(get_env(*env_list, "PATH"), ':');
+	path = ft_split(get_env(*env_list, "PATH")->value, ':');
 	if (!path || !*program_name)
 		return (free_double_ptr((void **)path), NULL);
 	while (path[++i])

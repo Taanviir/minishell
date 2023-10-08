@@ -12,17 +12,30 @@
 
 #include "minishell.h"
 
-char	*get_env(t_env *env_list, char *name)
+/**
+ * @brief get the specific environment variable
+ * 
+ * @param env_list environment list
+ * @param name name of the environment variable
+ * @return value of the environment variable
+ */
+t_env	*get_env(t_env *env, char *name)
 {
-	while (env_list)
+	while (env)
 	{
-		if (!ft_strncmp(env_list->name, name, _name(env_list->name, name)))
-			return (env_list->value);
-		env_list = env_list->next;
+		if (!ft_strncmp(env->name, name, get_longer_name(env->name, name)))
+			return (env);
+		env = env->next;
 	}
 	return (NULL);
 }
 
+/**
+ * @brief convert environment list to array
+ * 
+ * @param env_list environment list
+ * @return environment array
+ */
 char	**list_to_array(t_env *env_list)
 {
 	t_env	*temp;
@@ -50,6 +63,13 @@ char	**list_to_array(t_env *env_list)
 	return (env_array);
 }
 
+/**
+ * @brief set the value of the environment variable depeinding on the name
+ * 
+ * @param var name of the environment variable
+ * @param value value of the environment variable
+ * @return value of the environment variable
+ */
 static char	*node_value(char *var, char *value)
 {
 	char	*check;
@@ -68,6 +88,12 @@ static char	*node_value(char *var, char *value)
 	return (ft_strdup(value));
 }
 
+/**
+ * @brief add node to the bottom of the list
+ * 
+ * @param env_list environment list
+ * @param env_var environment variable
+ */
 void	add_node_bottom(t_env **env_list, char *env_var)
 {
 	t_env	*new_node;
@@ -93,6 +119,12 @@ void	add_node_bottom(t_env **env_list, char *env_var)
 	free_double_ptr((void **) env_array);
 }
 
+/**
+ * @brief initialize environment list
+ * 
+ * @param env_list environment list
+ * @param envp environment array
+ */
 void	environment_init(t_env **env_list, char **envp)
 {
 	int		i;

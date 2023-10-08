@@ -6,13 +6,19 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 17:50:38 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/23 20:55:58 by tanas            ###   ########.fr       */
+/*   Updated: 2023/10/07 21:13:22 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	print_msg(char *arg, char *function)
+/**
+ * @brief prints error message for export and unset
+ * 
+ * @param arg argument to print
+ * @param function function name
+ */
+void	print_env_error(char *arg, char *function)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(function, 2);
@@ -21,50 +27,12 @@ static void	print_msg(char *arg, char *function)
 	ft_putendl_fd("': not a valid identifier", 2);
 }
 
-bool	check_var_unset(char *arg)
-{
-	int	i;
-
-	if (!ft_is_alpha(arg[0]) && arg[0] != '_')
-	{
-		print_msg(arg, "unset");
-		return (true);
-	}
-	i = 0;
-	while (arg[++i])
-	{
-		if (!ft_is_alnum(arg[i]) && arg[i] != '_')
-		{
-			print_msg(arg, "unset");
-			return (true);
-		}
-	}
-	return (false);
-}
-
-bool	check_var_export(char *arg, int *ret)
-{
-	int	i;
-
-	if (!ft_is_alpha(arg[0]))
-	{
-		print_msg(arg, "export");
-		*ret = 1;
-		return (true);
-	}
-	i = 0;
-	while (arg[++i] && arg[i] != '=')
-	{
-		if (!ft_is_alnum(arg[i]) && arg[i] != '_')
-		{
-			print_msg(arg, "export");
-			*ret = 1;
-			return (true);
-		}
-	}
-	return (false);
-}
-
+/**
+ * @brief name length of the environment variable
+ * 
+ * @param arg argument to get the name length
+ * @return length of the name
+ */
 int	name_len(char *arg)
 {
 	int	i;
@@ -75,7 +43,14 @@ int	name_len(char *arg)
 	return (i);
 }
 
-int	_name(char *var1, char *var2)
+/**
+ * @brief finds the longer name of two environment variables
+ * 
+ * @param var1 environment variable 1
+ * @param var2 environment variable 2
+ * @return length of the longer name
+ */
+int	get_longer_name(char *var1, char *var2)
 {
 	if (name_len(var1) > name_len(var2))
 		return (name_len(var1));

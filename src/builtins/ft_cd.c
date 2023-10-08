@@ -12,6 +12,12 @@
 
 #include "minishell.h"
 
+/**
+ * @brief updates env_list with new PWD and OLDPWD
+ * 
+ * @param env_list env_list to update
+ * @param old_path old path to update OLDPWD
+ */
 static void	update_env(t_env **env_list, char *old_path)
 {
 	char	**argv;
@@ -32,12 +38,19 @@ static void	update_env(t_env **env_list, char *old_path)
 	free(cwd);
 }
 
+/**
+ * @brief expands ~ to HOME
+ * 
+ * @param path path to expand
+ * @param env_list env_list to get HOME from
+ * @return 1 if error, 0 if success
+ */
 static int	expand_tilde(char **path, t_env **env_list)
 {
 	char	*home;
 	char	*expanded_path;
 
-	home = get_env(*env_list, "HOME");
+	home = get_env(*env_list, "HOME")->value;
 	if (!home)
 		return (printf("minishell: cd: HOME not set\n"), 1);
 	if ((*path)[0] == '~')
@@ -49,6 +62,14 @@ static int	expand_tilde(char **path, t_env **env_list)
 	return (0);
 }
 
+/**
+ * @brief changes directory
+ * 
+ * @param env_list env_list to update
+ * @param path path to change to
+ * @param old_path old path to update OLDPWD
+ * @return 1 if error, 0 if success
+ */
 static int	change_path(t_env **env_list, char *path, char *old_path)
 {
 	DIR	*directory;
@@ -67,6 +88,13 @@ static int	change_path(t_env **env_list, char *path, char *old_path)
 	return (1);
 }
 
+/**
+ * @brief changes directory
+ * 
+ * @param argv arguments
+ * @param env_list env_list to update
+ * @return 1 if error, 0 if success
+ */
 int	ft_cd(char **argv, t_env **env_list)
 {
 	char	*path;
@@ -74,13 +102,13 @@ int	ft_cd(char **argv, t_env **env_list)
 
 	if (!argv[1] || !ft_strncmp(argv[1], "~", get_len(argv[1], "~")))
 	{
-		path = get_env(*env_list, "HOME");
+		path = get_env(*env_list, "HOME")->value;
 		if (!path)
 			return (printf("minishell: cd: HOME not set\n"), 1);
 	}
 	else if (!ft_strncmp(argv[1], "-", 1))
 	{
-		path = get_env(*env_list, "OLDPWD");
+		path = get_env(*env_list, "OLDPWD")->value;
 		if (!path)
 			return (printf("minishell: cd: OLDPWD not set\n"), 1);
 	}

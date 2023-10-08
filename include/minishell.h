@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 22:43:03 by tanas             #+#    #+#             */
-/*   Updated: 2023/10/07 14:25:03 by tanas            ###   ########.fr       */
+/*   Updated: 2023/10/07 20:48:06 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	environment_init(t_env **env, char **envp);
 void	add_node_bottom(t_env **head, char *envp);
 char	**list_to_array(t_env *env);
 void	free_list(t_env *env);
-char	*get_env(t_env *env_list, char *name);
+t_env	*get_env(t_env *env_list, char *name);
 
 // INPUT FUNCTION
 t_cmd	*get_cmd(char *line, t_env **env_list);
