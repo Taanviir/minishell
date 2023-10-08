@@ -3,30 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   parse_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:13:46 by tanas             #+#    #+#             */
-/*   Updated: 2023/10/08 17:03:33 by tanas            ###   ########.fr       */
+/*   Updated: 2023/10/08 20:39:03 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // helper function to increase the size of the argument list
-static t_exec	*inc_argsize(t_exec *cmd, size_t argc)
+static void	inc_argsize(t_exec *cmd, size_t argc_max, size_t argc)
 {
-	t_exec	*ret;
+	char	**temp_argv;
+	char	**temp_eargv;
 
-	ret = ft_calloc(sizeof(t_exec), 1);
-	ret->argv = ft_calloc(sizeof(char *), (argc + ARGC));
-	ret->eargv = ft_calloc(sizeof(char *), (argc + ARGC));
-	ft_memcpy(ret, cmd, sizeof(cmd));
-	ft_memcpy(ret->argv, cmd->argv, sizeof(char *) * argc);
-	ft_memcpy(ret->eargv, cmd->eargv, sizeof(char *) * argc);
-	free(cmd->argv);
-	free(cmd->eargv);
-	free(cmd);
-	return (ret);
+	temp_argv = cmd->argv;
+	temp_eargv = cmd->eargv;
+	cmd->argv = ft_calloc(sizeof(char *), (argc_max * 2));
+	cmd->eargv = ft_calloc(sizeof(char *), (argc_max * 2));
+	ft_memcpy(cmd->argv, temp_argv, sizeof(char *) * argc);
+	ft_memcpy(cmd->eargv, temp_eargv, sizeof(char *) * argc);
+	cmd->argc_max = argc_max * 2;
+	free(temp_argv);
+	// free(temp_eargv);
 }
 
 static char	*open_quotes(char *es, char *q)
@@ -44,8 +44,8 @@ t_exec	*fill_execcmd(t_exec *execcmd, char **argq)
 	execcmd->eargv[execcmd->argc] = execcmd->argv[execcmd->argc]
 		+ ft_strlen(execcmd->argv[execcmd->argc]);
 	execcmd->argc++;
-	if (execcmd->argc > (ARGC - 1))
-		execcmd = inc_argsize(execcmd, execcmd->argc);
+	if (execcmd->argc > execcmd->argc_max)
+		inc_argsize(execcmd, execcmd->argc_max, execcmd->argc);
 	return (execcmd);
 }
 

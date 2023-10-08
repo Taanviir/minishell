@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   constructor.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 21:13:29 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/10/04 13:59:05 by tanas            ###   ########.fr       */
+/*   Updated: 2023/10/08 18:58:03 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_cmd	*construct_exec(void)
 	cmd->argv = ft_calloc(sizeof(char *), ARGC);
 	cmd->eargv = ft_calloc(sizeof(char *), ARGC);
 	cmd->type = EXEC;
+	cmd->argc_max = ARGC;
 	return ((t_cmd *)cmd);
 }
 

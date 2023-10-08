@@ -18,7 +18,7 @@ YELLOW = "\033[0;33m"
 RESET = "\033[0m"
 
 NAME = minishell
-C_FLAGS = -Wall -Wextra -Werror -g3
+C_FLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 INCLUDES = -I include/ -I libft/include -I /usr/local/opt/readline/include
 LIBFT = libft/libft.a
 PARSER = src/parser/parser.a
