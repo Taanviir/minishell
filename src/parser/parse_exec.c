@@ -6,7 +6,7 @@
 /*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:13:46 by tanas             #+#    #+#             */
-/*   Updated: 2023/10/08 20:39:03 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/10/08 20:48:16 by sabdelra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	inc_argsize(t_exec *cmd, size_t argc_max, size_t argc)
 	ft_memcpy(cmd->eargv, temp_eargv, sizeof(char *) * argc);
 	cmd->argc_max = argc_max * 2;
 	free(temp_argv);
-	// free(temp_eargv);
+	free(temp_eargv);
 }
 
 static char	*open_quotes(char *es, char *q)
@@ -44,7 +44,7 @@ t_exec	*fill_execcmd(t_exec *execcmd, char **argq)
 	execcmd->eargv[execcmd->argc] = execcmd->argv[execcmd->argc]
 		+ ft_strlen(execcmd->argv[execcmd->argc]);
 	execcmd->argc++;
-	if (execcmd->argc > execcmd->argc_max)
+	if (execcmd->argc > execcmd->argc_max - 1)
 		inc_argsize(execcmd, execcmd->argc_max, execcmd->argc);
 	return (execcmd);
 }
