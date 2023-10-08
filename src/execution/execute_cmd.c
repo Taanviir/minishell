@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:20:43 by tanas             #+#    #+#             */
-/*   Updated: 2023/10/08 17:35:23 by tanas            ###   ########.fr       */
+/*   Updated: 2023/10/08 17:59:25 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,6 @@ static void	write_exec_error(char *program_name, int *l_exit)
 	}
 	else if (errno == EACCES || errno == ENOENT)
 	{
-		ft_putstr_fd(program_name, 2);
 		if (errno == ENOENT)
 		{
 			print_error(": command not found", program_name);
