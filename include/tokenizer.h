@@ -6,14 +6,14 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 01:25:28 by tanas             #+#    #+#             */
-/*   Updated: 2023/10/04 14:28:30 by tanas            ###   ########.fr       */
+/*   Updated: 2023/10/08 17:04:16 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TOKENIZER_H
 # define TOKENIZER_H
 
-# define ARGC 20
+# define ARGC 2050
 
 # define EXEC 0
 # define REDIR 1

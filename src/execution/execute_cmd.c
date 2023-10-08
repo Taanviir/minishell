@@ -6,7 +6,7 @@
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:20:43 by tanas             #+#    #+#             */
-/*   Updated: 2023/10/07 20:48:53 by tanas            ###   ########.fr       */
+/*   Updated: 2023/10/08 17:35:23 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,11 +137,10 @@ static void	write_exec_error(char *program_name, int *l_exit)
 {
 	struct stat	file_stat;
 
-	ft_putstr_fd("minishell: ", 2);
-	if (stat(program_name, &file_stat) == 0 && S_ISDIR(file_stat.st_mode))
+	if (ft_strchr(program_name, '/')
+		&& stat(program_name, &file_stat) == 0 && S_ISDIR(file_stat.st_mode))
 	{
-		ft_putstr_fd(program_name, 2);
-		ft_putstr_fd(": Is a directory\n", 2);
+		print_error(": is a directory", program_name);
 		*l_exit = 126;
 	}
 	else if (errno == EACCES || errno == ENOENT)
@@ -149,12 +148,12 @@ static void	write_exec_error(char *program_name, int *l_exit)
 		ft_putstr_fd(program_name, 2);
 		if (errno == ENOENT)
 		{
-			ft_putstr_fd(": command not found\n", 2);
+			print_error(": command not found", program_name);
 			*l_exit = 127;
 		}
 		else if (errno == EACCES)
 		{
-			ft_putstr_fd(": Permission denied\n", 2);
+			print_error(": Permission denied", program_name);
 			*l_exit = 126;
 		}
 	}

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/21 12:06:57 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/21 12:06:57 by tanas            ###   ########.fr       */
+/*   Created: 2023/10/08 17:36:13 by tanas             #+#    #+#             */
+/*   Updated: 2023/10/08 17:36:13 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static int	expand_tilde(char **path, t_env **env_list)
 	char	*home;
 	char	*expanded_path;
 
-	home = get_env(*env_list, "HOME")->value;
+	home = get_env_value(*env_list, "HOME");
 	if (!home)
 		return (printf("minishell: cd: HOME not set\n"), 1);
 	if ((*path)[0] == '~')
@@ -102,13 +102,13 @@ int	ft_cd(char **argv, t_env **env_list)
 
 	if (!argv[1] || !ft_strncmp(argv[1], "~", get_len(argv[1], "~")))
 	{
-		path = get_env(*env_list, "HOME")->value;
+		path = get_env_value(*env_list, "HOME");
 		if (!path)
 			return (printf("minishell: cd: HOME not set\n"), 1);
 	}
 	else if (!ft_strncmp(argv[1], "-", 1))
 	{
-		path = get_env(*env_list, "OLDPWD")->value;
+		path = get_env_value(*env_list, "OLDPWD");
 		if (!path)
 			return (printf("minishell: cd: OLDPWD not set\n"), 1);
 	}

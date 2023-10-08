@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_token.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabdelra <sabdelra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 03:02:01 by tanas             #+#    #+#             */
-/*   Updated: 2023/08/24 20:35:45 by sabdelra         ###   ########.fr       */
+/*   Updated: 2023/10/08 16:48:25 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static char	find_type(char **scan)
 		*scan += 1;
 	}
 	if (in_quote)
-		return (print_error("unclosed quote", NULL), 0);
+		return (print_error("unclosed quote", NULL), 'u');
 	return ('a');
 }
 

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/12 03:46:11 by sabdelra          #+#    #+#             */
-/*   Updated: 2023/08/24 10:03:04 by tanas            ###   ########.fr       */
+/*   Created: 2023/10/08 17:36:53 by tanas             #+#    #+#             */
+/*   Updated: 2023/10/08 17:36:53 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@
  * @param name name of the environment variable
  * @return value of the environment variable
  */
-t_env	*get_env(t_env *env, char *name)
+char	*get_env_value(t_env *env, char *name)
 {
 	while (env)
 	{
 		if (!ft_strncmp(env->name, name, get_longer_name(env->name, name)))
-			return (env);
+			return (env->value);
 		env = env->next;
 	}
 	return (NULL);
@@ -74,7 +74,7 @@ static char	*node_value(char *var, char *value)
 {
 	char	*check;
 
-	if (!ft_strncmp(var, "SHLVL", name_len(var)))
+	if (!ft_strncmp(var, "SHLVL", env_name_len(var)))
 	{
 		if (value)
 			return (ft_itoa(ft_atoi(value) + 1));

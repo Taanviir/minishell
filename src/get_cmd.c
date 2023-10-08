@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tanas <tanas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/07 16:43:00 by tanas             #+#    #+#             */
-/*   Updated: 2023/10/07 16:43:00 by tanas            ###   ########.fr       */
+/*   Created: 2023/10/08 17:36:36 by tanas             #+#    #+#             */
+/*   Updated: 2023/10/08 17:36:36 by tanas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static char	*get_dir(t_env *env_list)
 	dir = getcwd(NULL, 0);
 	if (!dir)
 		return (ft_strdup("[.]"));
-	home = get_env(env_list, "HOME")->value;
+	home = get_env_value(env_list, "HOME");
 	if (home && !ft_strncmp(dir, home, get_len(dir, home)))
 		result = ft_strdup("[~]");
 	else if (dir[0] == '/' && !dir[1])
