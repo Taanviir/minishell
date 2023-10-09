@@ -6,7 +6,7 @@
 #    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/18 14:50:05 by sabdelra          #+#    #+#              #
-#    Updated: 2023/08/21 16:58:08 by tanas            ###   ########.fr        #
+#    Updated: 2023/10/09 18:13:05 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ BLUE_I:= "\033[3;34m"
 RESET:= "\033[0m"
 
 NAME:= execution.a
-C_FLAGS:= -Wall -Werror -Wextra -ggdb3
+C_FLAGS:= -Wall -Werror -Wextra
 INCLUDES:= -I ../../include -I ../../libft/include
 
 SRCS:= execution.c execute_cmd.c execute_redir.c execute_pipe.c
@@ -42,4 +42,7 @@ fclean : clean
 
 re : fclean all
 
-.PHONY : all fclean clean re
+debug : C_FLAGS += -g3
+debug : re
+
+.PHONY : all fclean clean re debug

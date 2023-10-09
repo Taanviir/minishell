@@ -6,12 +6,16 @@
 #    By: tanas <tanas@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/18 16:13:46 by tanas             #+#    #+#              #
-#    Updated: 2023/07/30 23:51:25 by tanas            ###   ########.fr        #
+#    Updated: 2023/10/09 18:13:41 by tanas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+### COLOURS
+YELLOW = "\033[0;33m"
+RESET = "\033[0m"
+
 NAME = libft.a
-C_FLAGS = -Wall -Wextra -Werror -ggdb3
+C_FLAGS = -Wall -Wextra -Werror
 
 SRCS_DIR = src/
 SRCS_LIST = error-utils/ft_error.c \
@@ -35,10 +39,6 @@ OBJS_DIR = obj/
 OBJS_SUBDIRS = $(foreach directory, $(SUB_DIRS), $(addprefix $(OBJS_DIR), $(directory))) # adding the prefix objects/ to each subdirectory
 OBJS = $(subst $(SRCS_DIR), $(OBJS_DIR), $(SRCS:.c=.o)) # changing .c to .o for object files
 
-### COLOURS
-YELLOW = "\033[0;33m"
-RESET = "\033[0m"
-
 all : $(NAME)
 
 $(NAME) : $(OBJS)
@@ -57,4 +57,7 @@ fclean : clean
 
 re : fclean all
 
-.PHONY : all clean fclean re
+debug : C_FLAGS += -g3
+debug : re
+
+.PHONY : all clean fclean re debug
