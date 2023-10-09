@@ -22,9 +22,9 @@
 static int	handle_tilde(char *arg, t_env *env_list)
 {
 	if (!ft_strncmp("~+", arg, get_len("~+", arg)))
-		return (ft_putstr_fd(get_env(env_list, "PWD")->value, 1), 1);
+		return (ft_putstr_fd(get_env_value(env_list, "PWD"), 1), 1);
 	else if (!ft_strncmp("~", arg, get_len("~", arg)))
-		return (ft_putstr_fd(get_env(env_list, "HOME")->value, 1), 1);
+		return (ft_putstr_fd(get_env_value(env_list, "HOME"), 1), 1);
 	return (0);
 }
 

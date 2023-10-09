@@ -48,7 +48,7 @@ static char	*get_full_path(char *program_name, t_env **env_list)
 	full_path = NULL;
 	if (has_consecutive_slashes(program_name))
 		return (full_path);
-	path = ft_split(get_env(*env_list, "PATH")->value, ':');
+	path = ft_split(get_env_value(*env_list, "PATH"), ':');
 	if (!path || !*program_name)
 		return (free_double_ptr((void **)path), NULL);
 	while (path[++i])
