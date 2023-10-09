@@ -142,6 +142,7 @@ static void	write_exec_error(char *program_name, int *l_exit)
 	{
 		print_error(": is a directory", program_name);
 		*l_exit = 126;
+		return ;
 	}
 	else if (errno == EACCES || errno == ENOENT)
 	{
@@ -155,7 +156,8 @@ static void	write_exec_error(char *program_name, int *l_exit)
 			print_error(": Permission denied", program_name);
 			*l_exit = 126;
 		}
+		return ;
 	}
-	else
-		perror(program_name);
+	ft_putstr_fd("minishell: ", 2);
+	perror(program_name);
 }
