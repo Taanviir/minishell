@@ -37,7 +37,7 @@ OBJS = $(addprefix $(OBJS_DIR), $(OBJS_LIST))
 
 all : $(NAME)
 
-$(NAME) : $(LIBFT) libraries $(OBJS)
+$(NAME) : $(LIBFT) $(PARSER) $(BUILTINS) $(EXECUTION) $(FREE) $(OBJS)
 	@$(CC) $(C_FLAGS) $(INCLUDES) $(OBJS) -o $(NAME) $(LD)
 	@echo $(GREEN_B)"$(NAME) is ready. ✅\n"$(RESET)
 
@@ -55,13 +55,19 @@ run : $(NAME)
 	clear
 	./$(NAME)
 
-leaks :
+leaks : debug
 	valgrind --show-leak-kinds=all --leak-check=full --suppressions=vg_rlsuppressions.supp ./$(NAME)
 
-libraries :
+$(PARSER) :
 	@make -sC src/parser
+
+$(BUILTINS) :
 	@make -sC src/builtins
+
+$(EXECUTION) :
 	@make -sC src/execution
+
+$(FREE) :
 	@make -sC src/free
 
 clean :
@@ -87,4 +93,4 @@ re : fclean all
 debug : C_FLAGS += -g3
 debug : re
 
-.PHONY : all clean fclean re libraries run leaks debug
+.PHONY : all clean fclean re run leaks debug
